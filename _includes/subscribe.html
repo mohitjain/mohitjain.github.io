@@ -1,7 +1,7 @@
 <section class="subscribe"{% unless include.compact %} aria-labelledby="subscribe-title"{% endunless %}>
   {%- unless include.compact %}
   <h2 class="subscribe-title" id="subscribe-title">Follow new articles</h2>
-  <p>New articles, the occasional learning note and engineering experiments, with no fixed schedule.</p>
+  <p>New articles, and the occasional learning note, with no fixed schedule.</p>
   {%- endunless %}
   {%- if site.newsletter.buttondown and site.newsletter.buttondown != '' %}
   <form class="subscribe-form" action="https://buttondown.com/api/emails/embed-subscribe/{{ site.newsletter.buttondown }}" method="post">

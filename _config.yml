@@ -52,9 +52,6 @@ collections:
   topics:
     output: true
     permalink: /topics/:name/
-  experiments:
-    output: true
-    permalink: /experiments/:name/
 
 # Pagination (jekyll-paginate-v2)
 pagination:
@@ -86,10 +83,6 @@ defaults:
       type: topics
     values:
       layout: topic
-  - scope:
-      type: experiments
-    values:
-      layout: experiment
 
 # Build settings
 sass:
