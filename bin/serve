@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Run the site locally with drafts, future posts and live reload.
+# Builds the search index first (Jekyll keeps it across rebuilds, but it only
+# refreshes when you run bin/build again). Extra flags go to `jekyll serve`.
+# Usage: bin/serve [--port 4001]
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+bin/build
+exec bundle exec jekyll serve --config _config.yml,_config.dev.yml "$@"

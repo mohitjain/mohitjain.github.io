@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Install everything needed to work on the site locally.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+want="$(cat .ruby-version)"
+have="$(ruby -e 'print RUBY_VERSION')"
+if [ "$have" != "$want" ]; then
+  echo "Ruby $want is required (found $have). With rvm: rvm install $want && rvm use $want" >&2
+  exit 1
+fi
+
+command -v node >/dev/null || { echo "Node.js is required for the Pagefind search index." >&2; exit 1; }
+
+bundle install
+echo "Ready. Run bin/serve to start the site."
