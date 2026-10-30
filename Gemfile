@@ -12,3 +12,7 @@ group :jekyll_plugins do
   gem "jekyll-postfiles", "~> 3.1"
   gem "rouge", "~> 4.6"
 end
+
+group :test do
+  gem "html-proofer", "~> 5.0"
+end

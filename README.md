@@ -1,2 +1,3 @@
 # codebeerstartups.com
+
 Blog
