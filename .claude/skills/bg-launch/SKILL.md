@@ -14,7 +14,7 @@ Take the site public once, deliberately. Everything that can be checked automati
 
 1. **See where things stand:**
    ```sh
-   source ~/.rvm/scripts/rvm && rvm use $(cat .ruby-version)
+   source ~/.rvm/scripts/rvm && rvm use ruby-$(cat .ruby-version)
    bin/launch-check
    ```
    Every `TODO` or `FAIL` line is an open item (exit status 1 until none remain). `MANUAL` lines are for the author. Read the whole output and report it plainly.

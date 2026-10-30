@@ -23,7 +23,7 @@ Published addresses are permanent. Changes must not break links or hide that an 
 
 1. Find the article in `_posts/` by slug or title. Never change its `date:` or the date in its filename.
 2. Make the change from the table. Do not rewrite the author's prose beyond what they asked. Do not add experience or results they did not give you.
-3. Run `bin/lint-content` (after `source ~/.rvm/scripts/rvm && rvm use $(cat .ruby-version)`), then the `bg-check` skill. For a rename, also confirm the old address redirects: build and look for `/_site/<old-slug>/index.html` containing `url=…<new-slug>/`.
+3. Run `bin/lint-content` (after `source ~/.rvm/scripts/rvm && rvm use ruby-$(cat .ruby-version)`), then the `bg-check` skill. For a rename, also confirm the old address redirects: build and look for `/_site/<old-slug>/index.html` containing `url=…<new-slug>/`.
 4. For a substantive change or a rename, run `bg-review-draft` on the changed article.
 5. Stage only the files you changed (`git add <paths>`, never `-A`), review `git status --short`, then commit with the message from the table and the session's attribution line.
 6. Push only after the author's explicit yes, using the same rules as the `bg-publish` skill (master pushes deploy; other branches need a PR). After a deploy, check the live URL and, for a rename, the old URL.

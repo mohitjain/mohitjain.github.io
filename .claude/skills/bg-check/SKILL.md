@@ -14,7 +14,7 @@ Run the checks, read the real output, say what it means.
 
 1. From the repo root:
    ```sh
-   source ~/.rvm/scripts/rvm && rvm use $(cat .ruby-version)
+   source ~/.rvm/scripts/rvm && rvm use ruby-$(cat .ruby-version)
    INCLUDE_DRAFTS=1 bin/check
    npx --yes markdownlint-cli2@0.24.0 2>&1 | grep -v "sample"
    ```

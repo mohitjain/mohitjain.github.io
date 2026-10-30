@@ -21,7 +21,7 @@ The Reading page lists only what the author has actually read or watched. Every 
 3. **Find the link if the author has none.** Search the web, open the page, and confirm the title and author match. Use only an address you have opened and checked. If you cannot confirm one, ask the author for it; never guess a URL.
 4. **Add it:**
    ```sh
-   source ~/.rvm/scripts/rvm && rvm use $(cat .ruby-version)
+   source ~/.rvm/scripts/rvm && rvm use ruby-$(cat .ruby-version)
    bin/add-reading --title "<title>" --type <kind> --topic <topic> --url <url> --read <YYYY-MM-DD> \
      [--author "<name>"] [--year <yyyy>] [--pick] [--comment "<one sentence>"] [--notes /<slug>/]
    ```

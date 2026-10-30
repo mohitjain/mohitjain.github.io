@@ -2,7 +2,7 @@
 # Runs the content lint before every commit so a bad article cannot be committed.
 # Enable once with: git config core.hooksPath .githooks   (bin/setup does this)
 cd "$(git rev-parse --show-toplevel)"
-[ -s "$HOME/.rvm/scripts/rvm" ] && . "$HOME/.rvm/scripts/rvm" >/dev/null 2>&1 && rvm use "$(cat .ruby-version)" >/dev/null 2>&1
+[ -s "$HOME/.rvm/scripts/rvm" ] && . "$HOME/.rvm/scripts/rvm" >/dev/null 2>&1 && rvm use "ruby-$(cat .ruby-version)" >/dev/null 2>&1
 if ! command -v ruby >/dev/null; then
   echo "pre-commit: ruby not found, skipping the content lint" >&2
   exit 0

@@ -17,7 +17,7 @@ Publishing is one commit: `Publish: <title>`. Nothing is pushed without an expli
 3. **Review:** run the `bg-review-draft` skill. Do not continue while any "Must fix" item is open.
 4. **Move and lint:**
    ```sh
-   source ~/.rvm/scripts/rvm && rvm use $(cat .ruby-version)
+   source ~/.rvm/scripts/rvm && rvm use ruby-$(cat .ruby-version)
    bin/publish <slug>
    ```
    This moves the draft to `_posts/YYYY-MM-DD-<slug>.md` dated today and lints it; on a lint failure it puts the draft back. The slug is now the permanent URL: say so.

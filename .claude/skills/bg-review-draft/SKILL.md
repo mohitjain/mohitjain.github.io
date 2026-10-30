@@ -15,7 +15,7 @@ A second pair of eyes. The author's ideas and wording stay theirs: report, don't
 1. **Find the file:** `_drafts/<slug>.md` (or `_posts/…` for a published article). If several drafts exist and the user did not say which, ask.
 2. **Run the mechanical checks** (from the repo root):
    ```sh
-   source ~/.rvm/scripts/rvm && rvm use $(cat .ruby-version)
+   source ~/.rvm/scripts/rvm && rvm use ruby-$(cat .ruby-version)
    bin/lint-content
    bin/review-checks <file>
    ```

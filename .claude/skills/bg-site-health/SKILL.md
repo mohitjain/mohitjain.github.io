@@ -15,7 +15,7 @@ Measure the real built site, then say what changed and what to fix.
 
 1. **Run it** (about 3 minutes for the full set, under 1 for `--quick`):
    ```sh
-   source ~/.rvm/scripts/rvm && rvm use $(cat .ruby-version)
+   source ~/.rvm/scripts/rvm && rvm use ruby-$(cat .ruby-version)
    bin/site-health            # builds, then checks the key pages and the 3 newest articles
    bin/site-health --quick    # home, Reading and the newest article only
    bin/site-health --external # also checks outbound links; slow and can be flaky

@@ -15,7 +15,7 @@ Run the real site locally, look at the page, and report only what you actually s
 1. **Pick the URL path.** Posts and drafts live at `/<slug>/` (no date). Examples: `/retry-jitter/`, `/reading/`, `/topics/leadership-thinking/`. Drafts are served by `bin/serve`.
 2. **Start the server on its own ports** so it never collides with a server the author already runs on 4000 (its live-reload port 35729 would make a second server crash):
    ```sh
-   source ~/.rvm/scripts/rvm && rvm use $(cat .ruby-version)
+   source ~/.rvm/scripts/rvm && rvm use ruby-$(cat .ruby-version)
    nohup bin/serve --port 4001 --livereload-port 35730 > /tmp/serve4001.log 2>&1 &
    ```
    Wait until `curl -s -o /dev/null -w '%{http_code}' localhost:4001<path>` prints `200` (up to about 90 seconds on a cold build). If it never does, read `/tmp/serve4001.log` and report the error; do not carry on.

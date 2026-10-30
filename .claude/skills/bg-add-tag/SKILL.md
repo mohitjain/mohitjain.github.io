@@ -14,7 +14,7 @@ The tag list is deliberately small (about 10 to 20). A tag earns its place when 
 
 1. **See what exists and how much it is used:**
    ```sh
-   source ~/.rvm/scripts/rvm && rvm use $(cat .ruby-version)
+   source ~/.rvm/scripts/rvm && rvm use ruby-$(cat .ruby-version)
    bin/tags
    ```
 2. **Prefer an existing tag.** Read the descriptions. If one fits even roughly, use it and stop; explain which and why. A new tag is only for a subject the list genuinely cannot express.

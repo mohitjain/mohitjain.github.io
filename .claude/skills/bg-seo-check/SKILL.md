@@ -13,7 +13,7 @@ Make sure an article can be found and previews well. Technical checks are automa
 
 1. **Build and run the checker** (drafts need `INCLUDE_DRAFTS=1`):
    ```sh
-   source ~/.rvm/scripts/rvm && rvm use $(cat .ruby-version)
+   source ~/.rvm/scripts/rvm && rvm use ruby-$(cat .ruby-version)
    INCLUDE_DRAFTS=1 bin/build
    bin/seo-check <slug>
    ```

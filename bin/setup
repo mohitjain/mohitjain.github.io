@@ -6,7 +6,7 @@ cd "$(dirname "$0")/.."
 want="$(cat .ruby-version)"
 have="$(ruby -e 'print RUBY_VERSION')"
 if [ "$have" != "$want" ]; then
-  echo "Ruby $want is required (found $have). With rvm: rvm install $want && rvm use $want" >&2
+  echo "Ruby $want is required (found $have). With rvm: rvm install ruby-$want && rvm use ruby-$want" >&2
   exit 1
 fi
 

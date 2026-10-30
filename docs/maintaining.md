@@ -158,7 +158,7 @@ Cloudflare. The site has no custom domain at the moment.
 
 - **`OpenSSL is not available` or gems fail to install**: the Ruby build is linked to an
   OpenSSL that no longer exists. Reinstall it against OpenSSL 3:
-  `rvm install ruby-$(cat .ruby-version) --autolibs=0 --with-openssl-dir=$(brew --prefix openssl@3)`.
+  `rvm install ruby-$(cat .ruby-version) --autolibs=disable --with-openssl-dir=$(brew --prefix openssl@3)`.
 - **Search page says the index is not built, or `/pagefind/...` returns 404**: run
   `bin/build`. A `jekyll serve` started before `keep_files` was added to `_config.yml`
   deletes the index on every rebuild, so restart it with `bin/serve`.
