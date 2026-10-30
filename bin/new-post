@@ -1,11 +1,29 @@
 #!/usr/bin/env bash
-# Usage: bin/new-post "My post title" [--draft]
+# Usage: bin/new-post "My post title" [--draft] [--slug short-name] [--topic <topic>] [--tags a,b]
+# --slug sets the permanent URL part (lowercase, hyphens, at most 5 words); default is made from the title.
 set -euo pipefail
+cd "$(dirname "$0")/.."
 
-title="${1:?usage: bin/new-post \"Post title\" [--draft]}"
-slug="$(printf '%s' "$title" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+|-+$//g')"
+title="${1:?usage: bin/new-post \"Post title\" [--draft] [--slug short-name] [--topic <topic>] [--tags a,b]}"
+shift
+draft=""; slug=""; topic=""; tags=""
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --draft) draft=1 ;;
+    --slug)  slug="${2:?--slug needs a value}"; shift ;;
+    --topic) topic="${2:?--topic needs a value}"; shift ;;
+    --tags)  tags="${2:?--tags needs a value}"; shift ;;
+    *) echo "unknown option: $1" >&2; exit 2 ;;
+  esac
+  shift
+done
 
-if [ "${2:-}" = "--draft" ]; then
+[ -n "$slug" ] || slug="$(printf '%s' "$title" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+|-+$//g')"
+if ! printf '%s' "$slug" | grep -Eq '^[a-z0-9]+(-[a-z0-9]+)*$'; then
+  echo "slug must be lowercase letters, digits and hyphens: $slug" >&2; exit 2
+fi
+
+if [ -n "$draft" ]; then
   file="_drafts/${slug}.md"
 else
   file="_posts/$(date +%Y-%m-%d)-${slug}.md"
@@ -16,10 +34,10 @@ mkdir -p "$(dirname "$file")"
 
 cat > "$file" <<POST
 ---
-title: "${title}"
+title: "${title//\"/\\\"}"
 description:        # one or two sentences: shown under the title, in lists, search and social previews
-categories: []      # one of: systems-architecture, ai-intelligent-systems, leadership-thinking
-tags: []            # from _data/tags.yml, at most 4
+categories: [${topic}]      # one of: systems-architecture, ai-intelligent-systems, leadership-thinking
+tags: [${tags}]            # from _data/tags.yml, at most 4
 ---
 
 POST
