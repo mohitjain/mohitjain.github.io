@@ -100,7 +100,6 @@ keep_files:
 exclude:
   - Gemfile
   - Gemfile.lock
-  - LICENSE
   - CHANGELOG.md
   - README.md
   - node_modules

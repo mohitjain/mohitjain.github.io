@@ -2,8 +2,7 @@
 
 Mohit Jain's blog, built with [Jekyll](https://jekyllrb.com) 4.4 and deployed to GitHub
 Pages with GitHub Actions. The design is a clean, large-type serif layout inspired by
-[Basecamp's Getting Real](https://basecamp.com/gettingreal); the markup began as the
-[Klisé](https://github.com/piharpi/jekyll-klise) theme, and its styles have since been replaced.
+[Basecamp's Getting Real](https://basecamp.com/gettingreal).
 
 ## Quick start
 
@@ -162,7 +161,3 @@ Cloudflare. The site has no custom domain at the moment.
 | `assets/` | CSS entry point, JavaScript, fonts (self-hosted Source Serif 4), favicons |
 | `bin/` | `setup`, `serve`, `build`, `check`, `lint-content`, `new-post` |
 | `.github/` | Workflows and Dependabot config |
-
-## License
-
-See [LICENSE](LICENSE).
