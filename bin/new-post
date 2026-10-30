@@ -29,12 +29,13 @@ else
   file="_posts/$(date +%Y-%m-%d)-${slug}.md"
 fi
 
+esc_title="${title//\"/\\\"}"   # a double quote in the title must be escaped in YAML
 mkdir -p "$(dirname "$file")"
 [ -e "$file" ] && { echo "$file already exists" >&2; exit 1; }
 
 cat > "$file" <<POST
 ---
-title: "${title//\"/\\\"}"
+title: "${esc_title}"
 description:        # one or two sentences: shown under the title, in lists, search and social previews
 categories: [${topic}]      # one of: systems-architecture, ai-intelligent-systems, leadership-thinking
 tags: [${tags}]            # from _data/tags.yml, at most 4
