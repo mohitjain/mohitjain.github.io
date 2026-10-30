@@ -84,7 +84,7 @@ Related articles are matched automatically on shared topic or tags. Images in po
 | Reading (`/reading/`) | `_data/reading.yml`, one entry per item actually read; it starts empty |
 | Allowed `content_type` values | `_data/content_types.yml` |
 | Header navigation | the five topics (short label = `nav_title` in `_topics/*.md`), then `_data/menus.yml` (Archive, About) |
-| Footer links | `_includes/footer.html` (Experiments, Reading, Tags, Subscribe, RSS, GitHub) |
+| Footer links | `_includes/footer.html` (Experiments, Tags, Subscribe, RSS, GitHub); the header menu is `_data/menus.yml` |
 | Newsletter | set `newsletter.buttondown` in `_config.yml` to show the signup form (RSS is shown until then) |
 
 ## What's in the site
