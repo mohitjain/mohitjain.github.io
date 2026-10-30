@@ -9,11 +9,13 @@ layout: compress
 
 <body>
   {% include navbar.html %}
-  <main id="main-content" tabindex="-1" class="wrapper" aria-label="Content">
-    <header class="page-header">
-      <h1 class="page-title">{{ page.title | escape }}</h1>
-    </header>
-    <div class="page-body prose">
+  <main id="main-content" tabindex="-1" class="layout" aria-label="Content">
+    <aside class="rail">
+      <header class="page-header">
+        <h1 class="page-title">{{ page.title | escape }}</h1>
+      </header>
+    </aside>
+    <div class="column page-body prose">
       {{ content }}
     </div>
   </main>

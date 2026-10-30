@@ -69,7 +69,7 @@ Everything lives in `_config.yml`:
 | Setting | Notes |
 | --- | --- |
 | `url` | Public site URL, used for canonical links and feeds |
-| `mode` | Default theme: `auto` (follow the visitor's system), `dark` or `light`. A visitor's own toggle choice is remembered |
+| `mode` | Default theme: `light` (Basecamp-style ink on white), `dark` (black) or `auto` (follow the visitor's system). A visitor's own toggle choice is remembered |
 | `google_analytics` | GA4 measurement ID (`G-XXXXXXXXXX`). Empty means nothing loads, and it only loads in production builds |
 | `giscus.*` | Repo and category IDs for comments. Empty `repo_id` turns comments off |
 | `pagination.per_page` | Posts per page |

@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding-block: 1.25rem;
+  padding: 1.25rem var(--edge);
 }
 
 // font sizes live on the children so the wrapper's em-based width stays aligned
@@ -87,23 +87,37 @@
 
 // Footer
 .site-footer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem 1.25rem;
   margin-top: 5rem;
-  padding-block: 0 3rem;
+  padding: 0 var(--edge) 3rem;
   color: var(--muted);
 
-  // the rule spans the content column, not the wrapper's padding
-  &::before {
-    flex-basis: 100%;
-    margin-bottom: 1.25rem;
-    border-top: 1px solid var(--rule);
-    content: "";
+  @media (min-width: 62em) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+    column-gap: 4.5em;
+
+    .site-footer-inner {
+      grid-column: 2;
+    }
   }
 
-  > * {
-    font-size: 0.78em;
+  .site-footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.25rem;
+    max-width: var(--measure);
+
+    // the rule spans the reading column
+    &::before {
+      flex-basis: 100%;
+      margin-bottom: 1.25rem;
+      border-top: 1px solid var(--rule);
+      content: "";
+    }
+
+    > * {
+      font-size: 0.78em;
+    }
   }
 
   a {
@@ -117,12 +131,12 @@
 
 // Home
 .hero {
-  padding-block: clamp(2rem, 7vw, 5rem) 2.25rem;
+  padding-block: clamp(0.5rem, 3vw, 2rem) 2.25rem;
 }
 
 .hero-title {
-  font-size: clamp(2.75rem, 1.9rem + 4.2vw, 5rem);
-  line-height: 1.04;
+  font-size: clamp(2.5rem, 1.6rem + 3.2vw, 4.25rem);
+  line-height: 1.06;
   letter-spacing: -0.015em;
 }
 
@@ -197,13 +211,17 @@
 
 // Plain pages (about, archive, tags, search, thanks, now)
 .page-header {
-  padding-block: clamp(1.5rem, 5vw, 3.5rem) 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .page-title {
   font-size: clamp(2.25rem, 1.6rem + 3.2vw, 3.75rem);
-  line-height: 1.08;
+  line-height: 1.1;
   letter-spacing: -0.012em;
+
+  @media (min-width: 62em) {
+    font-size: clamp(2.1rem, 1.4rem + 1.6vw, 2.75rem);
+  }
 }
 
 .page-body {
@@ -235,6 +253,7 @@
 .not-found {
   padding-block: clamp(2rem, 8vw, 6rem) 2rem;
 
+  .rail .title,
   .title {
     font-size: clamp(4rem, 3rem + 8vw, 9rem);
     font-weight: 700;

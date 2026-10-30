@@ -54,7 +54,7 @@
 
   // "On this page" is open in the margin on wide screens, collapsed otherwise
   const toc = document.querySelector(".toc details");
-  if (toc && window.matchMedia("(min-width: 80em)").matches) toc.open = true;
+  if (toc && window.matchMedia("(min-width: 62em)").matches) toc.open = true;
 
   // Copy button on code blocks
   if (navigator.clipboard) {

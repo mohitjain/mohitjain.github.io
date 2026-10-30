@@ -9,8 +9,8 @@ layout: compress
 
 <body>
   {% include navbar.html %}
-  <main id="main-content" tabindex="-1" class="wrapper" aria-label="Content">
-    <article data-pagefind-body>
+  <main id="main-content" tabindex="-1" class="layout" aria-label="Content" data-pagefind-body>
+    <aside class="rail">
       <header class="post-header-block">
         {% if page.tags and page.tags != empty %}
         <p class="label">
@@ -19,31 +19,34 @@ layout: compress
         {% endif %}
         <h1 class="post-title">{{ page.title | escape }}</h1>
         <p class="label post-meta">
-          <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%b %-d, %Y" }}</time>
-          &middot; {% include reading-time.html content=content %}
-          &middot; {{ site.author.name }}
-          {% if page.modified %}&middot; Updated <time datetime="{{ page.modified | date_to_xmlschema }}">{{ page.modified | date: "%b %-d, %Y" }}</time>{% endif %}
+          <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%b %-d, %Y" }}</time><br>
+          {% include reading-time.html content=content %}<br>
+          {{ site.author.name }}
+          {% if page.modified %}<br>Updated <time datetime="{{ page.modified | date_to_xmlschema }}">{{ page.modified | date: "%b %-d, %Y" }}</time>{% endif %}
         </p>
         {% for tag in page.tags %}<span hidden data-pagefind-filter="tag">{{ tag }}</span>{% endfor %}
-        {% include series.html %}
-      </header>
-
-      <div class="post-body">
-        <div class="toc-rail">{% include toc.html html=content %}</div>
-        <div class="prose">
-          {% assign body_html = content | replace: '<img ', '<img loading="lazy" decoding="async" ' %}
-          {% include anchor_headings.html html=body_html anchorClass="anchor-head" anchorAttrs='aria-label="Link to this section"' beforeHeading=true h_min=1 h_max=4 %}
+        <div data-pagefind-ignore>
+          {% include series.html %}
+          {% include toc.html html=content %}
         </div>
+      </header>
+    </aside>
+
+    <article class="column">
+      <div class="prose">
+        {% assign body_html = content | replace: '<img ', '<img loading="lazy" decoding="async" ' %}
+        {% include anchor_headings.html html=body_html anchorClass="anchor-head" anchorAttrs='aria-label="Link to this section"' beforeHeading=true h_min=1 h_max=4 %}
+      </div>
+      <div data-pagefind-ignore>
+        {% include related.html %}
+        {% if page.comments %}
+          {% include comments.html %}
+        {% endif %}
+        {% if page.next or page.previous %}
+          {% include navigation.html %}
+        {% endif %}
       </div>
     </article>
-
-    {% include related.html %}
-    {% if page.comments %}
-      {% include comments.html %}
-    {% endif %}
-    {% if page.next or page.previous %}
-      {% include navigation.html %}
-    {% endif %}
   </main>
   {% include footer.html %}
 </body>

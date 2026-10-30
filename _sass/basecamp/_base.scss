@@ -21,11 +21,36 @@ body {
   overflow-x: hidden;
 }
 
-.wrapper {
+// Pages are a grid: a sticky, right-aligned rail on the left (title, meta, contents)
+// and a reading column on the right. Below 62em they stack, left-aligned.
+.layout {
   width: 100%;
-  max-width: calc(var(--measure) + var(--gutter) * 2);
-  margin-inline: auto;
-  padding-inline: var(--gutter);
+  padding: clamp(1.5rem, 5vw, 3rem) var(--edge) 0;
+}
+
+.column {
+  max-width: var(--measure);
+}
+
+@media (min-width: 62em) {
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+    column-gap: 4.5em;
+  }
+
+  .rail {
+    position: sticky;
+    top: 1.5rem;
+    align-self: start;
+    max-height: calc(100vh - 3rem);
+    overflow-y: auto;
+    text-align: right;
+  }
+
+  .column:only-child {
+    grid-column: 2;
+  }
 }
 
 h1,

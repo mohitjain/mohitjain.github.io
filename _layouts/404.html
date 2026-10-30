@@ -9,18 +9,22 @@ layout: compress
 
 <body>
   {% include navbar.html %}
-  <main id="main-content" tabindex="-1" class="wrapper not-found" aria-label="Content">
-    <div class="title">404</div>
-    <p class="phrase">That page isn&rsquo;t here.</p>
-    <a class="pill" href="/">Back home</a>
-    {% if site.posts.size > 0 %}
-    <h2 class="section-title" style="margin-top:3rem">Recent posts</h2>
-    {% for post in site.posts limit: 5 %}
-    <article class="entry">
-      <h3 class="entry-title"><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h3>
-    </article>
-    {% endfor %}
-    {% endif %}
+  <main id="main-content" tabindex="-1" class="layout not-found" aria-label="Content">
+    <aside class="rail">
+      <div class="title">404</div>
+    </aside>
+    <div class="column">
+      <p class="phrase">That page isn&rsquo;t here.</p>
+      <a class="pill" href="/">Back home</a>
+      {% if site.posts.size > 0 %}
+      <h2 class="section-title" style="margin-top:3rem">Recent posts</h2>
+      {% for post in site.posts limit: 5 %}
+      <article class="entry">
+        <h3 class="entry-title"><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h3>
+      </article>
+      {% endfor %}
+      {% endif %}
+    </div>
   </main>
   {% include footer.html %}
 </body>

@@ -11,7 +11,7 @@ social:
   name: Mohit Jain
   links:
     - https://github.com/mohitjain
-mode: auto # default theme: "auto" (follow the visitor's system), "dark" or "light"
+mode: light # default theme: "light", "dark" or "auto" (follow the visitor's system)
 
 # Profile settings
 author:

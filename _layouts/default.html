@@ -7,8 +7,10 @@ layout: compress
 
 <body>
   {% include navbar.html %}
-  <main id="main-content" tabindex="-1" class="wrapper" aria-label="Content">
-    {{ content }}
+  <main id="main-content" tabindex="-1" class="layout" aria-label="Content">
+    <div class="column">
+      {{ content }}
+    </div>
   </main>
   {% include footer.html %}
 </body>

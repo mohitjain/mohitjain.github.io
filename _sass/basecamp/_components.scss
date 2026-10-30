@@ -62,20 +62,22 @@
   }
 }
 
-@media (min-width: 80em) {
-  .toc-rail {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 100%;
-    width: 11rem;
-    margin-right: 2rem;
-  }
+@media (min-width: 62em) {
+  .rail {
+    .series,
+    .toc {
+      text-align: right;
+    }
 
-  .toc-rail .toc {
-    position: sticky;
-    top: 1.5rem;
-    margin-top: 0;
+    .series ol {
+      padding-left: 0;
+      list-style-position: inside;
+    }
+
+    .toc .toc-level-3 {
+      padding-left: 0;
+      padding-right: 1em;
+    }
   }
 }
 
@@ -174,8 +176,7 @@
   .site-footer,
   .pagination,
   .post-nav,
-  .toc-rail,
-  .related,
+    .related,
   .comments,
   .copy-btn {
     display: none !important;
