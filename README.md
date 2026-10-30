@@ -5,7 +5,7 @@
 A personal knowledge journal about engineering, technology, and the ideas that shape how we think
 and build. Written by Mohit Jain.
 
-**Read it at [mohitjain.github.io](https://mohitjain.github.io).**
+**Read it at [mohitnotes.com](https://mohitnotes.com).**
 
 ## What you will find
 
@@ -20,9 +20,9 @@ The idea behind all of it: learn deeply, think clearly, build thoughtfully.
 
 ## Follow along
 
-- **RSS:** [mohitjain.github.io/feed.xml](https://mohitjain.github.io/feed.xml) in any feed reader
-  (there is also a [JSON feed](https://mohitjain.github.io/feed.json)).
-- **Subscribe page:** [mohitjain.github.io/subscribe](https://mohitjain.github.io/subscribe/).
+- **RSS:** [mohitnotes.com/feed.xml](https://mohitnotes.com/feed.xml) in any feed reader
+  (there is also a [JSON feed](https://mohitnotes.com/feed.json)).
+- **Subscribe page:** [mohitnotes.com/subscribe](https://mohitnotes.com/subscribe/).
 - **Comments:** each article has a comment thread, powered by this repository's GitHub Discussions.
 
 ## About the site

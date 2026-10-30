@@ -30,15 +30,16 @@ Take the site public once, deliberately. Everything that can be checked automati
    9. **Switch Pages to GitHub Actions**, only with the author's approval: `gh api -X PUT repos/:owner/:repo/pages -f build_type=workflow`. Then run the deploy workflow if the merge did not start it (`gh workflow run pages.yml`) and watch it (`gh run watch <id> --exit-status`).
 3. **Verify the live site:**
    ```sh
+   base=$(ruby -ryaml -e 'puts YAML.load_file("_config.yml")["url"]')
    for p in / /archive/ /reading/ /about/ /feed.xml /sitemap.xml /robots.txt /nope-404/; do
-     printf '%s ' "$p"; curl -s -o /dev/null -w '%{http_code}\n' "https://mohitjain.github.io$p"; done
+     printf '%s ' "$p"; curl -s -o /dev/null -w '%{http_code}\n' "$base$p"; done
    ```
-   Expect 200 everywhere except the last, which should be 404 and show the site's own 404 page. Open the home page and one article with the `bg-preview` skill pointed at the live URL (`SITE=https://mohitjain.github.io bin/snap …`).
+   Expect 200 everywhere except the last, which should be 404 and show the site's own 404 page. Open the home page and one article with the `bg-preview` skill pointed at the live URL (`SITE=$base bin/snap …`).
 4. **Hand over the manual list:** verify the site in Google Search Console and Bing Webmaster Tools and submit `/sitemap.xml`; read one article on a phone; share the first article. Offer `bg-seo-check` for it.
 5. **Custom domain (later, separate step):** once the site works on github.io and the author owns `mohitnotes.com`, offer the switch described under "Custom domain" in `docs/maintaining.md`.
 6. Re-run `bin/launch-check` and report what is left.
 
 ## Rules
 - Never merge, push, change repository settings or delete files without the author's explicit yes for that action.
-- The old domain (codebeerstartups.com) is permanently lost; never reference it. The planned custom domain is `mohitnotes.com`, which the author must buy and point at GitHub Pages. Do the switch only after the first deploy works on `https://mohitjain.github.io` and the author says DNS is ready, following "Custom domain" in `docs/maintaining.md`. Never add a `CNAME` file or change `url:` earlier: the github.io address would redirect to a domain that does not answer yet.
+- The old domain (codebeerstartups.com) is permanently lost; never reference it. The site's domain is `mohitnotes.com` (bought at GoDaddy, DNS set there, verified on the author's GitHub account). Its address is whatever `url:` says in `_config.yml`; read it from there and never hardcode it. The steps and the reasoning are in "Custom domain" in `docs/maintaining.md`.
 - Follow `CLAUDE.md`.

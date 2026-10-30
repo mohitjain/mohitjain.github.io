@@ -152,8 +152,7 @@ link check, then publish with the official Pages actions. This needs
 
 Caching: GitHub Pages serves files with a short cache lifetime and no CDN controls. For
 longer caching or a CDN, put the site behind a custom domain and a proxy such as
-Cloudflare. The site currently runs on `mohitjain.github.io`; the planned custom domain is
-`mohitnotes.com` (see "Custom domain" below).
+Cloudflare. The site runs on its own domain, `mohitnotes.com` (see "Custom domain" below).
 
 ## Troubleshooting
 
@@ -199,9 +198,10 @@ cycle; each calls the scripts in `bin/`:
 
 ## Custom domain
 
-The plan is `mohitnotes.com`. Do this only after the first deploy works on `mohitjain.github.io`
-and the domain is bought. Adding the `CNAME` file or changing `url:` earlier would make the
-github.io address redirect to a domain that does not answer yet.
+The site runs on `mohitnotes.com` (bought at GoDaddy, set up on 2026-10-31). This is how it was
+done, and what to repeat if the domain ever moves. The order matters: do not add the `CNAME` file
+or change `url:` before the DNS answers and the domain is attached in the Pages settings, or the
+old address would redirect to a domain that does not answer yet.
 
 1. **Buy the domain** with auto-renew on, for several years, with the registrar lock and
    two-factor sign-in enabled.
