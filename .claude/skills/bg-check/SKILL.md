@@ -16,7 +16,7 @@ Run the checks, read the real output, say what it means.
    ```sh
    source ~/.rvm/scripts/rvm && rvm use $(cat .ruby-version)
    INCLUDE_DRAFTS=1 bin/check
-   npx --yes markdownlint-cli2@0.18.1 2>&1 | grep -v "sample"
+   npx --yes markdownlint-cli2@0.24.0 2>&1 | grep -v "sample"
    ```
    `bin/check` runs the content lint, builds the site with the search index, and checks every internal link, image and script. Drafts are included so templates are exercised, exactly as CI does. The `grep -v sample` drops the local throwaway sample articles, which are never committed. Add `--external` to `bin/check` only when asked: it also checks outbound links, is slow and can be flaky.
 2. **Read the output before reporting.** Do not say "passed" unless `HTML-Proofer finished successfully` and `Content front matter OK` both appear and markdownlint printed no errors for real files.
