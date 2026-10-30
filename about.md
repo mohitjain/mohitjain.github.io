@@ -14,7 +14,7 @@ Some articles document concepts I'm learning. Others explore ideas in depth or s
 
 ## Who writes here
 
-I'm Mohit Jain, a Principal Engineer with about sixteen years of experience building software. Most of it has gone into distributed systems, enterprise data platforms and software architecture, and into the quieter work that makes large systems dependable: reliability, operations and careful technical decisions.
+I'm Mohit Jain, a Principal Software Engineer with about seventeen years of experience building software. I started in 2009 as a co-founder, have worked in startups I helped found and in large engineering organisations, and have led teams as well as built systems. This journal is where I think through what I've learned about designing and running software that people depend on.
 
 Right now much of my learning time goes into artificial intelligence: how foundation models work, how to give them the right context, how agents are built and run, and how to tell whether any of it is reliable. I study the field through books, papers and lectures, and by building things myself.
 
