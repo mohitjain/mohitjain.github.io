@@ -1,6 +1,7 @@
 ---
 title: "Systems & Architecture"
 description: "The principles behind designing and operating complex software systems."
+nav_title: Systems
 order: 1
 ---
 

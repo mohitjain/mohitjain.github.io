@@ -1,6 +1,7 @@
 ---
 title: "Thinking, Learning & Mental Models"
 description: "The ideas that connect the other areas."
+nav_title: Thinking
 order: 5
 ---
 

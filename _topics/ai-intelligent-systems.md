@@ -1,6 +1,7 @@
 ---
 title: "Artificial Intelligence & Intelligent Systems"
 description: "The foundations and engineering of modern AI systems."
+nav_title: AI
 order: 2
 ---
 

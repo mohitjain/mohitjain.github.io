@@ -1,6 +1,7 @@
 ---
 title: "Engineering Leadership & Strategy"
 description: "The organizational and human side of building software."
+nav_title: Leadership
 order: 4
 ---
 

@@ -2,9 +2,15 @@
 <header class="site-header">
   <a class="site-name" href="/">{{ site.title }}</a>
   <nav class="site-nav" aria-label="Main">
+    {% assign topic_list = site.topics | sort: "order" %}
+    {% for topic in topic_list %}
+    {%- assign is_current = false -%}
+    {%- if page.url contains topic.url or page.categories.first == topic.slug %}{% assign is_current = true %}{% endif %}
+    <a href="{{ topic.url }}"{% if is_current %} aria-current="page"{% endif %}>{{ topic.nav_title | default: topic.title }}</a>
+    {% endfor %}
     {% for menu in site.data.menus %}
-    {%- if menu.url == "/" %}{% assign is_current = false %}{% if page.url == "/" %}{% assign is_current = true %}{% endif %}
-    {%- else %}{% assign is_current = false %}{% if page.url contains menu.url %}{% assign is_current = true %}{% endif %}{% endif %}
+    {%- assign is_current = false -%}
+    {%- if page.url contains menu.url %}{% assign is_current = true %}{% endif %}
     <a href="{{ menu.url }}"{% if is_current %} aria-current="page"{% endif %}>{{ menu.title }}</a>
     {% endfor %}
   </nav>

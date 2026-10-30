@@ -1,6 +1,7 @@
 ---
 title: "Building & Experimentation"
 description: "The practical side of understanding technology: turning ideas into working systems."
+nav_title: Building
 order: 3
 ---
 
