@@ -152,7 +152,8 @@ link check, then publish with the official Pages actions. This needs
 
 Caching: GitHub Pages serves files with a short cache lifetime and no CDN controls. For
 longer caching or a CDN, put the site behind a custom domain and a proxy such as
-Cloudflare. The site has no custom domain at the moment.
+Cloudflare. The site currently runs on `mohitjain.github.io`; the planned custom domain is
+`mohitnotes.com` (see "Custom domain" below).
 
 ## Troubleshooting
 
@@ -195,3 +196,28 @@ cycle; each calls the scripts in `bin/`:
 | `assets/` | CSS entry point, JavaScript, fonts (self-hosted Source Serif 4), favicons |
 | `bin/` | `setup`, `serve`, `build`, `check`, `lint-content`, `new-post` |
 | `.github/` | Workflows and Dependabot config |
+
+## Custom domain
+
+The plan is `mohitnotes.com`. Do this only after the first deploy works on `mohitjain.github.io`
+and the domain is bought. Adding the `CNAME` file or changing `url:` earlier would make the
+github.io address redirect to a domain that does not answer yet.
+
+1. **Buy the domain** with auto-renew on, for several years, with the registrar lock and
+   two-factor sign-in enabled.
+2. **Verify it in your GitHub account** (Settings, Pages, "Add a domain") by adding the TXT record
+   GitHub shows. This stops anyone else claiming the domain on their own Pages site.
+3. **DNS records** at the registrar: four `A` records for the bare domain pointing to
+   `185.199.108.153`, `185.199.109.153`, `185.199.110.153` and `185.199.111.153`, and a `CNAME`
+   record for `www` pointing to `mohitjain.github.io`. Check GitHub's current Pages documentation
+   before entering them.
+4. **In the repo** (one commit): create a file named `CNAME` containing only `mohitnotes.com`, and
+   set `url: "https://mohitnotes.com"` in `_config.yml`. The canonical links, sitemap, feeds and link
+   previews all follow `url:`. Update the live address in `README.md`, and the `https://` address in
+   the `bg-publish` skill's live-page check.
+5. **In GitHub:** set the custom domain (Settings, Pages, or
+   `gh api -X PUT repos/:owner/:repo/pages -f cname=mohitnotes.com`). When the certificate is ready,
+   which can take up to an hour, enforce HTTPS (`-F https_enforced=true`).
+6. **Afterwards:** `mohitjain.github.io` redirects to the new domain by itself. Add the new domain
+   to Search Console and Bing Webmaster Tools, update the analytics property if one is set, and run
+   `bin/launch-check`, which now checks that `CNAME` and `url:` agree.

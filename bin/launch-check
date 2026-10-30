@@ -40,7 +40,15 @@ say.("TODO", "run bin/lint-content") unless sh.("bin/lint-content").last
 
 puts "\nConfiguration"
 cfg["url"].to_s.include?("codebeerstartups") ? say.("FAIL", "url still points at the lost domain") : say.("ok", "url #{cfg['url']}")
-File.exist?("CNAME") ? say.("FAIL", "a CNAME file exists; the old domain is gone, delete it") : say.("ok", "no CNAME file")
+host = cfg["url"].to_s.sub(%r{\Ahttps?://}, "").chomp("/")
+if File.exist?("CNAME")
+  cname = File.read("CNAME").strip
+  if cname.include?("codebeerstartups") then say.("FAIL", "CNAME names the lost domain (#{cname}); delete the file")
+  elsif cname != host then say.("FAIL", "CNAME is '#{cname}' but url: in _config.yml is '#{host}'; they must match")
+  else say.("ok", "custom domain #{cname} (CNAME matches url:)") end
+else
+  host.end_with?("github.io") ? say.("note", "using the #{host} address; a custom domain (planned: mohitnotes.com) is a separate step after the first deploy") : say.("FAIL", "url: is #{host} but there is no CNAME file for it")
+end
 cfg["google_analytics"].to_s.empty? ? say.("TODO", "google_analytics is empty: set your GA4 ID in _config.yml, or leave it empty on purpose (no analytics)") : say.("ok", "google_analytics set")
 cfg.dig("giscus", "repo_id").to_s.empty? ? say.("note", "comments are off (giscus repo_id empty)") : say.("ok", "comments configured (giscus)")
 cfg.dig("newsletter", "buttondown").to_s.empty? ? say.("note", "newsletter form is off (buttondown empty); readers are pointed at RSS") : say.("ok", "newsletter set (#{cfg['newsletter']['buttondown']})")

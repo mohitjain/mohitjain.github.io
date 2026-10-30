@@ -35,9 +35,10 @@ Take the site public once, deliberately. Everything that can be checked automati
    ```
    Expect 200 everywhere except the last, which should be 404 and show the site's own 404 page. Open the home page and one article with the `bg-preview` skill pointed at the live URL (`SITE=https://mohitjain.github.io bin/snap …`).
 4. **Hand over the manual list:** verify the site in Google Search Console and Bing Webmaster Tools and submit `/sitemap.xml`; read one article on a phone; share the first article. Offer `bg-seo-check` for it.
-5. Re-run `bin/launch-check` and report what is left.
+5. **Custom domain (later, separate step):** once the site works on github.io and the author owns `mohitnotes.com`, offer the switch described under "Custom domain" in `docs/maintaining.md`.
+6. Re-run `bin/launch-check` and report what is left.
 
 ## Rules
 - Never merge, push, change repository settings or delete files without the author's explicit yes for that action.
-- Do not set up a custom domain; the old one is permanently lost and `url:` is `https://mohitjain.github.io`.
+- The old domain (codebeerstartups.com) is permanently lost; never reference it. The planned custom domain is `mohitnotes.com`, which the author must buy and point at GitHub Pages. Do the switch only after the first deploy works on `https://mohitjain.github.io` and the author says DNS is ready, following "Custom domain" in `docs/maintaining.md`. Never add a `CNAME` file or change `url:` earlier: the github.io address would redirect to a domain that does not answer yet.
 - Follow `CLAUDE.md`.
