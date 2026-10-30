@@ -67,6 +67,10 @@ Optional front matter:
 | `toc: false` | Hide the table of contents (shown when a post has 3+ `h2`/`h3` headings) |
 | `comments: false` | Turn off comments for one post |
 
+To move a published article to a new address, add `redirect_from: [/old-address/]` to its front
+matter. GitHub Pages cannot send a server 301, so this writes a small page at the old address that
+redirects and names the new one as canonical (`jekyll-redirect-from`).
+
 Related articles are matched automatically on shared topic or tags. Images in posts get
 `loading="lazy"`; add `width` and `height` to avoid layout shift. For references, use a
 `## References` section or Markdown footnotes.
