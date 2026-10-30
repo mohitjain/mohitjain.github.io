@@ -22,7 +22,7 @@ author:
   avatar: /assets/img/avatar.jpg
 
 # Url settings
-url: "https://codebeerstartups.com"
+url: "https://mohitjain.github.io"
 baseurl:
 permalink: /:title/
 fb_appid:
@@ -59,7 +59,6 @@ sass:
   style: compressed
 
 exclude:
-  - CNAME
   - Gemfile
   - Gemfile.lock
   - LICENSE

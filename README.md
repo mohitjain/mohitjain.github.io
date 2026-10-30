@@ -1,3 +1,3 @@
-# codebeerstartups.com
+# mohitjain.github.io
 
 Blog
