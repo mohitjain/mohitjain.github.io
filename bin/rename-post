@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+# Rename a published article's slug (its permanent URL) and keep the old address working.
+# The file keeps its date; the old URL is added to redirect_from. Nothing is committed.
+# Usage: bin/rename-post <old-slug> <new-slug>
+require "yaml"
+
+root = File.expand_path("..", __dir__)
+old_slug, new_slug = ARGV
+abort "usage: bin/rename-post <old-slug> <new-slug>" unless old_slug && new_slug
+abort "slug must be lowercase letters, digits and hyphens: #{new_slug}" unless new_slug.match?(/\A[a-z0-9]+(-[a-z0-9]+)*\z/)
+warn "note: #{new_slug.split('-').size} words; slugs should be at most 5" if new_slug.split("-").size > 5
+
+src = Dir[File.join(root, "_posts", "*-#{old_slug}.md")].find { |f| File.basename(f).match?(/\A\d{4}-\d{2}-\d{2}-#{Regexp.escape(old_slug)}\.md\z/) }
+abort "no published article with slug #{old_slug}" unless src
+date = File.basename(src)[/\A\d{4}-\d{2}-\d{2}/]
+dest = File.join(root, "_posts", "#{date}-#{new_slug}.md")
+abort "#{File.basename(dest)} already exists" if File.exist?(dest)
+
+text = File.read(src)
+m = text.match(/\A---\s*\n(.*?)\n---\s*\n/m) or abort "no front matter in #{src}"
+fm = m[1]
+old_url = "/#{old_slug}/"
+if fm =~ /^redirect_from:/
+  abort "#{old_url} is already in redirect_from" if fm.include?(old_url)
+  fm = fm.sub(/^redirect_from:[ \t]*\n/, "redirect_from:\n  - #{old_url}\n") if fm =~ /^redirect_from:[ \t]*\n/
+  abort "redirect_from is written inline; add #{old_url} to it by hand" unless fm.include?(old_url)
+else
+  fm = fm + "\nredirect_from:\n  - #{old_url}"
+end
+text = text.sub(m[1], fm)
+
+tracked = system("git", "-C", root, "ls-files", "--error-unmatch", src, out: File::NULL, err: File::NULL)
+if tracked then system("git", "-C", root, "mv", src, dest) or abort("git mv failed") else File.rename(src, dest) end
+File.write(dest, text)
+puts dest.sub(root + "/", "")
+puts "old address /#{old_slug}/ now redirects to /#{new_slug}/"

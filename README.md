@@ -22,6 +22,8 @@ shortcuts for the same scripts. `make clean` removes build output.
 bin/new-post "My post title"            # _posts/YYYY-MM-DD-my-post-title.md
 bin/new-post "Work in progress" --draft  # _drafts/work-in-progress.md
 bin/publish work-in-progress             # move the draft to _posts/ dated today (lints it first)
+bin/rename-post old-slug new-slug        # change a published slug; the old address redirects
+bin/unpublish some-slug                  # take a published article back to a draft
 ```
 
 `bin/snap <path> [width] [light|dark]` screenshots a page of the running site, and
