@@ -18,7 +18,8 @@
   <span class="reading-when">
     {%- if include.show_kind %}{% case item.type %}{% when "book" %}Book{% when "paper" %}Paper{% when "article" %}Article{% when "video" %}Video{% endcase %}{% if item.read %} &middot; {% endif %}{% endif -%}
     {%- if item.read %}{% if item.type == "video" %}Watched{% else %}Read{% endif %} {{ item.read | date: "%b %Y" }}{% endif -%}
-    {%- if item.read and item.notes %} &middot; {% endif -%}
-    {%- if item.notes %}<a href="{{ item.notes }}">My notes</a>{% endif -%}
+    {%- if item.read and item.url %} &middot; {% endif -%}
+    {%- if item.url %}<a href="{{ item.url }}" rel="noopener">{% case item.type %}{% when "video" %}Watch{% else %}Source{% endcase %} &nearr;</a>{% endif -%}
+    {%- if item.notes %} &middot; <a href="{{ item.notes }}">My notes</a>{% endif -%}
   </span>
 </li>

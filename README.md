@@ -78,7 +78,7 @@ Related articles are matched automatically on shared topic or tags. Images in po
 | What | Where |
 | --- | --- |
 | Topic pages (`/topics/<slug>/`) | `_topics/*.md`: the front matter and body are the editorial text; articles are listed automatically |
-| Reading (`/reading/`, `/reading/books/`, `/papers/`, `/articles/`, `/videos/`, and `/reading/architecture/`, `/ai/`, `/leadership/`) | `_data/reading.yml`, one entry per item actually read (`title`, `type`, `topic`, `read` required; optional `author`, `year`, `url`, `pick`, `comment`, `notes`, `tags`, `image`). `topic` is one of the three topic slugs. `/reading/` shows only `pick: true` items; each kind page lists everything, newest first, with a text filter and topic chips; each topic page lists everything on that topic by kind |
+| Reading (`/reading/`, `/reading/books/`, `/papers/`, `/articles/`, `/videos/`, and `/reading/architecture/`, `/ai/`, `/leadership/`) | `_data/reading.yml`, one entry per item actually read (`title`, `type`, `topic`, `url`, `read` required; optional `author`, `year`, `pick`, `comment`, `notes`, `tags`, `image`). `topic` is one of the three topic slugs. `/reading/` shows only `pick: true` items; each kind page lists everything, newest first, with a text filter and topic chips; each topic page lists everything on that topic by kind |
 | Allowed `content_type` values | `_data/content_types.yml` |
 | Header navigation | the three topics (short label = `nav_title` in `_topics/*.md`), then `_data/menus.yml` (Reading, Archive, About) |
 | Footer links | `_includes/footer.html` (Tags, Subscribe, RSS, GitHub); the header menu is `_data/menus.yml` |

@@ -5,7 +5,7 @@
 #   type: book            # book | paper | article | video
 #   topic: leadership-thinking   # systems-architecture | ai-intelligent-systems | leadership-thinking
 #   author: Author or speaker
-#   url: https://example.com   # optional source link (only if you are certain it is right)
+#   url: https://example.com   # REQUIRED: where to read or watch it (paper page, article, YouTube video, book's publisher page). Only a link you have checked.
 #   year: 1999                 # optional: year published
 #   read: 2026-10-30           # when I finished it (items are sorted by this, newest first)
 #   pick: true                 # optional: a recommendation (also listed under "Recommended")
@@ -13,6 +13,6 @@
 #   comment: One sentence in my own words about why it mattered   # optional
 #   tags: [systems-thinking]   # optional
 #   notes: /some-article/      # optional: link to my notes or a related article
-- {title: "Deep Dive into LLMs like ChatGPT", type: video, author: "Andrej Karpathy", topic: ai-intelligent-systems, year: 2025, read: 2026-10-27}
-- {title: "Intro to Large Language Models", type: video, author: "Andrej Karpathy", topic: ai-intelligent-systems, year: 2023, read: 2026-10-27}
-- {title: "State of GPT", type: video, author: "Andrej Karpathy", topic: ai-intelligent-systems, year: 2023, read: 2026-10-27}
+- {title: "Deep Dive into LLMs like ChatGPT", type: video, url: "https://www.youtube.com/watch?v=7xTGNNLPyMI", author: "Andrej Karpathy", topic: ai-intelligent-systems, year: 2025, read: 2026-10-27}
+- {title: "Intro to Large Language Models", type: video, url: "https://www.youtube.com/watch?v=zjkBMFhNj_g", author: "Andrej Karpathy", topic: ai-intelligent-systems, year: 2023, read: 2026-10-27}
+- {title: "State of GPT", type: video, url: "https://www.youtube.com/watch?v=bZQun8Y4L2A", author: "Andrej Karpathy", topic: ai-intelligent-systems, year: 2023, read: 2026-10-27}

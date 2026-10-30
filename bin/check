@@ -8,7 +8,7 @@ cd "$(dirname "$0")/.."
 
 bin/lint-content
 
-flags=(--disable-external)
+flags=(--disable-external --no-enforce-https)
 [ "${1:-}" = "--external" ] && flags=(--ignore-status-codes "0,429,999")
 
 bundle exec htmlproofer ./_site "${flags[@]}"

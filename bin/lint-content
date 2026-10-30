@@ -58,8 +58,9 @@ Array(YAML.safe_load(File.read(reading_file), permitted_classes: [Date, Time])).
   problems << "missing title" if item["title"].to_s.strip.empty?
   problems << "type must be one of: #{kinds.join(', ')}" unless kinds.include?(item["type"])
   problems << "topic is required, one of: #{topics.join(', ')}" unless topics.include?(item["topic"])
-  problems << "url must start with http:// or https://" if item["url"] && item["url"].to_s !~ %r{\Ahttps?://}
+  problems << "url is required and must start with http:// or https://" unless item["url"].to_s.match?(%r{\Ahttps?://})
   problems << "image file not found: #{item['image']}" if item["image"] && !File.exist?(File.join(root, item["image"].to_s))
+  puts "warning: #{label}: url is not https; use https if the source offers it" if item["url"].to_s.start_with?("http://")
   problems << "read (the date finished) is required and must be a date" unless item["read"].respond_to?(:strftime)
   problems << "remove sample: true before publishing" if item["sample"]
   next if problems.empty?
