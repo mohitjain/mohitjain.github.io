@@ -4,7 +4,7 @@ title: "Hello, world"
 description: First post on the rebuilt blog.
 categories: [building-experiments]
 content_type: build-log
-tags: [meta, jekyll]
+tags: [experiments]
 series: Rebuilding the blog
 ---
 

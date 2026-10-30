@@ -4,7 +4,7 @@ title: "Why rebuild the blog"
 description: Why I started from scratch.
 categories: [thinking-learning]
 content_type: reflection
-tags: [meta]
+tags: [experiments]
 series: Rebuilding the blog
 ---
 

@@ -2,6 +2,8 @@
 # Check post front matter against the site's conventions.
 # Published posts (_posts/) must pass; drafts (_drafts/) only produce warnings.
 # Required: title, description, one topic in categories. content_type is optional.
+# Tags must come from _data/tags.yml (at most 4 per post); slugs are lowercase with hyphens, at most 5 words.
+# Posts with `sample: true` are skipped.
 # Usage: bin/lint-content
 require "yaml"
 require "date"
@@ -9,6 +11,9 @@ require "date"
 root = File.expand_path("..", __dir__)
 topics = Dir[File.join(root, "_topics", "*.md")].map { |f| File.basename(f, ".md") }
 types = YAML.load_file(File.join(root, "_data", "content_types.yml")).keys
+allowed_tags = YAML.load_file(File.join(root, "_data", "tags.yml")).keys
+MAX_TAGS = 4
+MAX_SLUG_WORDS = 5
 
 errors = 0
 { "_posts" => :error, "_drafts" => :warn }.each do |dir, level|
@@ -20,10 +25,18 @@ errors = 0
       problems << "no front matter"
     else
       fm = YAML.safe_load(match[1], permitted_classes: [Date, Time]) || {}
+      next if fm["sample"]
       problems << "missing title" if fm["title"].to_s.strip.empty?
       problems << "missing description" if fm["description"].to_s.strip.empty?
       cats = Array(fm["categories"])
       problems << "categories must contain one of: #{topics.join(', ')}" if cats.empty? || (cats - topics).any?
+      tags = Array(fm["tags"]).map(&:to_s)
+      unknown = tags - allowed_tags
+      problems << "tags not in _data/tags.yml: #{unknown.join(', ')}" if unknown.any?
+      problems << "too many tags (#{tags.size}); use at most #{MAX_TAGS}" if tags.size > MAX_TAGS
+      slug = File.basename(file, ".md").sub(/\A\d{4}-\d{2}-\d{2}-/, "")
+      problems << "filename slug '#{slug}' must be lowercase letters, digits and hyphens" unless slug.match?(/\A[a-z0-9]+(-[a-z0-9]+)*\z/)
+      problems << "filename slug '#{slug}' has #{slug.split('-').size} words; keep it to #{MAX_SLUG_WORDS}" if slug.split("-").size > MAX_SLUG_WORDS
       if fm.key?("content_type") && !fm["content_type"].to_s.empty? && !types.include?(fm["content_type"])
         problems << "content_type, if set, must be one of: #{types.join(', ')}"
       end

@@ -34,9 +34,13 @@ A post's front matter:
 title: "My post title"
 description: One or two sentences, shown under the title, in lists, search and social previews.
 categories: [ai-intelligent-systems]   # exactly one topic, see below
-tags: [retrieval, evals]
+tags: [retrieval, evals]               # from _data/tags.yml, at most 4
 ---
 ```
+
+Tags come from the allowed list in `_data/tags.yml`; `bin/lint-content` rejects any other tag and
+more than four per post. It also checks that the filename slug (the part after the date, which
+becomes the permanent URL) is lowercase with hyphens and at most five words.
 
 `bin/lint-content` (run by `bin/check` and CI) fails the build if a published post is missing a
 title, a description or a valid topic.

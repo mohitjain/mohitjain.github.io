@@ -1,0 +1,17 @@
+# The allowed tags. bin/lint-content rejects any tag in a published post that is not listed here,
+# and allows at most 4 tags per post. Add a tag only when at least two articles will use it.
+architecture: Designing the structure of systems
+distributed-systems: Consistency, failure, retries and coordination
+reliability: Making systems keep working under failure
+performance: Latency, throughput and cost
+databases: Storage, indexes and query behaviour
+llms: Large language models and how they behave
+agents: Systems where a model decides what to do next
+retrieval: Search, embeddings and RAG
+evals: Measuring whether AI systems work
+experiments: Things built to learn something
+decision-making: Choosing under uncertainty
+communication: Writing and explaining clearly
+mental-models: Ways of thinking about problems
+learning: How to learn and teach technical subjects
+leadership: Leading engineers and engineering work

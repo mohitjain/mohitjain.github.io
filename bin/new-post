@@ -19,7 +19,7 @@ cat > "$file" <<POST
 title: "${title}"
 description:        # one or two sentences: shown under the title, in lists, search and social previews
 categories: []      # one of: systems-architecture, ai-intelligent-systems, building-experiments, leadership-strategy, thinking-learning
-tags: []
+tags: []            # from _data/tags.yml, at most 4
 ---
 
 POST
