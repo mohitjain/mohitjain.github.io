@@ -9,5 +9,4 @@ cd "$(dirname "$0")/.."
 flags=(--disable-external)
 [ "${1:-}" = "--external" ] && flags=(--ignore-status-codes "0,429,999")
 
-# TODO(accessibility): the dark-mode toggle is an <a> without href; make it a <button>, then drop the next flag.
-bundle exec htmlproofer ./_site --allow-missing-href "${flags[@]}"
+bundle exec htmlproofer ./_site "${flags[@]}"

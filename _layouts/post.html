@@ -7,10 +7,10 @@ layout: compress
 
 {% include header.html %}
 
-<body>
+<body data-theme="{{ site.mode }}">
   {% include navbar.html %}
   <div class="wrapper post">
-    <main class="page-content" aria-label="Content">
+    <main id="main-content" tabindex="-1" class="page-content" aria-label="Content">
       <article itemscope itemtype="https://schema.org/BlogPosting" data-pagefind-body>
 
         <header class="header">
@@ -50,7 +50,8 @@ layout: compress
         {% include toc.html html=content %}
 
         <div class="page-content" itemprop="articleBody">
-          {% include anchor_headings.html html=content anchorClass="anchor-head" beforeHeading=true h_min=1 h_max=4 %}
+          {% assign body_html = content | replace: '<img ', '<img loading="lazy" decoding="async" ' %}
+          {% include anchor_headings.html html=body_html anchorClass="anchor-head" anchorAttrs='aria-label="Link to this section"' beforeHeading=true h_min=1 h_max=4 %}
           {% if page.tweet %}
           <p>Comments this article on 
             <a href="https://twitter.com/{{site.username}}/status/{{page.tweet}}">Twitter</a>.

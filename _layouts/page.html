@@ -7,14 +7,14 @@ layout: compress
 
 {% include header.html %}
 
-<body>
+<body data-theme="{{ site.mode }}">
   {% include navbar.html %}
   <div class="wrapper">
     <header class="header">
       <h1 class="header-title center" itemprop="headline">{{ page.title | escape }}.</h1>
     </header>
-    <main class="page-content" aria-label="Content">
-      {% include anchor_headings.html html=content anchorClass="anchor-head" beforeHeading=true h_min=4 h_max=4 %}
+    <main id="main-content" tabindex="-1" class="page-content" aria-label="Content">
+      {% include anchor_headings.html html=content anchorClass="anchor-head" anchorAttrs='aria-label="Link to this section"' beforeHeading=true h_min=4 h_max=4 %}
     </main>
     {% include footer.html %}
   </div>

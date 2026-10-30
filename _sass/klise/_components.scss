@@ -48,7 +48,7 @@ $component-border: 1px solid rgba(128, 128, 128, 0.3);
 
 .related-date {
   margin-left: 0.5em;
-  opacity: 0.7;
+  color: $gray;
 }
 
 // Copy button on code blocks (added by assets/js/main.js)
@@ -103,9 +103,125 @@ body[data-theme="dark"] #search {
   margin-left: 0.5em;
   font-size: $small-font-size - 2;
   font-weight: $normal-weight;
-  opacity: 0.7;
 }
 
 .comments {
   margin-top: 2em;
+}
+
+// ---- Accessibility ----
+
+// The dark-mode toggle is a <button>; strip the default button chrome.
+#mood {
+  padding: 0;
+  margin: 0;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  padding: 0.5em 1em;
+  color: $white;
+  background: $black;
+  transform: translateY(-120%);
+
+  &:focus {
+    transform: translateY(0);
+  }
+}
+
+#main-content:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid $text-link-blue;
+  outline-offset: 2px;
+}
+
+body[data-theme="dark"] :focus-visible {
+  outline-color: $dark-text-link-blue;
+}
+
+// Archive, tags, home and 404 list headings keep the look they had as <h4>,
+// now that they are real h2/h3 elements in the right order.
+.posts-item-note,
+.post-item-title {
+  font-size: 1em;
+}
+
+.page-content {
+  .post-header,
+  .posts-title {
+    @include relative-font-size(1.25);
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .related-title {
+    margin: 0;
+    font-size: 1em;
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+@media print {
+  .navbar,
+  .skip-link,
+  .footer,
+  .pagination,
+  .post-nav,
+  .toc,
+  .related,
+  .comments,
+  .copy-btn {
+    display: none !important;
+  }
+
+  body,
+  body[data-theme="dark"] {
+    color: #000;
+    background: #fff;
+  }
+
+  .page-content a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    word-break: break-all;
+  }
+}
+
+// Links inside running text need more than colour to stand out (WCAG 1.4.1).
+.page-content p a,
+.page-content li a {
+  text-decoration: underline;
+}
+
+.page-content .toc a,
+.page-content .related a,
+.page-content .series a,
+.page-content a.anchor-head {
+  text-decoration: none;
+}
+
+body[data-theme="dark"] .related-date {
+  color: #8d959c; // 5.3:1 on the dark background
 }

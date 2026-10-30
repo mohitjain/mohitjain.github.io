@@ -6,21 +6,21 @@ layout: compress
 <html lang="{{ page.lang | default: site.lang | default: " en " }}">
   
 {% include header.html %}
-<body>
+<body data-theme="{{ site.mode }}">
   <main aria-label="Content">
     {% include navbar.html %}
-    <div class="wrapper not-found">
+    <div class="wrapper not-found" id="main-content" tabindex="-1">
       <div class="container">
         <div class="title">404</div>
         <p class="phrase">😕 Hmm... Seems you lost from my journey.</p>
         <a class="solution" href="{{ site.url }}">back home</a>
         {% if site.posts.size > 0 %}
-        <h4 class="posts-item-note">Recent Posts</h4>
+        <h2 class="posts-item-note">Recent Posts</h2>
         {% for post in site.posts limit: 5 %}
         <article class="post-item">
-          <h4 class="post-item-title">
+          <h3 class="post-item-title">
             <a href="{{ post.url }}">{{ post.title | escape }}</a>
-          </h4>
+          </h3>
         </article>
         {% endfor %}
         {% endif %}

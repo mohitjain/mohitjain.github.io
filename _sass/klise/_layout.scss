@@ -20,7 +20,7 @@
   -ms-user-select: none;
   -webkit-user-select: none;
 
-  a#mood {
+  #mood {
     float: left;
     left: 8px;
     top: 6px;
@@ -117,7 +117,7 @@
     background-color: $white;
     border-bottom: 1px solid $light;
 
-    a#mood {
+    #mood {
       left: 10px;
       top: 12px;
     }
@@ -294,7 +294,6 @@
     margin-top: 3px;
     display: block;
     color: $gray;
-    opacity: 0.8;
   }
 }
 

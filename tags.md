@@ -7,17 +7,17 @@ excerpt: Sorted article by tags.
 
 {% for tag in site.tags %} {% capture name %}{{ tag | first }}{% endcapture %}
 
-<h4 class="post-header" id="{{ name | downcase | slugify }}">
+<h2 class="post-header" id="{{ name | downcase | slugify }}">
   {{ name }}
   <a class="tag-feed" href="/feed/tags/{{ name | slugify }}.xml" aria-label="RSS feed for {{ name }}">rss</a>
-</h4>
+</h2>
 {% for post in site.tags[name] %}
 <article class="posts">
   <span class="posts-date">{{ post.date | date: "%b %d" }}</span>
   <header class="posts-header">
-    <h4 class="posts-title">
+    <h3 class="posts-title">
       <a href="{{ post.url }}">{{ post.title | escape }}</a>
-    </h4>
+    </h3>
   </header>
 </article>
 {% endfor %} {% endfor %}
