@@ -20,6 +20,18 @@ Right now much of my learning time goes into artificial intelligence: how founda
 
 I see the leadership, strategy and systems-thinking side of engineering as one subject with the technical work: how complex things are understood, designed and led.
 
+## What I write about
+
+Five connected areas, not five separate blogs.
+
+{% assign topic_list = site.topics | sort: "order" %}
+{% for topic in topic_list %}
+<article class="entry">
+  <h3 class="entry-title"><a href="{{ topic.url }}">{{ topic.title }}</a></h3>
+  <p class="entry-desc">{{ topic.description }}</p>
+</article>
+{% endfor %}
+
 ## What to expect
 
 - Plain, careful writing. I'll try to separate what is established, what I read in a source, what I interpret, and what I'm only guessing.

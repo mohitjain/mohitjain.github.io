@@ -11,9 +11,15 @@ home: true
   <p class="label motto">Learn deeply &middot; Think clearly &middot; Build thoughtfully</p>
 </section>
 
-{% assign latest = site.posts | slice: 0, 3 %}
-{% comment %}Shown once there are enough articles that it adds something beyond the topic sections.{% endcomment %}
+{% if site.posts.size == 0 %}
+<section aria-labelledby="writing-title">
+  <h2 class="section-title" id="writing-title">Writing</h2>
+  <p>The first articles are on their way.</p>
+</section>
+{% else %}
+{% comment %}Latest and Selected appear once there are enough articles that they add something beyond the topic groups below.{% endcomment %}
 {% if site.posts.size >= 6 %}
+{% assign latest = site.posts | slice: 0, 3 %}
 <section aria-labelledby="latest-title">
   <h2 class="section-title" id="latest-title">Latest</h2>
   {% for post in latest %}{% include entry.html post=post %}{% endfor %}
@@ -22,55 +28,25 @@ home: true
 {% endif %}
 
 {% assign featured = site.posts | where: "featured", true %}
-{% if featured.size > 0 %}
+{% if featured.size > 0 and site.posts.size >= 6 %}
 <section aria-labelledby="featured-title">
   <h2 class="section-title" id="featured-title">Selected</h2>
   {% for post in featured limit: 3 %}{% include entry.html post=post %}{% endfor %}
 </section>
 {% endif %}
 
+{% comment %}Only topics that already have an article; descriptions live on About and the topic pages.{% endcomment %}
 {% assign topic_list = site.topics | sort: "order" %}
 {% for topic in topic_list %}
 {% assign topic_posts = site.posts | where_exp: "p", "p.categories contains topic.slug" %}
+{% if topic_posts.size > 0 %}
 <section aria-labelledby="topic-{{ topic.slug }}">
   <h2 class="section-title" id="topic-{{ topic.slug }}"><a href="{{ topic.url }}">{{ topic.title }}</a></h2>
-  <p class="section-desc">{{ topic.description }}</p>
-  {% if topic_posts.size > 0 %}
-    {% for post in topic_posts limit: 3 %}{% include entry.html post=post %}{% endfor %}
-    {% if topic_posts.size > 3 %}<p class="more"><a href="{{ topic.url }}">All {{ topic_posts.size }} in {{ topic.nav_title | default: topic.title }}</a></p>{% endif %}
-  {% else %}
-    <p class="entry-desc">Writing will appear here over time.</p>
-  {% endif %}
-</section>
-{% endfor %}
-
-{% if site.experiments.size > 0 %}
-<section aria-labelledby="experiments-title">
-  <h2 class="section-title" id="experiments-title">Experiments</h2>
-  {% assign recent_experiments = site.experiments | sort: "started" | reverse | slice: 0, 3 %}
-  {% for item in recent_experiments %}
-  <article class="entry">
-    <p class="label">{{ item.status | default: "idea" }}</p>
-    <h3 class="entry-title"><a href="{{ item.url }}">{{ item.title }}</a></h3>
-    <p class="entry-desc">{{ item.description }}</p>
-  </article>
-  {% endfor %}
-  <p class="more"><a href="/experiments/">All experiments</a></p>
+  {% for post in topic_posts limit: 3 %}{% include entry.html post=post %}{% endfor %}
+  {% if topic_posts.size > 3 %}<p class="more"><a href="{{ topic.url }}">All {{ topic_posts.size }} in {{ topic.nav_title | default: topic.title }}</a></p>{% endif %}
 </section>
 {% endif %}
-
-{% if site.data.reading.size > 0 %}
-<section aria-labelledby="reading-title">
-  <h2 class="section-title" id="reading-title">Reading</h2>
-  {% assign recent_reading = site.data.reading | slice: 0, 4 %}
-  {% for item in recent_reading %}
-  <article class="entry">
-    <p class="label">{{ item.type }}{% if item.author %} &middot; {{ item.author }}{% endif %}</p>
-    <h3 class="entry-title">{% if item.url %}<a href="{{ item.url }}" rel="noopener">{{ item.title }}</a>{% else %}{{ item.title }}{% endif %}</h3>
-  </article>
-  {% endfor %}
-  <p class="more"><a href="/reading/">All reading</a></p>
-</section>
+{% endfor %}
 {% endif %}
 
 {% include subscribe.html %}

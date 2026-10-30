@@ -59,7 +59,7 @@ Optional front matter:
 | Key | Effect |
 | --- | --- |
 | `updated` | "Updated" date (`modified` also works) |
-| `featured: true` | Shows the post under "Selected" on the home page |
+| `featured: true` | Shows the post under "Selected" on the home page (once there are six or more articles) |
 | `series` | Posts with the same value link to each other |
 | `related_posts` | List of post URL fragments to show as related, instead of the automatic matches |
 | `image` | Social preview image (falls back to `assets/img/ogp.png`) |
