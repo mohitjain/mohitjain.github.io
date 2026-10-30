@@ -3,8 +3,21 @@
 // Neutral borders and inherited colours keep these readable in light and dark mode.
 $component-border: 1px solid rgba(128, 128, 128, 0.3);
 
-.reading-time {
+// Date, reading time and author each get the theme's little dash separator.
+.post-meta .reading-time {
+  position: relative;
+  margin-right: 1.5em;
   white-space: nowrap;
+
+  &::after {
+    background: $light;
+    bottom: 1px;
+    content: " ";
+    height: 2px;
+    position: absolute;
+    right: -20px;
+    width: 12px;
+  }
 }
 
 .toc,
@@ -59,24 +72,20 @@ div.highlighter-rouge {
 .copy-btn {
   position: absolute;
   top: 6px;
-  right: -22px;
+  right: 6px;
   padding: 2px 8px;
   font: inherit;
   font-size: $small-font-size - 2;
-  color: inherit;
-  background: transparent;
-  border: $component-border;
+  color: $dark-text-base-color;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 3px;
-  opacity: 0.6;
+  opacity: 0.8;
   cursor: pointer;
 
   &:hover,
   &:focus-visible {
     opacity: 1;
-  }
-
-  @include media-query($on-mobile) {
-    right: calc(51% - 51vw + 6px);
   }
 }
 
@@ -224,4 +233,8 @@ body[data-theme="dark"] :focus-visible {
 
 body[data-theme="dark"] .related-date {
   color: #8d959c; // 5.3:1 on the dark background
+}
+
+body[data-theme="dark"] .post-meta .reading-time::after {
+  background-color: $dark-light;
 }
