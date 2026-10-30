@@ -1,8 +1,10 @@
 ---
-title: Mohit Jain
+title: About
 permalink: /about/
 layout: page
-comments: false
+description: About Mohit Jain.
 ---
 
-Coming soon ;)
+Hi, I'm Mohit Jain. I write about code, startups and what I'm learning.
+
+Find me on [GitHub](https://github.com/mohitjain).

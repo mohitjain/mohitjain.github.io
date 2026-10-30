@@ -1,10 +1,16 @@
 # Site settings
 title: Mohit Jain
-description: >-
+description: Notes on code, startups and what I'm learning.
 lang: en-US
 timezone: Asia/Kolkata
 image: assets/img/ogp.png # This image used for Open Graph more info https://ogp.me/
 repo:
+twitter:
+  username: jainmohit27
+social:
+  name: Mohit Jain
+  links:
+    - https://github.com/mohitjain
 mode: dark # default theme "dark" | "light"
 
 # Profile settings
@@ -25,6 +31,14 @@ fb_appid:
 collections:
   posts:
     output: true
+
+# Pagination (jekyll-paginate-v2)
+pagination:
+  enabled: true
+  per_page: 10
+  permalink: /page:num/
+  sort_field: date
+  sort_reverse: true
 
 # Markdown settings
 markdown: kramdown
@@ -53,9 +67,12 @@ exclude:
   - README.md
   - node_modules
   - CODE_OF_CONDUCT.md
+  - bin
 
 # Plugins
 plugins:
+  - jekyll-paginate-v2
+  - jekyll-seo-tag
   - jekyll-feed
   - jekyll-sass-converter
   - jekyll-sitemap

@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Usage: bin/new-post "My post title" [--draft]
+set -euo pipefail
+
+title="${1:?usage: bin/new-post \"Post title\" [--draft]}"
+slug="$(printf '%s' "$title" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+|-+$//g')"
+
+if [ "${2:-}" = "--draft" ]; then
+  file="_drafts/${slug}.md"
+else
+  file="_posts/$(date +%Y-%m-%d)-${slug}.md"
+fi
+
+mkdir -p "$(dirname "$file")"
+[ -e "$file" ] && { echo "$file already exists" >&2; exit 1; }
+
+cat > "$file" <<POST
+---
+title: "${title}"
+description:
+tags: []
+---
+
+POST
+echo "$file"

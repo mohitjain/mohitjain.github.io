@@ -14,6 +14,16 @@ layout: compress
         <div class="title">404</div>
         <p class="phrase">😕 Hmm... Seems you lost from my journey.</p>
         <a class="solution" href="{{ site.url }}">back home</a>
+        {% if site.posts.size > 0 %}
+        <h4 class="posts-item-note">Recent Posts</h4>
+        {% for post in site.posts limit: 5 %}
+        <article class="post-item">
+          <h4 class="post-item-title">
+            <a href="{{ post.url }}">{{ post.title | escape }}</a>
+          </h4>
+        </article>
+        {% endfor %}
+        {% endif %}
       </div>
     </div>
     {% include footer.html %}
