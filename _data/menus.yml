@@ -1,9 +1,9 @@
-# Shown after the five topics in the header.
-- title: Archive
-  url: /archive/
-
+# Shown after the five topics in the header, in this order.
 - title: Reading
   url: /reading/
+
+- title: Archive
+  url: /archive/
 
 - title: About
   url: /about/
