@@ -6,6 +6,6 @@
     "MD041": false,
     "MD025": false
   },
-  "globs": ["_posts/**/*.md", "_drafts/**/*.md", "_topics/*.md", "*.md"],
+  "globs": ["_posts/**/*.md", "_drafts/**/*.md", "_topics/*.md", "*.md", "docs/*.md"],
   "ignores": []
 }

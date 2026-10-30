@@ -96,6 +96,8 @@ exclude:
   - Gemfile.lock
   - CHANGELOG.md
   - README.md
+  - CLAUDE.md
+  - docs
   - node_modules
   - CODE_OF_CONDUCT.md
   - bin
