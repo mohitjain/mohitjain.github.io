@@ -46,6 +46,10 @@ body {
     max-height: calc(100vh - 3rem);
     overflow-y: auto;
     text-align: right;
+    // titles are sized to the rail's width (see .page-title / .post-title), so
+    // long words fit whole; this only guards against extreme cases
+    container-type: inline-size;
+    overflow-wrap: break-word;
   }
 
   .column:only-child {

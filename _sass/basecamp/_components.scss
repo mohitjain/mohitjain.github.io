@@ -293,10 +293,6 @@
   }
 }
 
-.topic-articles {
-  margin-top: 3rem;
-}
-
 // Footnotes and references at the end of an article
 .prose .footnotes {
   margin-top: 3rem;
@@ -385,4 +381,19 @@
 // Tags sit at the end of the article, not in the rail
 .column .post-tags {
   margin-top: 2.4rem;
+}
+
+// Topic pages: a short intro, then the articles
+.topic-intro p {
+  margin-top: 0;
+}
+
+.topic-articles {
+  margin-top: 2.4rem;
+}
+
+// "Covers ..." line under each topic on the About page
+.entry .entry-covers {
+  margin-top: 0.35rem;
+  font-size: 0.82em;
 }

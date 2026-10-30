@@ -10,7 +10,7 @@
 
   // in the rail: Basecamp's ~44px bold, right-aligned chapter title
   @media (min-width: 62em) {
-    font-size: clamp(2.1rem, 1.4rem + 1.6vw, 2.75rem);
+    font-size: clamp(1.5rem, 10.2cqw, 2.75rem);
   }
 }
 

@@ -18,10 +18,9 @@ layout: compress
       </header>
     </aside>
     <div class="column page-body">
-      <div class="prose">{{ content }}</div>
+      <div class="prose topic-intro">{{ content }}</div>
       {% assign topic_posts = site.posts | where_exp: "p", "p.categories contains page.slug" %}
-      <section class="topic-articles" aria-labelledby="topic-articles-title">
-        <h2 class="section-title" id="topic-articles-title">Articles</h2>
+      <section class="topic-articles" aria-label="Articles">
         {% if topic_posts.size > 0 %}
           {% for post in topic_posts %}{% include entry.html post=post tag="h3" %}{% endfor %}
         {% else %}

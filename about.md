@@ -29,6 +29,7 @@ Five connected areas, not five separate blogs.
 <article class="entry">
   <h3 class="entry-title"><a href="{{ topic.url }}">{{ topic.title }}</a></h3>
   <p class="entry-desc">{{ topic.description }}</p>
+  {% if topic.covers %}<p class="entry-desc entry-covers">{{ topic.covers | join: " &middot; " }}</p>{% endif %}
 </article>
 {% endfor %}
 

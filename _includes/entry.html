@@ -1,7 +1,7 @@
 {%- comment -%}
   One post in a list. Usage: {% include entry.html post=post %}
   Options: tag="h2" (heading level), show_topic=true (add the topic to the label),
-  compact=true (home page: DATE · TOPIC label and the title only)
+  compact=true (DATE · TOPIC label and the title only; currently unused)
 {%- endcomment -%}
 {%- assign post = include.post -%}
 {%- assign heading = include.tag | default: "h3" -%}
