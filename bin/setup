@@ -13,4 +13,5 @@ fi
 command -v node >/dev/null || { echo "Node.js is required for the Pagefind search index." >&2; exit 1; }
 
 bundle install
+git config core.hooksPath .githooks   # pre-commit content lint
 echo "Ready. Run bin/serve to start the site."

@@ -21,7 +21,13 @@ shortcuts for the same scripts. `make clean` removes build output.
 ```sh
 bin/new-post "My post title"            # _posts/YYYY-MM-DD-my-post-title.md
 bin/new-post "Work in progress" --draft  # _drafts/work-in-progress.md
+bin/publish work-in-progress             # move the draft to _posts/ dated today (lints it first)
 ```
+
+`bin/snap <path> [width] [light|dark]` screenshots a page of the running site, and
+`bin/overflow <path>...` tests pages for sideways scrolling at phone width. `bin/setup` also
+enables the pre-commit hook (`.githooks/pre-commit`), which runs the content lint on every commit.
+`CLAUDE.md` holds the working rules for Claude Code sessions, and `.claude/skills/` the skills.
 
 `bin/serve` shows drafts and future-dated posts. Drafts never publish. The two sample files in
 `_drafts/` are development fixtures that exercise every template; delete them whenever you like

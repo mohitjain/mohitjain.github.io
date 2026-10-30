@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# Move a finished draft into _posts/ dated today, then lint it. Nothing is committed.
+# Usage: bin/publish <slug>        e.g. bin/publish retry-jitter   (looks for _drafts/<slug>.md)
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+slug="${1:?usage: bin/publish <slug>   (the draft filename without .md)}"
+slug="${slug%.md}"; slug="${slug##*/}"
+src="_drafts/${slug}.md"
+[ -f "$src" ] || { echo "No draft at $src" >&2; exit 1; }
+
+if grep -qE '^sample:[[:space:]]*true' "$src"; then
+  echo "$src is marked sample: true; samples are never published." >&2
+  exit 1
+fi
+
+dest="_posts/$(date +%Y-%m-%d)-${slug}.md"
+[ -e "$dest" ] && { echo "$dest already exists" >&2; exit 1; }
+
+if git ls-files --error-unmatch "$src" >/dev/null 2>&1; then git mv "$src" "$dest"; else mv "$src" "$dest"; fi
+
+# Published posts must pass the content lint; if not, put the draft back.
+if ! bin/lint-content; then
+  if git ls-files --error-unmatch "$dest" >/dev/null 2>&1; then git mv "$dest" "$src"; else mv "$dest" "$src"; fi
+  echo "Not published: fix the problems above, then run bin/publish $slug again." >&2
+  exit 1
+fi
+echo "$dest"
