@@ -8,7 +8,7 @@
   line-height: 1.1;
   letter-spacing: -0.012em;
 
-  // in the rail: Basecamp's ~44px bold, right-aligned chapter title
+  // in the rail: large bold right-aligned title
   @media (min-width: 62em) {
     font-size: clamp(1.5rem, 10.2cqw, 2.75rem);
   }

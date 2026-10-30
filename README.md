@@ -1,8 +1,7 @@
 # mohitjain.github.io
 
 Mohit Jain's blog, built with [Jekyll](https://jekyllrb.com) 4.4 and deployed to GitHub
-Pages with GitHub Actions. The design is a clean, large-type serif layout inspired by
-[Basecamp's Getting Real](https://basecamp.com/gettingreal).
+Pages with GitHub Actions. The design is a clean, large-type serif layout.
 
 ## Quick start
 
@@ -98,7 +97,7 @@ Everything lives in `_config.yml`:
 | Setting | Notes |
 | --- | --- |
 | `url` | Public site URL, used for canonical links and feeds |
-| `mode` | Default theme: `light` (Basecamp-style ink on white), `dark` (black) or `auto` (follow the visitor's system). A visitor's own toggle choice is remembered |
+| `mode` | Default theme: `light` (ink on white), `dark` (black) or `auto` (follow the visitor's system). A visitor's own toggle choice is remembered |
 | `google_analytics` | GA4 measurement ID (`G-XXXXXXXXXX`). Empty means nothing loads, and it only loads in production builds |
 | `giscus.*` | Repo and category IDs for comments. Empty `repo_id` turns comments off |
 | `tagline` | Shown under the title on the home page |
@@ -156,7 +155,7 @@ Cloudflare. The site has no custom domain at the moment.
 | --- | --- |
 | `_posts/`, `_drafts/`, `_topics/`, `_experiments/` | Content |
 | `_layouts/`, `_includes/` | Templates and partials |
-| `_sass/basecamp/` | Styles: design tokens (`_tokens.scss`), type and layout, code, components |
+| `_sass/site/` | Styles: design tokens (`_tokens.scss`), type and layout, code, components |
 | `_plugins/tag_feeds.rb` | Generates the per-tag feeds |
 | `assets/` | CSS entry point, JavaScript, fonts (self-hosted Source Serif 4), favicons |
 | `bin/` | `setup`, `serve`, `build`, `check`, `lint-content`, `new-post` |
