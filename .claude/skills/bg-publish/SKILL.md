@@ -41,8 +41,9 @@ Publishing is one commit: `Publish: <title>`. Nothing is pushed without an expli
    ```
    If the workflow is not found, Pages is not yet set to deploy from Actions: report that. Then confirm the page is live (replace the base with `url:` from `_config.yml`):
    ```sh
-   curl -s -o /dev/null -w '%{http_code}\n' https://mohitjain.github.io/<slug>/
-   curl -s https://mohitjain.github.io/feed.xml | grep -c '<slug>'
+   base=$(ruby -ryaml -e 'puts YAML.load_file("_config.yml")["url"]')
+   curl -s -o /dev/null -w '%{http_code}\n' "$base/<slug>/"
+   curl -s "$base/feed.xml" | grep -c '<slug>'
    ```
    Report the URL, the status code, and whether the feed lists it. Pages can take a minute to update; retry a few times before reporting failure.
 10. **Report:** the commit hash, the live URL, and what to do next (share it; `bg-seo-check`; `bg-update-article` for later fixes).

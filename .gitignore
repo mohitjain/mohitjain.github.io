@@ -5,3 +5,9 @@ _site/*
 vendor/
 .lighthouseci/
 .site-health/
+
+# macOS and editor leftovers
+.DS_Store
+*.swp
+*.swo
+*~
