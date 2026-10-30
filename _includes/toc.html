@@ -1,0 +1,29 @@
+{%- comment -%}
+  Table of contents built from the h2/h3 headings in include.html.
+  Shown when there are at least 3 headings; disable per post with `toc: false`.
+{%- endcomment -%}
+{%- if page.toc != false -%}
+{%- capture toc_items -%}
+{%- assign toc_parts = include.html | split: '<h' -%}
+{%- for part in toc_parts -%}
+  {%- assign level = part | slice: 0 -%}
+  {%- if level == '2' or level == '3' -%}
+    {%- assign open_tag = part | split: '>' | first -%}
+    {%- assign heading_id = open_tag | split: 'id="' | slice: 1 | first | split: '"' | first -%}
+    {%- if heading_id and heading_id != '' -%}
+      {%- assign heading_text = part | split: '</h' | first | remove_first: open_tag | remove_first: '>' | strip_html -%}
+      <li class="toc-level-{{ level }}"><a href="#{{ heading_id }}">{{ heading_text }}</a></li>
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- endcapture -%}
+{%- assign toc_count = toc_items | split: '<li' | size | minus: 1 -%}
+{%- if toc_count >= 3 -%}
+<nav class="toc" aria-label="Table of contents">
+  <details open>
+    <summary>On this page</summary>
+    <ul>{{ toc_items }}</ul>
+  </details>
+</nav>
+{%- endif -%}
+{%- endif -%}

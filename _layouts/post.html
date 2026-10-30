@@ -31,11 +31,12 @@ layout: compress
             <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
               {{ page.date | date: "%b %d, %Y" }}
             </time>
+            {% include reading-time.html content=content %}
             <span itemprop="author" itemscope itemtype="https://schema.org/Person">
               <span itemprop="name">{{ site.author.name }}</span>
             </span>
-            <time hidden datetime="{{ page.modified | date_to_xmlschema }}" itemprop="dateModified">
-              {{ page.date | date: "%b %d, %Y" }}
+            <time hidden datetime="{{ page.modified | default: page.date | date_to_xmlschema }}" itemprop="dateModified">
+              {{ page.modified | default: page.date | date: "%b %d, %Y" }}
             </time>
             <span hidden itemprop="publisher" itemtype="Person">{{ site.author.name }}</span>
             <span hidden itemprop="image">{{ page.image }}</span>
@@ -43,6 +44,9 @@ layout: compress
           </div>
           {% endif %}
         </header>
+
+        {% include series.html %}
+        {% include toc.html html=content %}
 
         <div class="page-content" itemprop="articleBody">
           {% include anchor_headings.html html=content anchorClass="anchor-head" beforeHeading=true h_min=1 h_max=4 %}
@@ -53,6 +57,7 @@ layout: compress
           {% endif %}
         </div>
       </article>
+      {% include related.html %}
 
     </main>
     {% if page.modified %}

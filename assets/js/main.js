@@ -32,4 +32,28 @@
       }
     }
   }
+
+  // Copy button on code blocks
+  if (navigator.clipboard) {
+    document.querySelectorAll("div.highlighter-rouge").forEach((block) => {
+      const code = block.querySelector("pre");
+      if (!code) return;
+
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "copy-btn";
+      button.textContent = "Copy";
+      button.setAttribute("aria-label", "Copy code to clipboard");
+      button.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(code.innerText);
+          button.textContent = "Copied";
+        } catch (e) {
+          button.textContent = "Failed";
+        }
+        setTimeout(() => (button.textContent = "Copy"), 1500);
+      });
+      block.appendChild(button);
+    });
+  }
 })();
