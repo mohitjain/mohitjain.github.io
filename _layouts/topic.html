@@ -1,0 +1,36 @@
+---
+layout: compress
+---
+
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
+{% include header.html %}
+
+<body>
+  {% include navbar.html %}
+  <main id="main-content" tabindex="-1" class="layout" aria-label="Content">
+    <aside class="rail">
+      <header class="page-header">
+        <p class="label"><a href="/topics/">Topic</a></p>
+        <h1 class="page-title">{{ page.title | escape }}</h1>
+        <p class="page-lede">{{ page.description }}</p>
+      </header>
+    </aside>
+    <div class="column page-body">
+      <div class="prose">{{ content }}</div>
+      {% assign topic_posts = site.posts | where_exp: "p", "p.categories contains page.slug" %}
+      <section class="topic-articles" aria-labelledby="topic-articles-title">
+        <h2 class="section-title" id="topic-articles-title">Articles</h2>
+        {% if topic_posts.size > 0 %}
+          {% for post in topic_posts %}{% include entry.html post=post tag="h3" %}{% endfor %}
+        {% else %}
+          <p>Writing in this area will appear here over time.</p>
+        {% endif %}
+      </section>
+    </div>
+  </main>
+  {% include footer.html %}
+</body>
+
+</html>

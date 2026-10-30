@@ -4,11 +4,15 @@
       "staticDistDir": "./_site",
       "url": [
         "/index.html",
-        "/hello-world/index.html",
-        "/archive/index.html",
-        "/tags/index.html",
-        "/search/index.html",
+        "/writing/index.html",
+        "/topics/index.html",
+        "/topics/ai-intelligent-systems/index.html",
+        "/experiments/index.html",
+        "/reading/index.html",
         "/about/index.html",
+        "/subscribe/index.html",
+        "/search/index.html",
+        "/hello-world/index.html",
         "/404.html"
       ],
       "numberOfRuns": 1

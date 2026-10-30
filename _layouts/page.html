@@ -13,6 +13,7 @@ layout: compress
     <aside class="rail">
       <header class="page-header">
         <h1 class="page-title">{{ page.title | escape }}</h1>
+        {% if page.lede %}<p class="page-lede">{{ page.lede }}</p>{% endif %}
       </header>
     </aside>
     <div class="column page-body prose">

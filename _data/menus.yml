@@ -1,11 +1,17 @@
-- title: Archive
-  url: /archive/
-  external: false
+- title: Home
+  url: /
 
-- title: Search
-  url: /search/
-  external: false
+- title: Writing
+  url: /writing/
+
+- title: Topics
+  url: /topics/
+
+- title: Experiments
+  url: /experiments/
+
+- title: Reading
+  url: /reading/
 
 - title: About
   url: /about/
-  external: false

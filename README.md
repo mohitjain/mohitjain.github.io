@@ -21,41 +21,71 @@ shortcuts for the same scripts. `make clean` removes build output.
 ## Writing
 
 ```sh
-bin/new-post "My post title"           # _posts/YYYY-MM-DD-my-post-title.md
-bin/new-post "Work in progress" --draft # _drafts/work-in-progress.md
+bin/new-post "My post title"            # _posts/YYYY-MM-DD-my-post-title.md
+bin/new-post "Work in progress" --draft  # _drafts/work-in-progress.md
 ```
 
-`bin/serve` shows drafts and future-dated posts. A published post looks like this:
+`bin/serve` shows drafts and future-dated posts. Drafts never publish. The two sample files in
+`_drafts/` are development fixtures that exercise every template; delete them whenever you like
+(CI builds drafts only to test the templates, and never deploys them).
+
+A post's front matter:
 
 ```yaml
 ---
 title: "My post title"
-description: One sentence used for search results and social previews.
-tags: [jekyll, meta]
+description: One or two sentences, shown under the title, in lists, search and social previews.
+categories: [ai-intelligent-systems]   # exactly one topic, see below
+content_type: deep-dive                # til | deep-dive | build-log | reading-note | reflection
+tags: [retrieval, evals]
 ---
 ```
 
-Write a one-line `description` for every post: it is shown under the title on the home page and
-used for search results and social previews.
+`bin/lint-content` (run by `bin/check` and CI) fails the build if a published post is missing a
+title, a description, a valid topic or a valid content type.
+
+Topics (the `categories` values; one per post):
+
+| Slug | Topic |
+| --- | --- |
+| `systems-architecture` | Systems & Architecture |
+| `ai-intelligent-systems` | Artificial Intelligence & Intelligent Systems |
+| `building-experiments` | Building & Experimentation |
+| `leadership-strategy` | Engineering Leadership & Strategy |
+| `thinking-learning` | Thinking, Learning & Mental Models |
 
 Optional front matter:
 
 | Key | Effect |
 | --- | --- |
-| `series` | Posts with the same value get a linked list at the top |
+| `updated` | "Updated" date (`modified` also works) |
+| `featured: true` | Shows the post under "Selected" on the home page |
+| `series` | Posts with the same value link to each other |
+| `related_posts` | List of post URL fragments to show as related, instead of the automatic matches |
 | `image` | Social preview image (falls back to `assets/img/ogp.png`) |
-| `modified` | "Updated" date, also used in feeds |
 | `toc: false` | Hide the table of contents (shown when a post has 3+ `h2`/`h3` headings) |
-| `comments: false` | Turn off giscus comments for one post |
+| `comments: false` | Turn off comments for one post |
 
-Images in posts get `loading="lazy"` automatically. Add `width` and `height` to each
-image to avoid layout shift.
+Related articles are matched automatically on shared topic or tags. Images in posts get
+`loading="lazy"`; add `width` and `height` to avoid layout shift. For references, use a
+`## References` section or Markdown footnotes.
+
+## Other content
+
+| What | Where |
+| --- | --- |
+| Topic pages (`/topics/<slug>/`) | `_topics/*.md`: the front matter and body are the editorial text; articles are listed automatically |
+| Experiments (`/experiments/<name>/`) | `_experiments/*.md` with `status` and `started`; only list real projects |
+| Reading (`/reading/`) | `_data/reading.yml`, one entry per item actually read; it starts empty |
+| Content type labels | `_data/content_types.yml` |
+| Navigation | `_data/menus.yml` |
+| Newsletter | set `newsletter.buttondown` in `_config.yml` to show the signup form (RSS is shown until then) |
 
 ## What's in the site
 
 - SEO tags, a sitemap, an Atom feed (`/feed.xml`), a JSON feed (`/feed.json`) and an Atom
   feed per tag (`/feed/tags/<tag>.xml`)
-- Tags, archive and paginated home page (10 posts per page)
+- A home page, a paginated Writing archive (20 per page), five topic pages, tags, experiments and reading pages
 - Reading time, table of contents, related posts, series and code-copy buttons
 - Search at `/search/` (Pagefind; press `/` or Ctrl/Cmd+K on any page)
 - Comments with [giscus](https://giscus.app), backed by GitHub Discussions
@@ -72,7 +102,8 @@ Everything lives in `_config.yml`:
 | `mode` | Default theme: `light` (Basecamp-style ink on white), `dark` (black) or `auto` (follow the visitor's system). A visitor's own toggle choice is remembered |
 | `google_analytics` | GA4 measurement ID (`G-XXXXXXXXXX`). Empty means nothing loads, and it only loads in production builds |
 | `giscus.*` | Repo and category IDs for comments. Empty `repo_id` turns comments off |
-| `pagination.per_page` | Posts per page |
+| `tagline` | Shown under the title on the home page |
+| `newsletter.buttondown` | Buttondown username; empty shows RSS instead of the signup form |
 
 Local-only overrides are in `_config.dev.yml`.
 
@@ -124,12 +155,12 @@ Cloudflare. The site has no custom domain at the moment.
 
 | Path | What it is |
 | --- | --- |
-| `_posts/`, `_drafts/` | Content |
+| `_posts/`, `_drafts/`, `_topics/`, `_experiments/` | Content |
 | `_layouts/`, `_includes/` | Templates and partials |
 | `_sass/basecamp/` | Styles: design tokens (`_tokens.scss`), type and layout, code, components |
 | `_plugins/tag_feeds.rb` | Generates the per-tag feeds |
 | `assets/` | CSS entry point, JavaScript, fonts (self-hosted Source Serif 4), favicons |
-| `bin/` | `setup`, `serve`, `build`, `check`, `new-post` |
+| `bin/` | `setup`, `serve`, `build`, `check`, `lint-content`, `new-post` |
 | `.github/` | Workflows and Dependabot config |
 
 ## License

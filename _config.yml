@@ -1,6 +1,7 @@
 # Site settings
-title: Mohit Jain
-description: Notes on code, startups and what I'm learning.
+title: The Craft of Engineering
+tagline: Systems, Intelligence, Architecture & Ideas.
+description: A personal knowledge journal about engineering, technology, and the ideas that shape how we think and build.
 lang: en-US
 timezone: Asia/Kolkata
 image: assets/img/ogp.png # This image used for Open Graph more info https://ogp.me/
@@ -39,10 +40,21 @@ giscus:
 # Leave empty to load nothing. Only loads in production builds.
 google_analytics:
 
+# Newsletter (Buttondown): put your Buttondown username here to show the subscribe form.
+# Leave empty to point readers at RSS instead.
+newsletter:
+  buttondown:
+
 # Collection setting
 collections:
   posts:
     output: true
+  topics:
+    output: true
+    permalink: /topics/:name/
+  experiments:
+    output: true
+    permalink: /experiments/:name/
 
 # Pagination (jekyll-paginate-v2)
 pagination:
@@ -69,6 +81,14 @@ defaults:
       type: posts
     values:
       comments: true
+  - scope:
+      type: topics
+    values:
+      layout: topic
+  - scope:
+      type: experiments
+    values:
+      layout: experiment
 
 # Build settings
 sass:

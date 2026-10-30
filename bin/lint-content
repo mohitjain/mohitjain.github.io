@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+# Check post front matter against the site's conventions.
+# Published posts (_posts/) must pass; drafts (_drafts/) only produce warnings.
+# Usage: bin/lint-content
+require "yaml"
+require "date"
+
+root = File.expand_path("..", __dir__)
+topics = Dir[File.join(root, "_topics", "*.md")].map { |f| File.basename(f, ".md") }
+types = YAML.load_file(File.join(root, "_data", "content_types.yml")).keys
+
+errors = 0
+{ "_posts" => :error, "_drafts" => :warn }.each do |dir, level|
+  Dir[File.join(root, dir, "**", "*.md")].sort.each do |file|
+    text = File.read(file)
+    match = text.match(/\A---\s*\n(.*?)\n---\s*\n/m)
+    problems = []
+    if match.nil?
+      problems << "no front matter"
+    else
+      fm = YAML.safe_load(match[1], permitted_classes: [Date, Time]) || {}
+      problems << "missing title" if fm["title"].to_s.strip.empty?
+      problems << "missing description" if fm["description"].to_s.strip.empty?
+      cats = Array(fm["categories"])
+      problems << "categories must contain one of: #{topics.join(', ')}" if cats.empty? || (cats - topics).any?
+      problems << "content_type must be one of: #{types.join(', ')}" unless types.include?(fm["content_type"])
+    end
+    next if problems.empty?
+
+    label = level == :error ? "ERROR" : "warning"
+    puts "#{label}: #{file.sub(root + '/', '')}: #{problems.join('; ')}"
+    errors += 1 if level == :error
+  end
+end
+
+if errors.zero?
+  puts "Content front matter OK"
+else
+  exit 1
+end

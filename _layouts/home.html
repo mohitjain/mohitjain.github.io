@@ -5,20 +5,74 @@ home: true
 
 <section class="hero">
   <h1 class="hero-title">{{ site.title }}</h1>
-  <p class="hero-sub">{{ site.description }}</p>
-  <a class="pill" href="/feed.xml">Subscribe via RSS</a>
+  <p class="hero-sub">{{ site.tagline }}</p>
+  <div class="intro">
+    <p>This is my personal knowledge journal about engineering, technology, and the ideas that shape how we think and build.</p>
+    <p>I write about distributed systems, software architecture, artificial intelligence, and the evolving discipline of building intelligent software systems. I also explore engineering leadership, strategy, decision-making, and systems thinking through books, research papers, technical talks, and practical experience.</p>
+    <p>Some articles document concepts I&rsquo;m learning. Others explore ideas in depth or share experiments and things I&rsquo;ve built. It is a continuous record of learning, questioning, experimenting, and refining how I think about engineering.</p>
+  </div>
+  <p class="label motto">Learn deeply &middot; Think clearly &middot; Build thoughtfully</p>
 </section>
 
-<h2 class="section-title">Posts</h2>
-{% for post in paginator.posts %}
-<article class="entry">
-  <p class="label">
-    <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %-d, %Y" }}</time>
-    &middot; {% include reading-time.html content=post.content %}
-  </p>
-  <h3 class="entry-title"><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h3>
-  {% assign summary = post.description | default: post.excerpt | strip_html | normalize_whitespace | truncatewords: 30 %}
-  {% if summary != "" %}<p class="entry-desc">{{ summary }}</p>{% endif %}
-</article>
-{% endfor %}
-{% include pagination.html %}
+<section aria-labelledby="latest-title">
+  <h2 class="section-title" id="latest-title">Latest writing</h2>
+  {% assign latest = site.posts | slice: 0, 5 %}
+  {% if latest.size > 0 %}
+    {% for post in latest %}{% include entry.html post=post %}{% endfor %}
+    <p class="more"><a href="/writing/">All writing</a></p>
+  {% else %}
+    <p>The first articles are being written. <a href="/subscribe/">Follow along</a> to read them when they appear.</p>
+  {% endif %}
+</section>
+
+{% assign featured = site.posts | where: "featured", true %}
+{% if featured.size > 0 %}
+<section aria-labelledby="featured-title">
+  <h2 class="section-title" id="featured-title">Selected</h2>
+  {% for post in featured limit: 3 %}{% include entry.html post=post %}{% endfor %}
+</section>
+{% endif %}
+
+<section aria-labelledby="topics-title">
+  <h2 class="section-title" id="topics-title">Topics</h2>
+  {% assign topic_list = site.topics | sort: "order" %}
+  {% for topic in topic_list %}
+  {% assign topic_posts = site.posts | where_exp: "p", "p.categories contains topic.slug" %}
+  <article class="entry">
+    {% if topic_posts.size > 0 %}<p class="label">{{ topic_posts.size }} article{% if topic_posts.size != 1 %}s{% endif %}</p>{% endif %}
+    <h3 class="entry-title"><a href="{{ topic.url }}">{{ topic.title }}</a></h3>
+    <p class="entry-desc">{{ topic.description }}</p>
+  </article>
+  {% endfor %}
+</section>
+
+{% if site.experiments.size > 0 %}
+<section aria-labelledby="experiments-title">
+  <h2 class="section-title" id="experiments-title">Experiments</h2>
+  {% assign recent_experiments = site.experiments | sort: "started" | reverse | slice: 0, 3 %}
+  {% for item in recent_experiments %}
+  <article class="entry">
+    <p class="label">{{ item.status | default: "idea" }}</p>
+    <h3 class="entry-title"><a href="{{ item.url }}">{{ item.title }}</a></h3>
+    <p class="entry-desc">{{ item.description }}</p>
+  </article>
+  {% endfor %}
+  <p class="more"><a href="/experiments/">All experiments</a></p>
+</section>
+{% endif %}
+
+{% if site.data.reading.size > 0 %}
+<section aria-labelledby="reading-title">
+  <h2 class="section-title" id="reading-title">Reading</h2>
+  {% assign recent_reading = site.data.reading | slice: 0, 4 %}
+  {% for item in recent_reading %}
+  <article class="entry">
+    <p class="label">{{ item.type }}{% if item.author %} &middot; {{ item.author }}{% endif %}</p>
+    <h3 class="entry-title">{% if item.url %}<a href="{{ item.url }}" rel="noopener">{{ item.title }}</a>{% else %}{{ item.title }}{% endif %}</h3>
+  </article>
+  {% endfor %}
+  <p class="more"><a href="/reading/">All reading</a></p>
+</section>
+{% endif %}
+
+{% include subscribe.html %}

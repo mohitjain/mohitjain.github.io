@@ -1,0 +1,6 @@
+# Values allowed for `content_type` in a post's front matter.
+til: Today I learned
+deep-dive: Deep dive
+build-log: Build log
+reading-note: Reading note
+reflection: Reflection

@@ -1,0 +1,11 @@
+# Reading archive: books, papers, articles and talks I have actually read or watched.
+# Add an entry per item. Nothing here is a recommendation list or a claim of completeness.
+#
+# - title: Title of the book, paper, article or talk
+#   type: book            # book | paper | article | talk
+#   author: Author or speaker
+#   url: https://example.com   # optional source link
+#   date: 2026-10-30           # optional: when I read it, or when it was published
+#   tags: [systems-thinking]   # optional
+#   notes: /some-article/      # optional: link to my notes or a related article
+[]

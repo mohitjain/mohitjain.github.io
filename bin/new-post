@@ -17,7 +17,9 @@ mkdir -p "$(dirname "$file")"
 cat > "$file" <<POST
 ---
 title: "${title}"
-description:
+description:        # one or two sentences: shown under the title, in lists, search and social previews
+categories: []      # one of: systems-architecture, ai-intelligent-systems, building-experiments, leadership-strategy, thinking-learning
+content_type:       # one of: til, deep-dive, build-log, reading-note, reflection
 tags: []
 ---
 
