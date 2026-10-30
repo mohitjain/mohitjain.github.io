@@ -1,0 +1,81 @@
+#!/usr/bin/env ruby
+# Check one built article for what search engines and link previews read.
+# Run bin/build first. Usage: bin/seo-check <slug>
+# Prints ok / warn / FAIL lines; exits 1 if anything FAILs.
+require "json"
+require "nokogiri"
+require "yaml"
+require "uri"
+
+root = File.expand_path("..", __dir__)
+slug = ARGV[0] or abort "usage: bin/seo-check <slug>"
+site = File.join(root, "_site")
+page = File.join(site, slug, "index.html")
+abort "#{page} not found; run bin/build first (drafts need INCLUDE_DRAFTS=1)" unless File.exist?(page)
+
+base = YAML.load_file(File.join(root, "_config.yml"))["url"].to_s.chomp("/")
+doc = Nokogiri::HTML(File.read(page))
+fails = 0
+out = lambda do |level, msg|
+  fails += 1 if level == :FAIL
+  puts "#{level.to_s.ljust(4)} #{msg}"
+end
+meta = ->(sel) { doc.at_css(sel)&.[]("content").to_s.strip }
+
+title = doc.at_css("title")&.text.to_s.strip
+if title.empty? then out.(:FAIL, "no <title>")
+elsif title.size > 65 then out.(:warn, "title is #{title.size} characters including the site name (search results cut off around 60): #{title}")
+else out.(:ok, "title (#{title.size}): #{title}") end
+
+desc = meta.('meta[name="description"]')
+if desc.empty? then out.(:FAIL, "no meta description")
+elsif desc.size < 70 then out.(:warn, "description is short (#{desc.size}); aim for 70 to 160")
+elsif desc.size > 160 then out.(:warn, "description is long (#{desc.size}); search results cut off around 160")
+else out.(:ok, "description (#{desc.size})") end
+
+canon = doc.at_css('link[rel="canonical"]')&.[]("href").to_s
+want = "#{base}/#{slug}/"
+out.(canon == want ? :ok : :FAIL, canon == want ? "canonical #{canon}" : "canonical is '#{canon}', expected #{want}")
+
+%w[og:title og:description og:type].each { |p| meta.("meta[property=\"#{p}\"]").empty? ? out.(:FAIL, "missing #{p}") : out.(:ok, p) }
+img = meta.('meta[property="og:image"]')
+if img.empty? then out.(:FAIL, "no og:image (link previews will have no picture)")
+else
+  path = URI(img).path rescue ""
+  out.(File.exist?(File.join(site, path)) ? :ok : :FAIL, File.exist?(File.join(site, path)) ? "og:image #{img}" : "og:image file missing in _site: #{img}")
+end
+out.(meta.('meta[name="twitter:card"]').empty? ? :warn : :ok, "twitter:card #{meta.('meta[name="twitter:card"]')}")
+
+ld = doc.css('script[type="application/ld+json"]').map { |s| JSON.parse(s.text) rescue nil }.compact
+article = ld.flat_map { |x| x.is_a?(Array) ? x : [x] }.find { |x| %w[BlogPosting Article].include?(x["@type"]) }
+if article && article["headline"] && article["datePublished"] then out.(:ok, "structured data (#{article['@type']}, published #{article['datePublished'][0, 10]})")
+else out.(:FAIL, "no BlogPosting/Article structured data with headline and datePublished") end
+
+h1 = doc.css("h1").size
+out.(h1 == 1 ? :ok : :FAIL, "#{h1} <h1> (expected 1)")
+robots = meta.('meta[name="robots"]')
+out.(:FAIL, "robots says '#{robots}': search engines will skip this page") if robots =~ /noindex/
+
+words = slug.split("-").size
+out.(words <= 5 ? :ok : :warn, "slug '#{slug}' has #{words} words (aim for 5 or fewer)")
+
+sitemap = File.exist?(File.join(site, "sitemap.xml")) ? File.read(File.join(site, "sitemap.xml")) : ""
+out.(sitemap.include?(want) ? :ok : :warn, sitemap.include?(want) ? "listed in sitemap.xml" : "not in sitemap.xml (a draft never is; a published post should be)")
+feed = File.exist?(File.join(site, "feed.xml")) ? File.read(File.join(site, "feed.xml")) : ""
+out.(feed.include?(want) ? :ok : :note, feed.include?(want) ? "listed in feed.xml" : "not in feed.xml (it holds only the newest posts, and never drafts)")
+
+body = doc.at_css(".prose")
+if body
+  text_words = body.text.split.size
+  posts = Dir[File.join(root, "_posts", "*.md")].map { |f| File.basename(f, ".md").sub(/\A\d{4}-\d{2}-\d{2}-/, "") }
+  internal = body.css("a[href]").map { |a| a["href"].to_s.delete_prefix(base).split("#").first.to_s.delete_prefix("/").delete_suffix("/") }.select { |h| posts.include?(h) && h != slug }.uniq
+  if internal.empty? && text_words > 500 then out.(:warn, "no links to your other articles in the text (#{text_words} words); internal links help readers and search")
+  else out.(:ok, "#{internal.size} link(s) to other articles in the text") end
+  noalt = body.css("img").reject { |i| i["alt"].to_s.strip.size > 0 }
+  out.(noalt.empty? ? :ok : :FAIL, noalt.empty? ? "all images have alt text" : "#{noalt.size} image(s) without alt text")
+  h2 = body.css("h2").size
+  out.(:warn, "#{text_words} words and no ## headings: hard to scan") if text_words > 800 && h2 < 2
+end
+
+puts(fails.zero? ? "\nno failures" : "\n#{fails} failure(s)")
+exit(fails.zero? ? 0 : 1)

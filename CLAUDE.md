@@ -22,7 +22,7 @@ Mohit Jain's personal journal (Jekyll, GitHub Pages, built by Actions). Markdown
 ## Commands
 
 - `bin/serve` preview with drafts; `bin/build` build and search index; `bin/check` lint, build and link check.
-- `bin/new-post "Title" --draft` new draft; `bin/publish <slug>` move a draft to `_posts/` dated today; `bin/rename-post <old> <new>` change a slug and keep the old address redirecting; `bin/unpublish <slug>` back to a draft; `bin/add-reading` add a checked item to the reading list; `bin/tags` list or add allowed tags.
+- `bin/new-post "Title" --draft` new draft; `bin/publish <slug>` move a draft to `_posts/` dated today; `bin/rename-post <old> <new>` change a slug and keep the old address redirecting; `bin/unpublish <slug>` back to a draft; `bin/add-reading` add a checked item to the reading list; `bin/tags` list or add allowed tags; `bin/seo-check <slug>` search and sharing check of a built article.
 - `bin/lint-content` front matter, tags, slugs, reading list.
 - `bin/snap <path> [width] [theme]` screenshot; `bin/overflow <path>...` phone overflow test.
 - Ruby via rvm: `source ~/.rvm/scripts/rvm && rvm use $(cat .ruby-version)`.
