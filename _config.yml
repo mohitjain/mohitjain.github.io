@@ -38,7 +38,7 @@ giscus:
 
 # Analytics (Google Analytics 4): put the measurement ID here, e.g. "G-XXXXXXXXXX".
 # Leave empty to load nothing. Only loads in production builds.
-google_analytics:
+google_analytics: "G-4N94T0LKZ6"
 
 # Newsletter (Buttondown): put your Buttondown username here to show the subscribe form.
 # Leave empty to point readers at RSS instead.
