@@ -542,3 +542,8 @@
     grid-column: 1 / -1;
   }
 }
+
+.reading-topics a[aria-current="true"] {
+  font-weight: 700;
+  text-decoration-thickness: 2px;
+}

@@ -3,6 +3,7 @@
 #
 # - title: Title of the book, paper, article or talk
 #   type: book            # book | paper | article | video
+#   topic: leadership-thinking   # systems-architecture | ai-intelligent-systems | leadership-thinking
 #   author: Author or speaker
 #   url: https://example.com   # optional source link (only if you are certain it is right)
 #   year: 1999                 # optional: year published
@@ -12,6 +13,6 @@
 #   comment: One sentence in my own words about why it mattered   # optional
 #   tags: [systems-thinking]   # optional
 #   notes: /some-article/      # optional: link to my notes or a related article
-- {title: "Deep Dive into LLMs like ChatGPT", type: video, author: "Andrej Karpathy", year: 2025, read: 2026-10-27}
-- {title: "Intro to Large Language Models", type: video, author: "Andrej Karpathy", year: 2023, read: 2026-10-27}
-- {title: "State of GPT", type: video, author: "Andrej Karpathy", year: 2023, read: 2026-10-27}
+- {title: "Deep Dive into LLMs like ChatGPT", type: video, author: "Andrej Karpathy", topic: ai-intelligent-systems, year: 2025, read: 2026-10-27}
+- {title: "Intro to Large Language Models", type: video, author: "Andrej Karpathy", topic: ai-intelligent-systems, year: 2023, read: 2026-10-27}
+- {title: "State of GPT", type: video, author: "Andrej Karpathy", topic: ai-intelligent-systems, year: 2023, read: 2026-10-27}

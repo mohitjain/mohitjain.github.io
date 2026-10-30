@@ -12,6 +12,14 @@
     <label for="reading-q" class="visually-hidden">Filter the list</label>
     <input id="reading-q" type="search" placeholder="Filter by title, author or tag" autocomplete="off">
   </p>
+  <ul class="chips reading-topics" id="reading-topics" aria-label="Filter by topic" hidden>
+    <li><a href="#" data-topic="">All</a></li>
+    {% assign topics = site.topics | sort: "order" %}
+    {% for t in topics %}
+    {% assign tn = items | where: "topic", t.slug | size %}
+    {% if tn > 0 %}<li><a href="#{{ t.nav_title | downcase }}" data-topic="{{ t.slug }}" data-hash="{{ t.nav_title | downcase }}">{{ t.nav_title }} <span class="tag-count">{{ tn }}</span></a></li>{% endif %}
+    {% endfor %}
+  </ul>
   {% assign years = items | group_by_exp: "i", "i.read | date: '%Y'" | sort: "name" | reverse %}
   {% for year in years %}
   <section class="reading-group" aria-labelledby="y{{ year.name }}">

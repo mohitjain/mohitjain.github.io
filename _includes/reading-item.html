@@ -2,15 +2,16 @@
   One item in the reading list. Usage: {% include reading-item.html item=item %}
 {%- endcomment -%}
 {%- assign item = include.item -%}
-{%- capture find %}{{ item.title }} {{ item.author }} {{ item.year }} {{ item.tags | join: " " }}{% endcapture -%}
-<li class="reading-row{% if item.pick %} is-pick{% endif %}" data-find="{{ find | downcase | strip_newlines | escape }}">
+{%- assign topic = site.topics | where: "slug", item.topic | first -%}
+{%- capture find %}{{ item.title }} {{ item.author }} {{ item.year }} {{ topic.nav_title }} {{ item.tags | join: " " }}{% endcapture -%}
+<li class="reading-row{% if item.pick %} is-pick{% endif %}" data-topic="{{ item.topic }}" data-find="{{ find | downcase | strip_newlines | escape }}">
   {%- if item.image %}
   <img class="reading-thumb" src="{{ item.image | relative_url }}" alt="Cover of {{ item.title | escape }}" width="48" loading="lazy" decoding="async">
   {%- endif %}
   <div class="reading-main">
     <span class="reading-title">{% if item.url %}<a href="{{ item.url }}" rel="noopener">{{ item.title }}</a>{% else %}{{ item.title }}{% endif %}</span>
-    {%- if item.author or item.year %}
-    <span class="reading-by">{{ item.author }}{% if item.author and item.year %} &middot; {% endif %}{{ item.year }}</span>
+    {%- if item.author or item.year or topic %}
+    <span class="reading-by">{{ item.author }}{% if item.author and item.year %} &middot; {% endif %}{{ item.year }}{% if topic %}{% if item.author or item.year %} &middot; {% endif %}{{ topic.nav_title | default: topic.title }}{% endif %}</span>
     {%- endif %}
     {%- if item.comment %}<span class="reading-comment">{{ item.comment }}</span>{% endif %}
   </div>
