@@ -266,7 +266,7 @@
   line-height: 1.1;
   letter-spacing: -0.012em;
 
-  // in the rail: scale with the rail so "Experimentation" fits on one line
+  // in the rail: scale with the rail so the longest topic title fits on one line
   @media (min-width: 62em) {
     font-size: clamp(1.5rem, 10.2cqw, 2.75rem);
   }

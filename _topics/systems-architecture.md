@@ -10,6 +10,7 @@ covers:
   - "Reliability and scalability"
   - "Data engineering and enterprise platforms"
   - "Engineering trade-offs, system boundaries and abstractions"
+  - "Building systems from scratch and learning from the measurements and failures"
 ---
 
 Most failures in large systems come from unexamined assumptions, unclear boundaries and trade-offs nobody made explicit. Writing about architecture is a way of making those visible.

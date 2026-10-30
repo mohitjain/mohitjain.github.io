@@ -11,6 +11,7 @@ covers:
   - "Evaluation, reliability and reward hacking"
   - "Model adaptation, inference economics, security and governance"
   - "Enterprise AI systems"
+  - "Building and measuring AI systems: retrieval experiments, model serving, AI-assisted development"
 ---
 
 AI is changing what software is made of. Understanding how these systems work, and how they fail, matters more than keeping up with each new release.

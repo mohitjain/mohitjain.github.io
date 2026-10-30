@@ -22,7 +22,7 @@ I see the leadership, strategy and systems-thinking side of engineering as one s
 
 ## What I write about
 
-Five connected areas, not five separate blogs.
+Three connected areas, not three separate blogs.
 
 {% assign topic_list = site.topics | sort: "order" %}
 {% for topic in topic_list %}

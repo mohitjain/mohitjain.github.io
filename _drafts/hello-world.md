@@ -2,7 +2,7 @@
 # Development fixture: lives in _drafts/, so it appears in bin/serve but is never published.
 title: "Hello, world"
 description: First post on the rebuilt blog.
-categories: [building-experiments]
+categories: [systems-architecture]
 content_type: build-log
 tags: [experiments]
 series: Rebuilding the blog

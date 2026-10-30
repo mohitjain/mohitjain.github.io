@@ -51,9 +51,7 @@ Topics (the `categories` values; one per post):
 | --- | --- |
 | `systems-architecture` | Systems & Architecture |
 | `ai-intelligent-systems` | Artificial Intelligence & Intelligent Systems |
-| `building-experiments` | Building & Experimentation |
-| `leadership-strategy` | Engineering Leadership & Strategy |
-| `thinking-learning` | Thinking, Learning & Mental Models |
+| `leadership-thinking` | Leadership & Thinking |
 
 Optional front matter:
 
@@ -82,7 +80,7 @@ Related articles are matched automatically on shared topic or tags. Images in po
 | Topic pages (`/topics/<slug>/`) | `_topics/*.md`: the front matter and body are the editorial text; articles are listed automatically |
 | Reading (`/reading/`) | `_data/reading.yml`, one entry per item actually read; it starts empty |
 | Allowed `content_type` values | `_data/content_types.yml` |
-| Header navigation | the five topics (short label = `nav_title` in `_topics/*.md`), then `_data/menus.yml` (Archive, About) |
+| Header navigation | the three topics (short label = `nav_title` in `_topics/*.md`), then `_data/menus.yml` (Reading, Archive, About) |
 | Footer links | `_includes/footer.html` (Tags, Subscribe, RSS, GitHub); the header menu is `_data/menus.yml` |
 | Newsletter | set `newsletter.buttondown` in `_config.yml` to show the signup form (RSS is shown until then) |
 
@@ -90,7 +88,7 @@ Related articles are matched automatically on shared topic or tags. Images in po
 
 - SEO tags, a sitemap, an Atom feed (`/feed.xml`), a JSON feed (`/feed.json`) and an Atom
   feed per tag (`/feed/tags/<tag>.xml`), plus a page per tag (`/tags/<tag>/`)
-- A home page with a flat list of the latest ten article titles (date and topic above each), a paginated Archive (20 per page), five topic pages, tags and a reading page
+- A home page with a flat list of the latest ten article titles (date and topic above each), a paginated Archive (20 per page), three topic pages, tags and a reading page
 - Reading time, table of contents, related posts, series and code-copy buttons
 - Search at `/search/` (Pagefind; press `/` or Ctrl/Cmd+K on any page)
 - Comments with [giscus](https://giscus.app), backed by GitHub Discussions
