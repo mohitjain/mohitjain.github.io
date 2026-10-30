@@ -59,6 +59,9 @@ layout: compress
         </div>
       </article>
       {% include related.html %}
+      {% if page.comments %}
+        {% include comments.html %}
+      {% endif %}
 
     </main>
     {% if page.modified %}

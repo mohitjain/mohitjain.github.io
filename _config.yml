@@ -27,6 +27,18 @@ baseurl:
 permalink: /:title/
 fb_appid:
 
+# Comments (giscus, backed by GitHub Discussions). Needs the giscus app installed on the repo:
+# https://github.com/apps/giscus - leave repo_id empty to turn comments off.
+giscus:
+  repo: mohitjain/mohitjain.github.io
+  repo_id: MDEwOlJlcG9zaXRvcnkzNDM1OTQ4OQ==
+  category: Announcements
+  category_id: DIC_kwDOAgxIwc4DJ_6T
+
+# Analytics (Google Analytics 4): put the measurement ID here, e.g. "G-XXXXXXXXXX".
+# Leave empty to load nothing. Only loads in production builds.
+google_analytics:
+
 # Collection setting
 collections:
   posts:
@@ -53,6 +65,10 @@ defaults:
     values:
       layout: post
       comments: false
+  - scope:
+      type: posts
+    values:
+      comments: true
 
 # Build settings
 sass:

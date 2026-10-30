@@ -75,4 +75,26 @@
       window.location.assign("/search/");
     }
   });
+
+  // Keep giscus comments in sync with the site theme
+  const giscusTheme = () =>
+    document.body.getAttribute("data-theme") === "dark" ? "dark" : "light";
+
+  const setGiscusTheme = () => {
+    const frame = document.querySelector("iframe.giscus-frame");
+    if (!frame) return;
+    frame.contentWindow.postMessage(
+      { giscus: { setConfig: { theme: giscusTheme() } } },
+      "https://giscus.app"
+    );
+  };
+
+  if (themeSwitch) themeSwitch.addEventListener("click", setGiscusTheme);
+  // giscus loads with the light theme; apply the saved one on its first message
+  let giscusThemed = false;
+  window.addEventListener("message", (e) => {
+    if (giscusThemed || e.origin !== "https://giscus.app" || !e.data || !e.data.giscus) return;
+    giscusThemed = true;
+    setGiscusTheme();
+  });
 })();

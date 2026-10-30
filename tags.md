@@ -9,6 +9,7 @@ excerpt: Sorted article by tags.
 
 <h4 class="post-header" id="{{ name | downcase | slugify }}">
   {{ name }}
+  <a class="tag-feed" href="/feed/tags/{{ name | slugify }}.xml" aria-label="RSS feed for {{ name }}">rss</a>
 </h4>
 {% for post in site.tags[name] %}
 <article class="posts">
