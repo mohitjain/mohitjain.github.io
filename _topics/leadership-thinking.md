@@ -1,7 +1,7 @@
 ---
 title: "Leadership & Thinking"
 description: "How engineers lead, decide and think: the human side of building software."
-nav_title: Thinking
+nav_title: Leadership
 order: 3
 covers:
   - "Technical leadership and influence without authority"
