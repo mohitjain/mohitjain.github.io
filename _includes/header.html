@@ -22,6 +22,13 @@
   <meta name="referrer" content="no-referrer-when-downgrade" />
   {% seo %}
   {% if page.robots %}<meta name="robots" content="{{ page.robots }}" />{% endif %}
+  {%- comment -%} Reading pages with nothing on them yet are kept out of search until they have items. {%- endcomment -%}
+  {% if page.url contains "/reading/" %}
+    {% assign empty_kind = false %}
+    {% if page.kind %}{% assign n = site.data.reading | where: "type", page.kind | size %}{% if n == 0 %}{% assign empty_kind = true %}{% endif %}{% endif %}
+    {% if page.topic %}{% assign n = site.data.reading | where: "topic", page.topic | size %}{% if n == 0 %}{% assign empty_kind = true %}{% endif %}{% endif %}
+    {% if empty_kind %}<meta name="robots" content="noindex" />{% endif %}
+  {% endif %}
   {% feed_meta %}
   <link rel="alternate" type="application/feed+json" title="{{ site.title | escape }}" href="{{ '/feed.json' | absolute_url }}" />
   <link

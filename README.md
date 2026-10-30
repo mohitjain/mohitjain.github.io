@@ -32,9 +32,10 @@ bin/add-reading --title ... --type book --topic ... --url ... --read 2026-10-27 
 enables the pre-commit hook (`.githooks/pre-commit`), which runs the content lint on every commit.
 `CLAUDE.md` holds the working rules for Claude Code sessions, and `.claude/skills/` the skills.
 
-`bin/serve` shows drafts and future-dated posts. Drafts never publish. The two sample files in
-`_drafts/` are development fixtures that exercise every template; delete them whenever you like
-(CI builds drafts only to test the templates, and never deploys them).
+`bin/serve` shows drafts and future-dated posts. Drafts never publish. CI builds drafts only to
+test the templates, and never deploys them. Until the first real article exists, the article
+template and the article Lighthouse check have nothing to run on; add a real article's URL to
+`.lighthouserc.json` once there is one.
 
 A post's front matter:
 
