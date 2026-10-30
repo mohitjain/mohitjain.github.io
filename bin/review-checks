@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Mechanical checks for one article, used by the review-draft skill. Prints findings; exit status is always 0.
+# Usage: bin/review-checks _drafts/my-article.md
+set -uo pipefail
+f="${1:?usage: bin/review-checks <file.md>}"
+[ -f "$f" ] || { echo "no such file: $f" >&2; exit 2; }
+
+body() { awk 'BEGIN{fm=0} /^---[[:space:]]*$/ && fm<2 {fm++; next} fm>=2' "$f"; }
+
+words=$(body | wc -w | tr -d ' ')
+echo "words: $words (about $(( (words + 199) / 200 )) min read)"
+[ "$words" -lt 150 ] && echo "note: under 150 words; fine for a short note, thin for an article"
+
+body | awk -v f="$f" '
+  /^```/ { if (!open) { open=1; if ($0 == "```") printf "code fence without a language tag (body line %d)\n", NR } else open=0; next }
+  open { next }
+  /^# / { printf "h1 heading in the body (body line %d): the layout already renders the title\n", NR }
+  /^#{2,4} / { h++; if (prev_h && NR - prev_h == 1) printf "two headings in a row (body line %d)\n", NR; prev_h=NR }
+  /!\[\]\(/ { printf "image with empty alt text (body line %d)\n", NR }
+  /<!--/ { printf "leftover HTML comment (body line %d): remove prompts before publishing\n", NR }
+  /(TODO|FIXME|XXX|lorem ipsum)/ { printf "placeholder text (body line %d): %s\n", NR, $0 }
+  END { if (h == 0) print "no ## headings: fine for a short note, hard to scan for a long article" }
+'
+
+# claims that need a source or a measured/expected label
+body | grep -nE '[0-9]+(\.[0-9]+)? ?(ms|µs|%|x faster|x slower|req/s|QPS|GB|MB|tokens/s)' | head -5 | sed 's/^/number to verify or label as expected: /'
+# invented-experience phrasing the content rules forbid unless the author supplied it
+body | grep -niE "at my (last|previous|old) (job|company)|when I worked at|in my experience|we shipped|I once (built|saw|debugged)|my team (built|shipped)" | head -5 | sed 's/^/experience claim; confirm the author wrote this: /'
+# links
+body | grep -noE 'https?://[^) >"]+' | sed 's/^/link to check: /' | head -10
+body | grep -noE '\]\(/[^) ]+\)' | sed 's/^/internal link to check: /' | head -10
+# dense paragraphs
+body | awk -v RS= 'length($0) > 900 { printf "long paragraph (%d characters) starting: %.60s\n", length($0), $0 }' | head -3
