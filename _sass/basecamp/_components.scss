@@ -381,3 +381,8 @@
 .entry-compact {
   margin-bottom: 1.9rem;
 }
+
+// Tags sit at the end of the article, not in the rail
+.column .post-tags {
+  margin-top: 2.4rem;
+}

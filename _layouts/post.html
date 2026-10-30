@@ -14,21 +14,15 @@ layout: compress
       <header class="post-header-block">
         {% assign topic = site.topics | where: "slug", page.categories.first | first %}
         <p class="label">
-          {% if topic %}<a href="{{ topic.url }}">{{ topic.title }}</a>{% endif %}
+          {% if topic %}<a href="{{ topic.url }}">{{ topic.nav_title | default: topic.title }}</a>{% endif %}
         </p>
         <h1 class="post-title">{{ page.title | escape }}</h1>
         <p class="label post-meta">
           <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%b %-d, %Y" }}</time><br>
-          {% include reading-time.html content=content %}<br>
-          {{ site.author.name }}
+          {% include reading-time.html content=content %}
           {% assign updated = page.updated | default: page.modified %}
           {% if updated %}<br>Updated <time datetime="{{ updated | date_to_xmlschema }}">{{ updated | date: "%b %-d, %Y" }}</time>{% endif %}
         </p>
-        {% if page.tags and page.tags != empty %}
-        <p class="label post-tags">
-          {% for tag in page.tags %}<a href="/tags/#{{ tag | downcase | slugify }}">{{ tag }}</a>{% unless forloop.last %}, {% endunless %}{% endfor %}
-        </p>
-        {% endif %}
         {% for tag in page.tags %}<span hidden data-pagefind-filter="tag">{{ tag }}</span>{% endfor %}
         <div data-pagefind-ignore>
           {% include series.html %}
@@ -43,6 +37,12 @@ layout: compress
         {% assign body_html = content | replace: '<img ', '<img loading="lazy" decoding="async" ' %}
         {% include anchor_headings.html html=body_html anchorClass="anchor-head" anchorAttrs='aria-label="Link to this section"' beforeHeading=true h_min=1 h_max=4 %}
       </div>
+      {% if page.tags and page.tags != empty %}
+      <p class="label post-tags">
+        Tagged
+        {% for tag in page.tags %}<a href="/tags/#{{ tag | downcase | slugify }}">{{ tag }}</a>{% unless forloop.last %}, {% endunless %}{% endfor %}
+      </p>
+      {% endif %}
       <div data-pagefind-ignore>
         {% include subscribe.html %}
         {% include related.html %}
