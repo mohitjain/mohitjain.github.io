@@ -466,6 +466,10 @@
   }
 }
 
+.reading-group[hidden] {
+  display: none;
+}
+
 .reading-thumb {
   align-self: start;
   width: 3rem;
@@ -478,7 +482,7 @@
 }
 
 .reading-by {
-  margin-left: 0.6em;
+  display: block;
   color: var(--muted);
   font-size: 0.85em;
 }
@@ -503,9 +507,8 @@
   font-weight: 400;
 }
 
-.reading-more summary {
-  margin: 0.4rem 0 0.6rem;
-  cursor: pointer;
+.reading-back {
+  margin: 0 0 1.4rem;
   font-size: 0.85em;
 }
 
@@ -525,10 +528,6 @@
   }
 }
 
-.reading.is-filtering .reading-featured {
-  display: none;
-}
-
 @media (max-width: 40em) {
   .reading-row,
   .reading-row:has(.reading-thumb) {
@@ -541,10 +540,5 @@
 
   .reading-when {
     grid-column: 1 / -1;
-  }
-
-  .reading-by {
-    display: block;
-    margin-left: 0;
   }
 }

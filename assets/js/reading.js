@@ -1,4 +1,4 @@
-// Reading page: filter the list as you type. Without JavaScript the box stays hidden
+// Reading kind pages: filter the list as you type. Without JavaScript the box stays hidden
 // and the full list is shown.
 (() => {
   const root = document.getElementById("reading");
@@ -8,23 +8,19 @@
   if (!root || !box || !input) return;
   box.hidden = false;
 
-  const rows = Array.from(root.querySelectorAll(".reading-kind .reading-row"));
-  const kinds = Array.from(root.querySelectorAll(".reading-kind"));
+  const rows = Array.from(root.querySelectorAll(".reading-row"));
+  const groups = Array.from(root.querySelectorAll(".reading-group"));
 
   const apply = () => {
     const q = input.value.trim().toLowerCase();
-    root.classList.toggle("is-filtering", q !== "");
     let total = 0;
     rows.forEach((row) => {
       const hit = q === "" || row.dataset.find.includes(q);
       row.hidden = !hit;
       if (hit) total += 1;
     });
-    kinds.forEach((kind) => {
-      const visible = kind.querySelector(".reading-row:not([hidden])");
-      kind.hidden = !visible;
-      const more = kind.querySelector(".reading-more");
-      if (more && q !== "") more.open = true;
+    groups.forEach((group) => {
+      group.hidden = !group.querySelector(".reading-row:not([hidden])");
     });
     empty.hidden = q === "" || total > 0;
   };

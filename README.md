@@ -78,7 +78,7 @@ Related articles are matched automatically on shared topic or tags. Images in po
 | What | Where |
 | --- | --- |
 | Topic pages (`/topics/<slug>/`) | `_topics/*.md`: the front matter and body are the editorial text; articles are listed automatically |
-| Reading (`/reading/`) | `_data/reading.yml`, one entry per item actually read; it starts empty |
+| Reading (`/reading/`, `/reading/books/`, `/papers/`, `/articles/`, `/videos/`) | `_data/reading.yml`, one entry per item actually read (`title`, `type`, `read` required; optional `author`, `year`, `url`, `pick`, `comment`, `notes`, `tags`, `image`). `/reading/` shows only `pick: true` items; each kind page lists everything, newest first, with a filter box |
 | Allowed `content_type` values | `_data/content_types.yml` |
 | Header navigation | the three topics (short label = `nav_title` in `_topics/*.md`), then `_data/menus.yml` (Reading, Archive, About) |
 | Footer links | `_includes/footer.html` (Tags, Subscribe, RSS, GitHub); the header menu is `_data/menus.yml` |
