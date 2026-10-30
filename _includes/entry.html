@@ -13,7 +13,6 @@
     {%- if topic %} &middot; {{ topic.nav_title | default: topic.title }}{% endif -%}
     {%- else %}
     &middot; {% include reading-time.html content=post.content %}
-    {%- if post.content_type %} &middot; {{ site.data.content_types[post.content_type] | default: post.content_type }}{% endif -%}
     {%- if include.show_topic and topic %} &middot; {{ topic.nav_title | default: topic.title }}{% endif -%}
     {%- endif %}
   </p>

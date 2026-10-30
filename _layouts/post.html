@@ -15,7 +15,6 @@ layout: compress
         {% assign topic = site.topics | where: "slug", page.categories.first | first %}
         <p class="label">
           {% if topic %}<a href="{{ topic.url }}">{{ topic.title }}</a>{% endif %}
-          {% if page.content_type %}{% if topic %}<br>{% endif %}{{ site.data.content_types[page.content_type] | default: page.content_type }}{% endif %}
         </p>
         <h1 class="post-title">{{ page.title | escape }}</h1>
         <p class="label post-meta">

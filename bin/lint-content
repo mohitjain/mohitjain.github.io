@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # Check post front matter against the site's conventions.
 # Published posts (_posts/) must pass; drafts (_drafts/) only produce warnings.
+# Required: title, description, one topic in categories. content_type is optional.
 # Usage: bin/lint-content
 require "yaml"
 require "date"
@@ -23,7 +24,9 @@ errors = 0
       problems << "missing description" if fm["description"].to_s.strip.empty?
       cats = Array(fm["categories"])
       problems << "categories must contain one of: #{topics.join(', ')}" if cats.empty? || (cats - topics).any?
-      problems << "content_type must be one of: #{types.join(', ')}" unless types.include?(fm["content_type"])
+      if fm.key?("content_type") && !fm["content_type"].to_s.empty? && !types.include?(fm["content_type"])
+        problems << "content_type, if set, must be one of: #{types.join(', ')}"
+      end
     end
     next if problems.empty?
 

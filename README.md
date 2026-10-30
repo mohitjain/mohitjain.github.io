@@ -36,13 +36,12 @@ A post's front matter:
 title: "My post title"
 description: One or two sentences, shown under the title, in lists, search and social previews.
 categories: [ai-intelligent-systems]   # exactly one topic, see below
-content_type: deep-dive                # til | deep-dive | build-log | reading-note | reflection
 tags: [retrieval, evals]
 ---
 ```
 
 `bin/lint-content` (run by `bin/check` and CI) fails the build if a published post is missing a
-title, a description, a valid topic or a valid content type.
+title, a description or a valid topic.
 
 Topics (the `categories` values; one per post):
 
@@ -58,6 +57,7 @@ Optional front matter:
 
 | Key | Effect |
 | --- | --- |
+| `content_type` | Optional label for your own use (`til`, `deep-dive`, `build-log`, `reading-note`, `reflection`); not shown on the site, validated if set |
 | `updated` | "Updated" date (`modified` also works) |
 | `series` | Posts with the same value link to each other |
 | `related_posts` | List of post URL fragments to show as related, instead of the automatic matches |
@@ -76,7 +76,7 @@ Related articles are matched automatically on shared topic or tags. Images in po
 | Topic pages (`/topics/<slug>/`) | `_topics/*.md`: the front matter and body are the editorial text; articles are listed automatically |
 | Experiments (`/experiments/<name>/`) | `_experiments/*.md` with `status` and `started`; only list real projects |
 | Reading (`/reading/`) | `_data/reading.yml`, one entry per item actually read; it starts empty |
-| Content type labels | `_data/content_types.yml` |
+| Allowed `content_type` values | `_data/content_types.yml` |
 | Header navigation | the five topics (short label = `nav_title` in `_topics/*.md`), then `_data/menus.yml` (Archive, About) |
 | Footer links | `_includes/footer.html` (Experiments, Reading, Topics, Tags, Subscribe, RSS, GitHub) |
 | Newsletter | set `newsletter.buttondown` in `_config.yml` to show the signup form (RSS is shown until then) |
