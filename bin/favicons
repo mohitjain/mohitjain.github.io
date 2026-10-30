@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# Regenerate the PNG and ICO icons from assets/favicons/favicon.svg (macOS: needs Google Chrome and sips).
+# The SVG is the source of truth. Edit it, run bin/favicons, commit the results.
+# Usage: bin/favicons
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+CHROME="${CHROME:-/Applications/Google Chrome.app/Contents/MacOS/Google Chrome}"
+SRC=assets/favicons/favicon.svg
+OUT=assets/favicons
+tmp="$(mktemp -d)"
+
+# Chrome draws the SVG at 512px on a transparent page; sips scales it down.
+render() { # render <svg-file> <out.png>
+  cat > "$tmp/page.html" <<HTML
+<!doctype html><style>html,body{margin:0;background:transparent}svg{display:block;width:512px;height:512px}</style>$(cat "$1")
+HTML
+  "$CHROME" --headless=new --disable-gpu --hide-scrollbars --default-background-color=00000000 \
+    --window-size=512,512 --screenshot="$2" "file://$tmp/page.html" >/dev/null 2>&1
+}
+scale() { sips -z "$2" "$2" "$1" --out "$3" >/dev/null; } # scale <in.png> <px> <out.png>
+
+# Full-bleed square version for touch and Android icons (the OS rounds the corners itself).
+sed 's/ rx="13"//' "$SRC" > "$tmp/square.svg"
+render "$SRC" "$tmp/rounded.png"
+render "$tmp/square.svg" "$tmp/square.png"
+
+scale "$tmp/rounded.png" 16  "$tmp/16.png"
+scale "$tmp/rounded.png" 32  "$tmp/32.png"
+scale "$tmp/rounded.png" 48  "$tmp/48.png"
+scale "$tmp/square.png" 180 "$OUT/apple-touch-icon.png"
+scale "$tmp/square.png" 192 "$OUT/android-chrome-192x192.png"
+scale "$tmp/square.png" 384 "$OUT/android-chrome-384x384.png"
+
+# favicon.ico with 16, 32 and 48 px PNG images, also served from the site root.
+python3 - "$tmp/16.png" "$tmp/32.png" "$tmp/48.png" "favicon.ico" <<'PY'
+import struct, sys
+files, out = sys.argv[1:4], sys.argv[4]
+imgs = [open(f, "rb").read() for f in files]
+sizes = [16, 32, 48]
+head = struct.pack("<HHH", 0, 1, len(imgs))
+offset = 6 + 16 * len(imgs)
+entries, body = b"", b""
+for size, data in zip(sizes, imgs):
+    entries += struct.pack("<BBBBHHII", size, size, 0, 0, 1, 32, len(data), offset + len(body))
+    body += data
+open(out, "wb").write(head + entries + body)
+PY
+rm -rf "$tmp"
+ls -la "$OUT" favicon.ico | awk '{print $5, $9}'
