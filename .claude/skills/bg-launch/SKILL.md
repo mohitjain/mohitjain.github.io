@@ -1,12 +1,12 @@
 ---
-name: launch
+name: bg-launch
 description: >-
   One-time checklist for taking the site live: remove throwaway content, confirm configuration,
   merge the redesign, switch GitHub Pages to Actions, and verify the live site. Use when the
   user says launch, go live, "are we ready" or "ship the site", or before the first public push.
 ---
 
-# launch
+# bg-launch
 
 Take the site public once, deliberately. Everything that can be checked automatically is; the rest is the author's.
 
@@ -23,7 +23,7 @@ Take the site public once, deliberately. Everything that can be checked automati
    2. **Real content:** the home page is empty until there is at least one real article. Do not publish placeholders to fill it; if there is none, tell the author the site can still go live but will say "The first articles are on their way".
    3. **Configuration:** `google_analytics` (a GA4 ID, or empty on purpose), `newsletter.buttondown` (optional), `giscus` (already set). Edit `_config.yml` only with values the author gives you.
    4. **Copy only the author can vouch for:** show the lines the checker prints from `about.md` and the topic intros, and ask the author to confirm each factual claim. Change them only as the author directs.
-   5. **Quality gates:** run the `check` skill (all green), then the `site-health` skill (scores at or above target, no phone overflow).
+   5. **Quality gates:** run the `bg-check` skill (all green), then the `bg-site-health` skill (scores at or above target, no phone overflow).
    6. **Commit** anything changed, on the working branch.
    7. **Push the branch and open a pull request to `master`** (`git push -u origin <branch>`, `gh pr create`), only after the author says yes. Wait for the CI run to pass (`gh pr checks --watch`). Report failures and fix their cause.
    8. **Merge** only when the author explicitly says to. Keep the commit history (a merge commit), not a squash, unless the author asks otherwise.
@@ -33,8 +33,8 @@ Take the site public once, deliberately. Everything that can be checked automati
    for p in / /archive/ /reading/ /about/ /feed.xml /sitemap.xml /robots.txt /nope-404/; do
      printf '%s ' "$p"; curl -s -o /dev/null -w '%{http_code}\n' "https://mohitjain.github.io$p"; done
    ```
-   Expect 200 everywhere except the last, which should be 404 and show the site's own 404 page. Open the home page and one article with the `preview` skill pointed at the live URL (`SITE=https://mohitjain.github.io bin/snap …`).
-4. **Hand over the manual list:** verify the site in Google Search Console and Bing Webmaster Tools and submit `/sitemap.xml`; read one article on a phone; share the first article. Offer `seo-check` for it.
+   Expect 200 everywhere except the last, which should be 404 and show the site's own 404 page. Open the home page and one article with the `bg-preview` skill pointed at the live URL (`SITE=https://mohitjain.github.io bin/snap …`).
+4. **Hand over the manual list:** verify the site in Google Search Console and Bing Webmaster Tools and submit `/sitemap.xml`; read one article on a phone; share the first article. Offer `bg-seo-check` for it.
 5. Re-run `bin/launch-check` and report what is left.
 
 ## Rules

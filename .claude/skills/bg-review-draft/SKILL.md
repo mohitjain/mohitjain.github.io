@@ -1,12 +1,12 @@
 ---
-name: review-draft
+name: bg-review-draft
 description: >-
   Editorial review of an article before it is published. Use when the user asks to review,
   proofread, critique or "check" a draft or post, or before publishing. Reports problems; does
   not rewrite the author's text unless asked.
 ---
 
-# review-draft
+# bg-review-draft
 
 A second pair of eyes. The author's ideas and wording stay theirs: report, don't rewrite.
 

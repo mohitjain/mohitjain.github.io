@@ -1,12 +1,12 @@
 ---
-name: add-tag
+name: bg-add-tag
 description: >-
   Add, rename or retire a tag in the allowed tag list (_data/tags.yml), or check which tag fits.
   Use when an article needs a tag that is not in the list, when the user asks about tags, or
   when tags look messy.
 ---
 
-# add-tag
+# bg-add-tag
 
 The tag list is deliberately small (about 10 to 20). A tag earns its place when at least two articles use it, so tag pages are worth visiting. Tags are not a substitute for the three topics.
 
@@ -25,7 +25,7 @@ The tag list is deliberately small (about 10 to 20). A tag earns its place when 
    bin/tags add <slug> "<what articles with this tag are about>"
    ```
 6. **Use it:** put the tag in the article's `tags:` (at most 4 per article), then run `bin/lint-content`.
-7. **Commit** only `_data/tags.yml` and the article(s) you changed: `Tags: add <slug>`, with the session's attribution line. Push only after the author's explicit yes (same rules as the `publish` skill).
+7. **Commit** only `_data/tags.yml` and the article(s) you changed: `Tags: add <slug>`, with the session's attribution line. Push only after the author's explicit yes (same rules as the `bg-publish` skill).
 
 ## Renaming or retiring a tag
 - **Rename:** change the key in `_data/tags.yml`, replace it in every article that uses it (`grep -rl "<old>" _posts _drafts`), run `bin/lint-content`, and say that the old tag page `/tags/<old>/` and its feed will disappear (its articles move to the new tag page).

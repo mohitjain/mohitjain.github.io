@@ -1,12 +1,12 @@
 ---
-name: preview
+name: bg-preview
 description: >-
   Preview an article (or any page) in the local site and look at it on desktop, phone and dark
   mode. Use when the user asks to see, preview, view or screenshot a page, or to check how an
   article looks, before publishing.
 ---
 
-# preview
+# bg-preview
 
 Run the real site locally, look at the page, and report only what you actually saw.
 

@@ -170,17 +170,17 @@ cycle; each calls the scripts in `bin/`:
 
 | Skill | Use it to |
 | --- | --- |
-| `new-article` | start a draft with the right front matter and an outline |
-| `review-draft` | get an editorial review before publishing |
-| `check` | run lint, build, link check and markdown lint, and read the result |
-| `preview` | see a page on desktop, phone and dark mode |
-| `publish` | move a draft live: one `Publish: <title>` commit, then push and verify (with your approval) |
-| `update-article` | fix, correct, rename (with a redirect) or unpublish an article |
-| `log-reading` | add a checked item to the Reading page |
-| `add-tag` | add a tag to the allowed list, or find the right one |
-| `seo-check` | check an article's search and sharing tags |
-| `site-health` | Lighthouse, phone overflow and link check, compared with the last run |
-| `launch` | the one-time go-live checklist |
+| `bg-new-article` | start a draft with the right front matter and an outline |
+| `bg-review-draft` | get an editorial review before publishing |
+| `bg-check` | run lint, build, link check and markdown lint, and read the result |
+| `bg-preview` | see a page on desktop, phone and dark mode |
+| `bg-publish` | move a draft live: one `Publish: <title>` commit, then push and verify (with your approval) |
+| `bg-update-article` | fix, correct, rename (with a redirect) or unpublish an article |
+| `bg-log-reading` | add a checked item to the Reading page |
+| `bg-add-tag` | add a tag to the allowed list, or find the right one |
+| `bg-seo-check` | check an article's search and sharing tags |
+| `bg-site-health` | Lighthouse, phone overflow and link check, compared with the last run |
+| `bg-launch` | the one-time go-live checklist |
 
 ## Project layout
 

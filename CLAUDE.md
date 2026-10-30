@@ -29,4 +29,4 @@ Mohit Jain's personal journal (Jekyll, GitHub Pages, built by Actions). Markdown
 
 ## Skills (`.claude/skills/`)
 
-new-article, review-draft, check, preview, publish, update-article, log-reading, add-tag, seo-check, site-health, launch.
+all start with `bg-`: bg-new-article, bg-review-draft, bg-check, bg-preview, bg-publish, bg-update-article, bg-log-reading, bg-add-tag, bg-seo-check, bg-site-health, bg-launch.

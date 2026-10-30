@@ -1,12 +1,12 @@
 ---
-name: log-reading
+name: bg-log-reading
 description: >-
   Add a book, paper, article or video to the Reading page. Use when the user says they finished
   reading or watching something and wants it listed, or asks to log, add or recommend an item on
   the reading list.
 ---
 
-# log-reading
+# bg-log-reading
 
 The Reading page lists only what the author has actually read or watched. Every entry needs a source link that works.
 
@@ -26,9 +26,9 @@ The Reading page lists only what the author has actually read or watched. Every 
      [--author "<name>"] [--year <yyyy>] [--pick] [--comment "<one sentence>"] [--notes /<slug>/]
    ```
    The script loads the link, refuses duplicates, future dates, unknown topics and notes that point to a missing article, and writes a correctly quoted entry. If a site blocks scripts but loads in a browser, ask the author to confirm it and rerun with `--no-check`.
-5. **Verify:** run `bin/lint-content`, then `preview` the `/reading/` page and the kind or topic page it appears on (`/reading/books/`, `/reading/ai/`, …). Report what you saw.
+5. **Verify:** run `bin/lint-content`, then run the `bg-preview` skill on the `/reading/` page and the kind or topic page it appears on (`/reading/books/`, `/reading/ai/`, …). Report what you saw.
 6. **Commit** only the data file: `git add _data/reading.yml`, message `Reading: <title>`, plus the session's attribution line. For several items added together, one commit: `Reading: <n> items`.
-7. **Push** only after the author's explicit yes, with the same rules as the `publish` skill.
+7. **Push** only after the author's explicit yes, with the same rules as the `bg-publish` skill.
 
 ## Recommendations
 `--pick` puts an item on the main `/reading/` page. Keep it for the few the author would genuinely recommend; ask, do not decide. The page shows at most the picks, so a long list of picks dilutes it.

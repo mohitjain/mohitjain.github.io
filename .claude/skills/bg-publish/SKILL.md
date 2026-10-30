@@ -1,12 +1,12 @@
 ---
-name: publish
+name: bg-publish
 description: >-
   Publish a finished draft as an article. Use when the user says publish, ship, "make it live"
   or "release" an article. Reviews, checks, moves the draft into _posts/ dated today, makes one
   commit, and (only after approval) pushes and verifies the live page.
 ---
 
-# publish
+# bg-publish
 
 Publishing is one commit: `Publish: <title>`. Nothing is pushed without an explicit yes.
 
@@ -14,14 +14,14 @@ Publishing is one commit: `Publish: <title>`. Nothing is pushed without an expli
 
 1. **Identify the draft** (`_drafts/<slug>.md`). If unclear, list `_drafts/` and ask. Refuse anything with `sample: true`.
 2. **Preconditions.** Run `git status --short` and `git branch --show-current`. Stop and tell the author if there are unrelated uncommitted changes (they must not slip into the publish commit) or if the draft is not committed or tracked in a way that confuses the move.
-3. **Review:** run the `review-draft` skill. Do not continue while any "Must fix" item is open.
+3. **Review:** run the `bg-review-draft` skill. Do not continue while any "Must fix" item is open.
 4. **Move and lint:**
    ```sh
    source ~/.rvm/scripts/rvm && rvm use $(cat .ruby-version)
    bin/publish <slug>
    ```
    This moves the draft to `_posts/YYYY-MM-DD-<slug>.md` dated today and lints it; on a lint failure it puts the draft back. The slug is now the permanent URL: say so.
-5. **Check:** run the `check` skill. If it fails, fix the cause (with the author's agreement) before continuing. Optionally run the `preview` and `seo-check` skills.
+5. **Check:** run the `bg-check` skill. If it fails, fix the cause (with the author's agreement) before continuing. Optionally run the `bg-preview` and `bg-seo-check` skills.
 6. **Stage only the article:**
    ```sh
    git add _posts/<dated-file>.md
@@ -45,7 +45,7 @@ Publishing is one commit: `Publish: <title>`. Nothing is pushed without an expli
    curl -s https://mohitjain.github.io/feed.xml | grep -c '<slug>'
    ```
    Report the URL, the status code, and whether the feed lists it. Pages can take a minute to update; retry a few times before reporting failure.
-10. **Report:** the commit hash, the live URL, and what to do next (share it; `seo-check`; `update-article` for later fixes).
+10. **Report:** the commit hash, the live URL, and what to do next (share it; `bg-seo-check`; `bg-update-article` for later fixes).
 
 ## Rules
 - Never push, merge or force-push without a clear yes for that action. Approval for one push does not cover another.

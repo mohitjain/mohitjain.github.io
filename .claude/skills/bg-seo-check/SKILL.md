@@ -1,11 +1,11 @@
 ---
-name: seo-check
+name: bg-seo-check
 description: >-
   Check one article for search and sharing: title and description length, canonical URL, link-preview image, structured data, headings, slug, internal links, alt text. Use when the user
   asks about SEO, search ranking, link previews, or before publishing an article.
 ---
 
-# seo-check
+# bg-seo-check
 
 Make sure an article can be found and previews well. Technical checks are automatic; the rest is judgment about the writing.
 
@@ -32,5 +32,5 @@ Make sure an article can be found and previews well. Technical checks are automa
 
 ## Rules
 - Do not stuff keywords, and do not rewrite the author's title or description without agreement; propose alternatives.
-- Do not change a published slug as an SEO tweak; use `update-article` with a redirect if it must change.
+- Do not change a published slug as an SEO tweak; use `bg-update-article` with a redirect if it must change.
 - Follow `CLAUDE.md`.

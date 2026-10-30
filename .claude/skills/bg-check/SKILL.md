@@ -1,12 +1,12 @@
 ---
-name: check
+name: bg-check
 description: >-
   Run every check on the site (content lint, build, link and image check, markdown lint) and
   explain any failure in plain words. Use before committing or publishing, when the user says
   "check", "run the tests", "is it ready", or when CI failed.
 ---
 
-# check
+# bg-check
 
 Run the checks, read the real output, say what it means.
 
@@ -28,7 +28,7 @@ Run the checks, read the real output, say what it means.
 | Output | Meaning | Fix |
 | --- | --- | --- |
 | `categories must contain one of…` | the article's topic is missing or misspelled | use one of the three topic slugs |
-| `tags not in _data/tags.yml` | a tag outside the allowed list | use an allowed tag, or the `add-tag` skill |
+| `tags not in _data/tags.yml` | a tag outside the allowed list | use an allowed tag, or the `bg-add-tag` skill |
 | `filename slug … words` | the slug is longer than 5 words or has capitals | rename the file; add `redirect_from` if it was already published |
 | `internally linking to #x … hash does not exist` | a link to a heading that is not there | fix the link or the heading |
 | `image … does not exist` | wrong image path | check `assets/img/` |
