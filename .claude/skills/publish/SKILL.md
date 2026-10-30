@@ -1,6 +1,9 @@
 ---
 name: publish
-description: Publish a finished draft as an article. Use when the user says publish, ship, "make it live" or "release" an article. Reviews, checks, moves the draft into _posts/ dated today, makes one commit, and (only after approval) pushes and verifies the live page.
+description: >-
+  Publish a finished draft as an article. Use when the user says publish, ship, "make it live"
+  or "release" an article. Reviews, checks, moves the draft into _posts/ dated today, makes one
+  commit, and (only after approval) pushes and verifies the live page.
 ---
 
 # publish

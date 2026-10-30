@@ -1,6 +1,10 @@
 ---
 name: site-health
-description: Periodic health check of the whole site: Lighthouse scores, phone-width overflow and dark mode, and optionally broken outbound links, compared with the last run. Use when the user asks how healthy or fast the site is, after template or style changes, or on a regular schedule such as monthly.
+description: >-
+  Periodic health check of the whole site: Lighthouse scores, phone-width overflow and dark
+  mode, and optionally broken outbound links, compared with the last run. Use when the user asks
+  how healthy or fast the site is, after template or style changes, or on a regular schedule
+  such as monthly.
 ---
 
 # site-health

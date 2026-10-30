@@ -1,6 +1,9 @@
 ---
 name: check
-description: Run every check on the site (content lint, build, link and image check, markdown lint) and explain any failure in plain words. Use before committing or publishing, when the user says "check", "run the tests", "is it ready", or when CI failed.
+description: >-
+  Run every check on the site (content lint, build, link and image check, markdown lint) and
+  explain any failure in plain words. Use before committing or publishing, when the user says
+  "check", "run the tests", "is it ready", or when CI failed.
 ---
 
 # check

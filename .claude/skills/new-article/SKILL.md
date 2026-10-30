@@ -1,6 +1,9 @@
 ---
 name: new-article
-description: Start a new article for the journal. Use when the user wants to begin writing a post, says "new article", "new post" or "draft about X". Creates the draft with correct front matter and an outline; does not write the article.
+description: >-
+  Start a new article for the journal. Use when the user wants to begin writing a post, says
+  "new article", "new post" or "draft about X". Creates the draft with correct front matter and
+  an outline; does not write the article.
 ---
 
 # new-article

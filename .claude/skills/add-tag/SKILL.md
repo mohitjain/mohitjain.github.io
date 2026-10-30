@@ -1,6 +1,9 @@
 ---
 name: add-tag
-description: Add, rename or retire a tag in the allowed tag list (_data/tags.yml), or check which tag fits. Use when an article needs a tag that is not in the list, when the user asks about tags, or when tags look messy.
+description: >-
+  Add, rename or retire a tag in the allowed tag list (_data/tags.yml), or check which tag fits.
+  Use when an article needs a tag that is not in the list, when the user asks about tags, or
+  when tags look messy.
 ---
 
 # add-tag

@@ -1,6 +1,9 @@
 ---
 name: update-article
-description: Change an article that is already published: fix a typo, correct or extend it, rename its URL slug, or take it down. Use when the user asks to edit, fix, update, correct, rename, retitle or unpublish an existing post.
+description: >-
+  Change an article that is already published: fix a typo, correct or extend it, rename its URL
+  slug, or take it down. Use when the user asks to edit, fix, update, correct, rename, retitle
+  or unpublish an existing post.
 ---
 
 # update-article

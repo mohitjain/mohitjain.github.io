@@ -1,6 +1,9 @@
 ---
 name: log-reading
-description: Add a book, paper, article or video to the Reading page. Use when the user says they finished reading or watching something and wants it listed, or asks to log, add or recommend an item on the reading list.
+description: >-
+  Add a book, paper, article or video to the Reading page. Use when the user says they finished
+  reading or watching something and wants it listed, or asks to log, add or recommend an item on
+  the reading list.
 ---
 
 # log-reading

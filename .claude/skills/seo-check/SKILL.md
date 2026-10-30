@@ -1,6 +1,9 @@
 ---
 name: seo-check
-description: Check one article for search and sharing: title and description length, canonical URL, link-preview image, structured data, headings, slug, internal links, alt text. Use when the user asks about SEO, search ranking, link previews, or before publishing an article.
+description: >-
+  Check one article for search and sharing: title and description length, canonical URL, link-
+  preview image, structured data, headings, slug, internal links, alt text. Use when the user
+  asks about SEO, search ranking, link previews, or before publishing an article.
 ---
 
 # seo-check

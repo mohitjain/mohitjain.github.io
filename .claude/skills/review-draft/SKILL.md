@@ -1,6 +1,9 @@
 ---
 name: review-draft
-description: Editorial review of an article before it is published. Use when the user asks to review, proofread, critique or "check" a draft or post, or before publishing. Reports problems; does not rewrite the author's text unless asked.
+description: >-
+  Editorial review of an article before it is published. Use when the user asks to review,
+  proofread, critique or "check" a draft or post, or before publishing. Reports problems; does
+  not rewrite the author's text unless asked.
 ---
 
 # review-draft

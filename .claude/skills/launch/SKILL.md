@@ -1,6 +1,9 @@
 ---
 name: launch
-description: One-time checklist for taking the site live: remove throwaway content, confirm configuration, merge the redesign, switch GitHub Pages to Actions, and verify the live site. Use when the user says launch, go live, "are we ready" or "ship the site", or before the first public push.
+description: >-
+  One-time checklist for taking the site live: remove throwaway content, confirm configuration,
+  merge the redesign, switch GitHub Pages to Actions, and verify the live site. Use when the
+  user says launch, go live, "are we ready" or "ship the site", or before the first public push.
 ---
 
 # launch

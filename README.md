@@ -163,6 +163,25 @@ Cloudflare. The site has no custom domain at the moment.
 - **Port 4000 or 35729 already in use**: another `jekyll serve` is running. Stop it, or pass
   `--port` and `--livereload-port` to `bin/serve`.
 
+## Working with Claude Code
+
+`CLAUDE.md` holds the standing rules. `.claude/skills/` has one skill per step of the writing life
+cycle; each calls the scripts in `bin/`:
+
+| Skill | Use it to |
+| --- | --- |
+| `new-article` | start a draft with the right front matter and an outline |
+| `review-draft` | get an editorial review before publishing |
+| `check` | run lint, build, link check and markdown lint, and read the result |
+| `preview` | see a page on desktop, phone and dark mode |
+| `publish` | move a draft live: one `Publish: <title>` commit, then push and verify (with your approval) |
+| `update-article` | fix, correct, rename (with a redirect) or unpublish an article |
+| `log-reading` | add a checked item to the Reading page |
+| `add-tag` | add a tag to the allowed list, or find the right one |
+| `seo-check` | check an article's search and sharing tags |
+| `site-health` | Lighthouse, phone overflow and link check, compared with the last run |
+| `launch` | the one-time go-live checklist |
+
 ## Project layout
 
 | Path | What it is |
