@@ -31,6 +31,10 @@ const expr = `(() => { const w = document.documentElement.clientWidth;
   return JSON.stringify({ scrollWidth: document.documentElement.scrollWidth, width: w, bad }); })()`;
 let failed = false;
 for (const p of paths) {
+  // A page that does not load must fail, not pass by showing Chrome's error page.
+  let status = 0;
+  try { status = (await fetch(site + p)).status; } catch {}
+  if (status !== 200) { failed = true; console.log(`FAIL ${p} HTTP ${status || "no response"} from ${site}`); continue; }
   for (const theme of ["light", "dark"]) {
     await send("Page.navigate", { url: site + p }); await sleep(900);
     await send("Runtime.evaluate", { expression: `document.documentElement.setAttribute("data-theme","${theme}")` });
