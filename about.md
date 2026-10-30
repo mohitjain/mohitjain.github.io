@@ -44,6 +44,6 @@ Three connected areas, not three separate blogs.
 
 I use AI tools to help organize notes and improve clarity. The understanding, the judgment and the mistakes are mine. Opinions here are my own.
 
-Find the code and experiments on [GitHub](https://github.com/mohitjain), or [follow new articles](/subscribe/).
+Find the code and experiments on [GitHub](https://github.com/mohitjain), [follow new articles](/subscribe/), or write to me at [hello@mohitnotes.com](mailto:hello@mohitnotes.com).
 
 <p class="label motto">Learn deeply &middot; Think clearly &middot; Build thoughtfully</p>
