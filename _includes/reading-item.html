@@ -2,15 +2,21 @@
   One item in the reading list. Usage: {% include reading-item.html item=item %}
 {%- endcomment -%}
 {%- assign item = include.item -%}
-<article class="entry reading-item">
-  <p class="label">{% if item.author %}{{ item.author }}{% endif %}{% if item.year %}{% if item.author %} &middot; {% endif %}{{ item.year }}{% endif %}</p>
-  <h3 class="entry-title">{% if item.url %}<a href="{{ item.url }}" rel="noopener">{{ item.title }}</a>{% else %}{{ item.title }}{% endif %}</h3>
-  {%- if item.comment %}<p class="entry-desc">{{ item.comment }}</p>{% endif %}
-  {%- if item.read or item.notes %}
-  <p class="label reading-meta">
-    {%- if item.read %}{% if item.type == "talk" %}Watched{% else %}Read{% endif %} {{ item.read | date: "%b %Y" }}{% endif -%}
+{%- capture find %}{{ item.title }} {{ item.author }} {{ item.year }} {{ item.tags | join: " " }}{% endcapture -%}
+<li class="reading-row{% if item.pick %} is-pick{% endif %}" data-find="{{ find | downcase | strip_newlines | escape }}">
+  {%- if item.image %}
+  <img class="reading-thumb" src="{{ item.image | relative_url }}" alt="Cover of {{ item.title | escape }}" width="48" loading="lazy" decoding="async">
+  {%- endif %}
+  <div class="reading-main">
+    <span class="reading-title">{% if item.url %}<a href="{{ item.url }}" rel="noopener">{{ item.title }}</a>{% else %}{{ item.title }}{% endif %}</span>
+    {%- if item.author or item.year %}
+    <span class="reading-by">{{ item.author }}{% if item.author and item.year %} &middot; {% endif %}{{ item.year }}</span>
+    {%- endif %}
+    {%- if item.comment %}<span class="reading-comment">{{ item.comment }}</span>{% endif %}
+  </div>
+  <span class="reading-when">
+    {%- if item.read %}{% if item.type == "video" %}Watched{% else %}Read{% endif %} {{ item.read | date: "%b %Y" }}{% endif -%}
     {%- if item.read and item.notes %} &middot; {% endif -%}
     {%- if item.notes %}<a href="{{ item.notes }}">My notes</a>{% endif -%}
-  </p>
-  {%- endif %}
-</article>
+  </span>
+</li>

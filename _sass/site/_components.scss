@@ -440,3 +440,111 @@
 .prose .tag-list {
   padding-left: 0;
 }
+
+// Reading list: compact rows that stay readable at hundreds of items
+.reading-list,
+.prose .reading-list {
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.reading-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.1rem 1.5rem;
+  align-items: baseline;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--rule);
+
+  &:has(.reading-thumb) {
+    grid-template-columns: 3rem 1fr auto;
+  }
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.reading-thumb {
+  align-self: start;
+  width: 3rem;
+  height: auto;
+  margin: 0;
+}
+
+.reading-title {
+  font-weight: 700;
+}
+
+.reading-by {
+  margin-left: 0.6em;
+  color: var(--muted);
+  font-size: 0.85em;
+}
+
+.reading-comment {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--muted);
+  font-size: 0.85em;
+}
+
+.reading-when {
+  color: var(--muted);
+  font-size: 0.75em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.reading-row.is-pick .reading-title::after {
+  content: " \2605";
+  font-weight: 400;
+}
+
+.reading-more summary {
+  margin: 0.4rem 0 0.6rem;
+  cursor: pointer;
+  font-size: 0.85em;
+}
+
+.reading-find {
+  margin: 0 0 1.2rem;
+
+  input {
+    width: 100%;
+    max-width: 24rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid var(--text);
+    border-radius: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 0.9em;
+  }
+}
+
+.reading.is-filtering .reading-featured {
+  display: none;
+}
+
+@media (max-width: 40em) {
+  .reading-row,
+  .reading-row:has(.reading-thumb) {
+    grid-template-columns: 1fr;
+  }
+
+  .reading-row:has(.reading-thumb) {
+    grid-template-columns: 3rem 1fr;
+  }
+
+  .reading-when {
+    grid-column: 1 / -1;
+  }
+
+  .reading-by {
+    display: block;
+    margin-left: 0;
+  }
+}

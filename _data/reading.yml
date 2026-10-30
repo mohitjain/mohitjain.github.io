@@ -1,16 +1,17 @@
-# Reading archive: books, papers, articles and talks I have actually read or watched.
+# Reading archive: articles, books, papers and videos I have actually read or watched.
 # Add an entry per item. Nothing here is a recommendation list or a claim of completeness.
 #
 # - title: Title of the book, paper, article or talk
-#   type: book            # book | paper | article | talk
+#   type: book            # book | paper | article | video
 #   author: Author or speaker
 #   url: https://example.com   # optional source link (only if you are certain it is right)
 #   year: 1999                 # optional: year published
-#   read: 2026-10-30           # when I finished it (finished items are sorted by this, newest first)
-#   status: reading            # optional: set to `reading` to show it under "Reading now" instead
+#   read: 2026-10-30           # when I finished it (items are sorted by this, newest first)
+#   pick: true                 # optional: a recommendation (also listed under "Recommended")
+#   image: /assets/img/reading/cover.jpg   # optional small cover or figure; only if you have the right to host it
 #   comment: One sentence in my own words about why it mattered   # optional
 #   tags: [systems-thinking]   # optional
 #   notes: /some-article/      # optional: link to my notes or a related article
-- {title: "Deep Dive into LLMs like ChatGPT", type: talk, author: "Andrej Karpathy", year: 2025, read: 2026-10-27}
-- {title: "Intro to Large Language Models", type: talk, author: "Andrej Karpathy", year: 2023, read: 2026-10-27}
-- {title: "State of GPT", type: talk, author: "Andrej Karpathy", year: 2023, read: 2026-10-27}
+- {title: "Deep Dive into LLMs like ChatGPT", type: video, author: "Andrej Karpathy", year: 2025, read: 2026-10-27}
+- {title: "Intro to Large Language Models", type: video, author: "Andrej Karpathy", year: 2023, read: 2026-10-27}
+- {title: "State of GPT", type: video, author: "Andrej Karpathy", year: 2023, read: 2026-10-27}

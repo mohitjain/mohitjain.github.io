@@ -3,7 +3,7 @@
 # Published posts (_posts/) must pass; drafts (_drafts/) only produce warnings.
 # Required: title, description, one topic in categories. content_type is optional.
 # Tags must come from _data/tags.yml (at most 4 per post); slugs are lowercase with hyphens, at most 5 words.
-# Posts with `sample: true` are skipped.
+# Posts with `sample: true` are skipped. Entries in _data/reading.yml are checked too.
 # Usage: bin/lint-content
 require "yaml"
 require "date"
@@ -47,6 +47,24 @@ errors = 0
     puts "#{label}: #{file.sub(root + '/', '')}: #{problems.join('; ')}"
     errors += 1 if level == :error
   end
+end
+
+# Reading list (_data/reading.yml): required fields, known kinds, sane links, images that exist.
+reading_file = File.join(root, "_data", "reading.yml")
+kinds = %w[book paper article video]
+Array(YAML.safe_load(File.read(reading_file), permitted_classes: [Date, Time])).each_with_index do |item, i|
+  label = "_data/reading.yml entry #{i + 1} (#{item['title']})"
+  problems = []
+  problems << "missing title" if item["title"].to_s.strip.empty?
+  problems << "type must be one of: #{kinds.join(', ')}" unless kinds.include?(item["type"])
+  problems << "url must start with http:// or https://" if item["url"] && item["url"].to_s !~ %r{\Ahttps?://}
+  problems << "image file not found: #{item['image']}" if item["image"] && !File.exist?(File.join(root, item["image"].to_s))
+  problems << "read must be a date" if item["read"] && !item["read"].respond_to?(:strftime)
+  problems << "remove sample: true before publishing" if item["sample"]
+  next if problems.empty?
+
+  puts "ERROR: #{label}: #{problems.join('; ')}"
+  errors += 1
 end
 
 if errors.zero?
