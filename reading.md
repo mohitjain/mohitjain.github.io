@@ -6,7 +6,9 @@ description: Books, papers, articles and talks I have read, with notes where I h
 lede: A learning archive, not a bibliography or a recommendation list.
 ---
 
-{% assign reading = site.data.reading %}
+{% assign none = "" | split: "," %}
+{% assign preview = site.data.reading_sample | default: none %}
+{% assign reading = site.data.reading | concat: preview %}
 {% if reading.size > 0 %}
 {% assign now = reading | where: "status", "reading" %}
 {% assign done = reading | where_exp: "i", "i.status != 'reading'" | sort: "read" | reverse %}
