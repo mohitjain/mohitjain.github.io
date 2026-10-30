@@ -84,7 +84,7 @@ Related articles are matched automatically on shared topic or tags. Images in po
 ## What's in the site
 
 - SEO tags, a sitemap, an Atom feed (`/feed.xml`), a JSON feed (`/feed.json`) and an Atom
-  feed per tag (`/feed/tags/<tag>.xml`)
+  feed per tag (`/feed/tags/<tag>.xml`), plus a page per tag (`/tags/<tag>/`)
 - A home page with a flat list of the latest ten article titles (date and topic above each), a paginated Archive (20 per page), five topic pages, tags, experiments and reading pages
 - Reading time, table of contents, related posts, series and code-copy buttons
 - Search at `/search/` (Pagefind; press `/` or Ctrl/Cmd+K on any page)

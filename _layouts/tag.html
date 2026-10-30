@@ -1,0 +1,30 @@
+---
+layout: compress
+---
+
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
+{% include header.html %}
+
+<body>
+  {% include navbar.html %}
+  <main id="main-content" tabindex="-1" class="layout" aria-label="Content">
+    <aside class="rail">
+      <header class="page-header">
+        <p class="label"><a href="/tags/">Tag</a></p>
+        <h1 class="page-title">{{ page.tag_name | escape }}</h1>
+        <p class="label post-meta"><a href="/feed/tags/{{ page.tag_slug }}.xml">RSS feed</a></p>
+      </header>
+    </aside>
+    <div class="column page-body">
+      {% assign tag_posts = site.tags[page.tag_name] %}
+      <section aria-label="Articles tagged {{ page.tag_name | escape }}">
+        {% for post in tag_posts %}{% include entry.html post=post show_topic=true %}{% endfor %}
+      </section>
+    </div>
+  </main>
+  {% include footer.html %}
+</body>
+
+</html>
