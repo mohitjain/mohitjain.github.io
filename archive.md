@@ -1,6 +1,6 @@
 ---
-title: Writing
-permalink: /writing/
+title: Archive
+permalink: /archive/
 layout: page
 description: Every article, newest first.
 lede: Every article, newest first.

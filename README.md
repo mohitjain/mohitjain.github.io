@@ -77,7 +77,7 @@ Related articles are matched automatically on shared topic or tags. Images in po
 | Experiments (`/experiments/<name>/`) | `_experiments/*.md` with `status` and `started`; only list real projects |
 | Reading (`/reading/`) | `_data/reading.yml`, one entry per item actually read; it starts empty |
 | Content type labels | `_data/content_types.yml` |
-| Header navigation | the five topics (short label = `nav_title` in `_topics/*.md`), then `_data/menus.yml` (Writing, About) |
+| Header navigation | the five topics (short label = `nav_title` in `_topics/*.md`), then `_data/menus.yml` (Archive, About) |
 | Footer links | `_includes/footer.html` (Experiments, Reading, Topics, Tags, Subscribe, RSS, GitHub) |
 | Newsletter | set `newsletter.buttondown` in `_config.yml` to show the signup form (RSS is shown until then) |
 
@@ -85,7 +85,7 @@ Related articles are matched automatically on shared topic or tags. Images in po
 
 - SEO tags, a sitemap, an Atom feed (`/feed.xml`), a JSON feed (`/feed.json`) and an Atom
   feed per tag (`/feed/tags/<tag>.xml`)
-- A home page with a flat list of the latest ten article titles (date and topic above each), a paginated Writing archive (20 per page), five topic pages, tags, experiments and reading pages
+- A home page with a flat list of the latest ten article titles (date and topic above each), a paginated Archive (20 per page), five topic pages, tags, experiments and reading pages
 - Reading time, table of contents, related posts, series and code-copy buttons
 - Search at `/search/` (Pagefind; press `/` or Ctrl/Cmd+K on any page)
 - Comments with [giscus](https://giscus.app), backed by GitHub Discussions

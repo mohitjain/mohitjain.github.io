@@ -18,7 +18,7 @@ home: true
   {% else %}
     {% assign latest = site.posts | slice: 0, 10 %}
     {% for post in latest %}{% include entry.html post=post compact=true %}{% endfor %}
-    <p class="more"><a href="/writing/">All writing</a></p>
+    <p class="more"><a href="/archive/">Full archive</a></p>
   {% endif %}
 </section>
 
