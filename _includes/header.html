@@ -1,4 +1,16 @@
 <head>
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("theme");
+        if (t !== "dark" && t !== "light") {
+          var d = "{{ site.mode }}";
+          t = d === "dark" || d === "light" ? d : window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+        document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    })();
+  </script>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -35,9 +47,8 @@
     color="#5bbad5"
   />
   <meta name="msapplication-TileColor" content="#da532c" />
-  <meta name="theme-color" content="#2c2c2c" />
 
-  <link rel="preload" href="/assets/fonts/roboto-latin.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="/assets/fonts/roboto-latin-italic.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/assets/fonts/source-serif-4-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/assets/fonts/source-serif-4-latin-italic.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="/assets/css/style.css" />
 </head>

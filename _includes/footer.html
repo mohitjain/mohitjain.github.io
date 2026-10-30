@@ -1,19 +1,13 @@
-<footer class="footer">
-  <a class="footer_item" href="/thanks">ack.</a>
-  <a class="footer_item" href="/feed.xml">rss</a>
-  <span class="footer_item">&copy; {{ site.time | date: "%Y" }}</span>
-  <small class="footer_theme-copyright">
-    <!-- Klisé Theme: https://github.com/piharpi/jekyll-klise -->
-    <a
-      href="https://github.com/piharpi/jekyll-klise"
-      target="_blank"
-      rel="noreferrer noopener"
-      >klisé</a
-    >
-    theme on
-    <a href="https://jekyllrb.com" target="_blank" rel="noreferrer noopener"
-      >jekyll</a
-    >
+<footer class="site-footer wrapper">
+  <span>&copy; {{ site.time | date: "%Y" }} {{ site.author.name }}</span>
+  <a href="/tags/">Tags</a>
+  <a href="/feed.xml">RSS</a>
+  <a href="https://github.com/mohitjain" rel="noopener">GitHub</a>
+  <a href="/thanks/">Thanks</a>
+  <small class="site-footer-credit">
+    <!-- Based on the Klisé theme: https://github.com/piharpi/jekyll-klise -->
+    Made with <a href="https://jekyllrb.com" rel="noopener">Jekyll</a>, originally from the
+    <a href="https://github.com/piharpi/jekyll-klise" rel="noopener">Klisé</a> theme.
   </small>
 </footer>
 <script src="/assets/js/main.js" defer="defer"></script>

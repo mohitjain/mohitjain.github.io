@@ -1,49 +1,61 @@
-@use "variables" as *;
-
-// Code
 code {
-  font-family: $mono-family;
-  text-rendering: optimizeLegibility;
-  font-feature-settings: "calt" 1;
-  font-variant-ligatures: normal;
-  white-space: pre;
-  word-spacing: normal;
-  word-break: normal;
-  word-wrap: normal;
-  font-size: inherit;
-
-  &.highlighter-rouge {
-    padding: 1px 3px;
-    position: relative;
-    top: -1px;
-    background-color: #f6f6f6;
-    border-radius: 2px;
-  }
+  font-family: var(--mono);
+  font-size: 0.85em;
 }
 
-.highlight {
-  overflow-x: auto;
+// Inline code
+:not(pre) > code {
+  padding: 0.1em 0.3em;
+  background: var(--inline-code-bg);
+  border-radius: 3px;
 }
 
-// Codeblock Theme
+.highlighter-rouge {
+  position: relative;
+}
+
+// Code blocks are dark in both themes
 pre.highlight {
   margin: 0;
-  border-radius: 2px;
-  padding: 12px 14px;
-  display: block;
+  padding: 1rem 1.1rem;
   overflow-x: auto;
+  border-radius: 4px;
+  font-size: clamp(0.875rem, 0.8rem + 0.2vw, 1rem);
+  line-height: 1.55;
+  color: var(--code-text);
+  background: var(--code-bg);
 
   > code {
-    width: 100%;
-    max-width: 50rem;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: 1.5;
     display: block;
+    padding: 0;
+    font-size: inherit;
+    background: none;
     border: 0;
   }
 }
 
+.copy-btn {
+  position: absolute;
+  top: 0.45rem;
+  right: 0.45rem;
+  padding: 0.15em 0.65em;
+  color: #e9eef2;
+  font: inherit;
+  font-family: var(--font);
+  font-size: 0.7rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  opacity: 0.8;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    opacity: 1;
+  }
+}
+
+// Syntax token colours (Rouge, gruvbox palette)
 .highlight table td {
   padding: 5px;
 }

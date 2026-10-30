@@ -1,0 +1,248 @@
+// Header
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 1.25rem;
+}
+
+// font sizes live on the children so the wrapper's em-based width stays aligned
+.site-name,
+.site-nav {
+  font-size: 0.8em;
+}
+
+.site-name {
+  font-weight: 700;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+
+  a {
+    text-decoration: none;
+
+    &:hover,
+    &[aria-current="page"] {
+      text-decoration: underline;
+    }
+  }
+}
+
+#mood {
+  display: inline-flex;
+  padding: 0.2rem;
+  margin: 0;
+  color: inherit;
+  background: none;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  // Show the icon for the theme you would switch to.
+  .mood-sunny {
+    display: none;
+  }
+}
+
+:root[data-theme="dark"] #mood {
+  .mood-sunny {
+    display: block;
+  }
+
+  .mood-moon {
+    display: none;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) #mood {
+    .mood-sunny {
+      display: block;
+    }
+
+    .mood-moon {
+      display: none;
+    }
+  }
+}
+
+// Footer
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.25rem;
+  margin-top: 5rem;
+  padding-block: 0 3rem;
+  color: var(--muted);
+
+  // the rule spans the content column, not the wrapper's padding
+  &::before {
+    flex-basis: 100%;
+    margin-bottom: 1.25rem;
+    border-top: 1px solid var(--rule);
+    content: "";
+  }
+
+  > * {
+    font-size: 0.78em;
+  }
+
+  a {
+    text-decoration-thickness: 0.05em;
+  }
+
+  .site-footer-credit {
+    flex-basis: 100%;
+  }
+}
+
+// Home
+.hero {
+  padding-block: clamp(2rem, 7vw, 5rem) 2.25rem;
+}
+
+.hero-title {
+  font-size: clamp(2.75rem, 1.9rem + 4.2vw, 5rem);
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+}
+
+.hero-sub {
+  max-width: 22em;
+  margin: 0.45em 0 1.1em;
+  font-size: clamp(1.35rem, 1.05rem + 1.5vw, 2.1rem);
+  line-height: 1.28;
+}
+
+.section-title {
+  margin: 0 0 1.6rem;
+  padding-top: 1.4rem;
+  font-size: 1.6em;
+  border-top: 1px solid var(--text);
+}
+
+// Home / archive / tag lists: "CHAPTER 1" style label above an underlined title
+.entry {
+  margin: 0 0 2.3rem;
+}
+
+.entry-title {
+  margin: 0.1em 0 0.15em;
+  font-size: 1.45em;
+  line-height: 1.2;
+}
+
+.entry-desc {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92em;
+  line-height: 1.45;
+}
+
+// Archive and tag pages (compact rows)
+.posts {
+  display: grid;
+  grid-template-columns: 7.5em 1fr;
+  align-items: baseline;
+  gap: 0 1rem;
+  margin-bottom: 0.7rem;
+
+  .posts-date {
+    color: var(--muted);
+    font-size: 0.72em;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .posts-title {
+    margin: 0;
+    font-size: 1.05em;
+    font-weight: 700;
+  }
+
+  @media (max-width: 40em) {
+    grid-template-columns: 1fr;
+    margin-bottom: 1.1rem;
+  }
+}
+
+.post-header {
+  // archive/tag section headings share this class
+  &:is(h2) {
+    margin: 2.2rem 0 1rem;
+    padding-top: 1rem;
+    font-size: 1.5em;
+    border-top: 1px solid var(--text);
+  }
+}
+
+// Plain pages (about, archive, tags, search, thanks, now)
+.page-header {
+  padding-block: clamp(1.5rem, 5vw, 3.5rem) 0.5rem;
+}
+
+.page-title {
+  font-size: clamp(2.25rem, 1.6rem + 3.2vw, 3.75rem);
+  line-height: 1.08;
+  letter-spacing: -0.012em;
+}
+
+.page-body {
+  padding-top: 1rem;
+
+  // archive/tag lists start with a ruled section heading; keep it close to the title
+  > .post-header:first-child {
+    margin-top: 0.5rem;
+  }
+}
+
+// Pagination
+.pagination {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3rem;
+  font-size: 0.85em;
+
+  .page_number {
+    color: var(--muted);
+    font-size: 0.85em;
+    letter-spacing: 0.12em;
+  }
+}
+
+// 404
+.not-found {
+  padding-block: clamp(2rem, 8vw, 6rem) 2rem;
+
+  .title {
+    font-size: clamp(4rem, 3rem + 8vw, 9rem);
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .phrase {
+    margin: 0.4em 0 1em;
+    font-size: 1.5em;
+  }
+}

@@ -1,13 +1,5 @@
-- title: Home
-  url: /
-  external: false
-
 - title: Archive
   url: /archive/
-  external: false
-
-- title: Tags
-  url: /tags/
   external: false
 
 - title: Search
@@ -17,7 +9,3 @@
 - title: About
   url: /about/
   external: false
-
-- title: Github
-  url: https://github.com/mohitjain
-  external: true

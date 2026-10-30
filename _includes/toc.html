@@ -20,7 +20,7 @@
 {%- assign toc_count = toc_items | split: '<li' | size | minus: 1 -%}
 {%- if toc_count >= 3 -%}
 <nav class="toc" aria-label="Table of contents">
-  <details open>
+  <details>
     <summary>On this page</summary>
     <ul>{{ toc_items }}</ul>
   </details>

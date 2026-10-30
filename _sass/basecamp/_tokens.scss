@@ -1,0 +1,49 @@
+// Design tokens. Light by default; dark via the visitor's system setting or the
+// toggle, which sets data-theme on <html> (see _includes/header.html and main.js).
+:root {
+  --font: "Source Serif 4", "Iowan Old Style", Charter, "Bitstream Charter", Georgia, serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+  // ~18px on phones up to ~22px on desktop
+  --step-0: clamp(1.125rem, 0.95rem + 0.6vw, 1.375rem);
+  --measure: 36em;
+  --gutter: 1.25rem;
+
+  --bg: #fff;
+  --text: #1f2d36;
+  --muted: #5b6b76;
+  --rule: rgba(31, 45, 54, 0.2);
+  --pill-bg: #1f2d36;
+  --pill-text: #fff;
+  --code-bg: #1a1b21;
+  --code-text: #fbf1c7;
+  --inline-code-bg: rgba(31, 45, 54, 0.07);
+  --focus: #0b5fff;
+}
+
+:root[data-theme="dark"] {
+  --bg: #11181e;
+  --text: #e9eef2;
+  --muted: #9fb0bc;
+  --rule: rgba(233, 238, 242, 0.22);
+  --pill-bg: #e9eef2;
+  --pill-text: #11181e;
+  --inline-code-bg: rgba(233, 238, 242, 0.1);
+  --focus: #7db0ff;
+  color-scheme: dark;
+}
+
+// Without JavaScript, follow the system setting.
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --bg: #11181e;
+    --text: #e9eef2;
+    --muted: #9fb0bc;
+    --rule: rgba(233, 238, 242, 0.22);
+    --pill-bg: #e9eef2;
+    --pill-text: #11181e;
+    --inline-code-bg: rgba(233, 238, 242, 0.1);
+    --focus: #7db0ff;
+    color-scheme: dark;
+  }
+}

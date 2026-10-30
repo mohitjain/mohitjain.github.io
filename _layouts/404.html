@@ -3,31 +3,26 @@ layout: compress
 ---
 
 <!DOCTYPE html>
-<html lang="{{ page.lang | default: site.lang | default: " en " }}">
-  
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
 {% include header.html %}
-<body data-theme="{{ site.mode }}">
-  <main aria-label="Content">
-    {% include navbar.html %}
-    <div class="wrapper not-found" id="main-content" tabindex="-1">
-      <div class="container">
-        <div class="title">404</div>
-        <p class="phrase">😕 Hmm... Seems you lost from my journey.</p>
-        <a class="solution" href="{{ site.url }}">back home</a>
-        {% if site.posts.size > 0 %}
-        <h2 class="posts-item-note">Recent Posts</h2>
-        {% for post in site.posts limit: 5 %}
-        <article class="post-item">
-          <h3 class="post-item-title">
-            <a href="{{ post.url }}">{{ post.title | escape }}</a>
-          </h3>
-        </article>
-        {% endfor %}
-        {% endif %}
-      </div>
-    </div>
-    {% include footer.html %}
+
+<body>
+  {% include navbar.html %}
+  <main id="main-content" tabindex="-1" class="wrapper not-found" aria-label="Content">
+    <div class="title">404</div>
+    <p class="phrase">That page isn&rsquo;t here.</p>
+    <a class="pill" href="/">Back home</a>
+    {% if site.posts.size > 0 %}
+    <h2 class="section-title" style="margin-top:3rem">Recent posts</h2>
+    {% for post in site.posts limit: 5 %}
+    <article class="entry">
+      <h3 class="entry-title"><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h3>
+    </article>
+    {% endfor %}
+    {% endif %}
   </main>
+  {% include footer.html %}
 </body>
 
 </html>

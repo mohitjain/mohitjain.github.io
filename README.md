@@ -1,8 +1,9 @@
 # mohitjain.github.io
 
-Mohit Jain's blog, built with [Jekyll](https://jekyllrb.com) 4.4 on the
-[Klisé](https://github.com/piharpi/jekyll-klise) theme and deployed to GitHub Pages
-with GitHub Actions.
+Mohit Jain's blog, built with [Jekyll](https://jekyllrb.com) 4.4 and deployed to GitHub
+Pages with GitHub Actions. The design is a clean, large-type serif layout inspired by
+[Basecamp's Getting Real](https://basecamp.com/gettingreal); the markup began as the
+[Klisé](https://github.com/piharpi/jekyll-klise) theme, and its styles have since been replaced.
 
 ## Quick start
 
@@ -34,6 +35,9 @@ tags: [jekyll, meta]
 ---
 ```
 
+Write a one-line `description` for every post: it is shown under the title on the home page and
+used for search results and social previews.
+
 Optional front matter:
 
 | Key | Effect |
@@ -55,7 +59,8 @@ image to avoid layout shift.
 - Reading time, table of contents, related posts, series and code-copy buttons
 - Search at `/search/` (Pagefind; press `/` or Ctrl/Cmd+K on any page)
 - Comments with [giscus](https://giscus.app), backed by GitHub Discussions
-- Dark and light themes, a skip link, and print styles
+- Light and dark themes that follow the visitor's system setting (with a toggle), a skip
+  link, and print styles
 
 ## Configuration
 
@@ -64,7 +69,7 @@ Everything lives in `_config.yml`:
 | Setting | Notes |
 | --- | --- |
 | `url` | Public site URL, used for canonical links and feeds |
-| `mode` | Default theme: `dark` or `light` |
+| `mode` | Default theme: `auto` (follow the visitor's system), `dark` or `light`. A visitor's own toggle choice is remembered |
 | `google_analytics` | GA4 measurement ID (`G-XXXXXXXXXX`). Empty means nothing loads, and it only loads in production builds |
 | `giscus.*` | Repo and category IDs for comments. Empty `repo_id` turns comments off |
 | `pagination.per_page` | Posts per page |
@@ -121,9 +126,9 @@ Cloudflare. The site has no custom domain at the moment.
 | --- | --- |
 | `_posts/`, `_drafts/` | Content |
 | `_layouts/`, `_includes/` | Templates and partials |
-| `_sass/klise/` | Theme styles (`_components.scss` holds the additions) |
+| `_sass/basecamp/` | Styles: design tokens (`_tokens.scss`), type and layout, code, components |
 | `_plugins/tag_feeds.rb` | Generates the per-tag feeds |
-| `assets/` | CSS entry point, JavaScript, fonts (self-hosted Roboto), favicons |
+| `assets/` | CSS entry point, JavaScript, fonts (self-hosted Source Serif 4), favicons |
 | `bin/` | `setup`, `serve`, `build`, `check`, `new-post` |
 | `.github/` | Workflows and Dependabot config |
 

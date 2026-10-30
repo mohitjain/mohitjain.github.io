@@ -7,74 +7,45 @@ layout: compress
 
 {% include header.html %}
 
-<body data-theme="{{ site.mode }}">
+<body>
   {% include navbar.html %}
-  <div class="wrapper post">
-    <main id="main-content" tabindex="-1" class="page-content" aria-label="Content">
-      <article itemscope itemtype="https://schema.org/BlogPosting" data-pagefind-body>
-
-        <header class="header">
-          {% if page.tags and page.tags != empty %}
-          <div class="tags">
-            {% assign tags = page.tags %}
-            <span itemprop="keywords">
-              {% for tag in tags %}
-              <a class="tag"
-                href="/tags/#{{tag | downcase | slugify}}">{{tag | upcase }}</a>{% unless forloop.last %},{% endunless %}
-              {% endfor %}
-            </span>
-          </div>
-          {% endif %}
-          <h1 class="header-title" itemprop="headline">{{ page.title | escape }}</h1>
-          {% if page.date %}
-          <div class="post-meta">
-            <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
-              {{ page.date | date: "%b %d, %Y" }}
-            </time>
-            {% include reading-time.html content=content %}
-            <span itemprop="author" itemscope itemtype="https://schema.org/Person">
-              <span itemprop="name">{{ site.author.name }}</span>
-            </span>
-            <time hidden datetime="{{ page.modified | default: page.date | date_to_xmlschema }}" itemprop="dateModified">
-              {{ page.modified | default: page.date | date: "%b %d, %Y" }}
-            </time>
-            <span hidden itemprop="publisher" itemtype="Person">{{ site.author.name }}</span>
-            <span hidden itemprop="image">{{ page.image }}</span>
-            <span hidden itemprop="mainEntityOfPage">{{ page.excerpt }}</span>
-          </div>
-          {% endif %}
-        </header>
-
+  <main id="main-content" tabindex="-1" class="wrapper" aria-label="Content">
+    <article data-pagefind-body>
+      <header class="post-header-block">
+        {% if page.tags and page.tags != empty %}
+        <p class="label">
+          {% for tag in page.tags %}<a href="/tags/#{{ tag | downcase | slugify }}">{{ tag }}</a>{% unless forloop.last %} &middot; {% endunless %}{% endfor %}
+        </p>
+        {% endif %}
+        <h1 class="post-title">{{ page.title | escape }}</h1>
+        <p class="label post-meta">
+          <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%b %-d, %Y" }}</time>
+          &middot; {% include reading-time.html content=content %}
+          &middot; {{ site.author.name }}
+          {% if page.modified %}&middot; Updated <time datetime="{{ page.modified | date_to_xmlschema }}">{{ page.modified | date: "%b %-d, %Y" }}</time>{% endif %}
+        </p>
         {% for tag in page.tags %}<span hidden data-pagefind-filter="tag">{{ tag }}</span>{% endfor %}
         {% include series.html %}
-        {% include toc.html html=content %}
+      </header>
 
-        <div class="page-content" itemprop="articleBody">
+      <div class="post-body">
+        <div class="toc-rail">{% include toc.html html=content %}</div>
+        <div class="prose">
           {% assign body_html = content | replace: '<img ', '<img loading="lazy" decoding="async" ' %}
           {% include anchor_headings.html html=body_html anchorClass="anchor-head" anchorAttrs='aria-label="Link to this section"' beforeHeading=true h_min=1 h_max=4 %}
-          {% if page.tweet %}
-          <p>Comments this article on 
-            <a href="https://twitter.com/{{site.username}}/status/{{page.tweet}}">Twitter</a>.
-          </p>
-          {% endif %}
         </div>
-      </article>
-      {% include related.html %}
-      {% if page.comments %}
-        {% include comments.html %}
-      {% endif %}
+      </div>
+    </article>
 
-    </main>
-    {% if page.modified %}
-      <small class="post-updated-at">updated_at {{page.modified | date: "%d-%m-%Y"}}</small>
+    {% include related.html %}
+    {% if page.comments %}
+      {% include comments.html %}
     {% endif %}
     {% if page.next or page.previous %}
       {% include navigation.html %}
     {% endif %}
-  </div>
-
+  </main>
   {% include footer.html %}
-
 </body>
 
 </html>
