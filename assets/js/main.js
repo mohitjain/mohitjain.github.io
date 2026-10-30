@@ -56,4 +56,23 @@
       block.appendChild(button);
     });
   }
+
+  // Search shortcuts: "/" or Ctrl/Cmd+K
+  document.addEventListener("keydown", (e) => {
+    const target = e.target;
+    const typing =
+      target instanceof HTMLElement &&
+      (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName));
+    const slash = e.key === "/" && !e.metaKey && !e.ctrlKey && !e.altKey && !typing;
+    const combo = e.key.toLowerCase() === "k" && (e.metaKey || e.ctrlKey);
+    if (!slash && !combo) return;
+
+    e.preventDefault();
+    const input = document.querySelector(".pagefind-ui__search-input");
+    if (input) {
+      input.focus();
+    } else {
+      window.location.assign("/search/");
+    }
+  });
 })();

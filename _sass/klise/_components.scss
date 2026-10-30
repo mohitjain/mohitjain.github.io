@@ -79,3 +79,22 @@ div.highlighter-rouge {
     right: calc(51% - 51vw + 6px);
   }
 }
+
+// Pagefind search UI (search page), themed to match the site
+#search {
+  --pagefind-ui-scale: 0.9;
+  --pagefind-ui-font: inherit;
+  --pagefind-ui-primary: #{$text-link-blue};
+  --pagefind-ui-text: #{$text-base-color};
+  --pagefind-ui-background: #{$white};
+  --pagefind-ui-border: #{$smoke};
+  --pagefind-ui-tag: #{$light};
+}
+
+body[data-theme="dark"] #search {
+  --pagefind-ui-primary: #{$dark-text-link-blue};
+  --pagefind-ui-text: #{$dark-text-base-color};
+  --pagefind-ui-background: #{$dark-light};
+  --pagefind-ui-border: #{$dark-smoke};
+  --pagefind-ui-tag: #{$dark-smoke};
+}

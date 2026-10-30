@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Build the site and its Pagefind search index into _site/.
+# Usage: bin/build [extra jekyll build flags]
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+PAGEFIND_VERSION="1.5.2"
+
+JEKYLL_ENV=production bundle exec jekyll build "$@"
+npx --yes "pagefind@${PAGEFIND_VERSION}" --site _site

@@ -11,7 +11,7 @@ layout: compress
   {% include navbar.html %}
   <div class="wrapper post">
     <main class="page-content" aria-label="Content">
-      <article itemscope itemtype="https://schema.org/BlogPosting">
+      <article itemscope itemtype="https://schema.org/BlogPosting" data-pagefind-body>
 
         <header class="header">
           {% if page.tags and page.tags != empty %}
@@ -45,6 +45,7 @@ layout: compress
           {% endif %}
         </header>
 
+        {% for tag in page.tags %}<span hidden data-pagefind-filter="tag">{{ tag }}</span>{% endfor %}
         {% include series.html %}
         {% include toc.html html=content %}
 

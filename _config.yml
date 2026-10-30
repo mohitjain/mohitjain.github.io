@@ -58,6 +58,9 @@ defaults:
 sass:
   style: compressed
 
+keep_files:
+  - pagefind
+
 exclude:
   - Gemfile
   - Gemfile.lock

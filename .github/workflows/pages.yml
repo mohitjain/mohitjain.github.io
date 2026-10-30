@@ -22,11 +22,12 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
       - id: pages
         uses: actions/configure-pages@v5
-      - run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
-        env:
-          JEKYLL_ENV: production
+      - run: bin/build --baseurl "${{ steps.pages.outputs.base_path }}"
       - name: Check links and images
         run: SKIP_BUILD=1 bin/check
       - uses: actions/upload-pages-artifact@v3
