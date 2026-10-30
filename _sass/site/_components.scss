@@ -373,6 +373,11 @@
   margin-top: 1.6rem;
 }
 
+// Reading list: air between a section heading and its first item
+.section-title + .reading-item {
+  margin-top: 1.4rem;
+}
+
 // Home list: table-of-contents rhythm
 .entry-compact {
   margin-bottom: 1.9rem;

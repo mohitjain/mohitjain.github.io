@@ -1,0 +1,16 @@
+{%- comment -%}
+  One item in the reading list. Usage: {% include reading-item.html item=item %}
+{%- endcomment -%}
+{%- assign item = include.item -%}
+<article class="entry reading-item">
+  <p class="label">{% if item.author %}{{ item.author }}{% endif %}{% if item.year %}{% if item.author %} &middot; {% endif %}{{ item.year }}{% endif %}</p>
+  <h3 class="entry-title">{% if item.url %}<a href="{{ item.url }}" rel="noopener">{{ item.title }}</a>{% else %}{{ item.title }}{% endif %}</h3>
+  {%- if item.comment %}<p class="entry-desc">{{ item.comment }}</p>{% endif %}
+  {%- if item.read or item.notes %}
+  <p class="label reading-meta">
+    {%- if item.read %}{% if item.type == "talk" %}Watched{% else %}Read{% endif %} {{ item.read | date: "%b %Y" }}{% endif -%}
+    {%- if item.read and item.notes %} &middot; {% endif -%}
+    {%- if item.notes %}<a href="{{ item.notes }}">My notes</a>{% endif -%}
+  </p>
+  {%- endif %}
+</article>
