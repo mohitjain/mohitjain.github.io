@@ -1,17 +1,25 @@
 {%- comment -%}
-  One post in a list. Usage: {% include entry.html post=post %} (optional: tag="h2", show_topic=true)
+  One post in a list. Usage: {% include entry.html post=post %}
+  Options: tag="h2" (heading level), show_topic=true (add the topic to the label),
+  compact=true (home page: DATE · TOPIC label and the title only)
 {%- endcomment -%}
 {%- assign post = include.post -%}
 {%- assign heading = include.tag | default: "h3" -%}
 {%- assign topic = site.topics | where: "slug", post.categories.first | first -%}
-<article class="entry">
+<article class="entry{% if include.compact %} entry-compact{% endif %}">
   <p class="label">
     <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %-d, %Y" }}</time>
+    {%- if include.compact %}
+    {%- if topic %} &middot; {{ topic.nav_title | default: topic.title }}{% endif -%}
+    {%- else %}
     &middot; {% include reading-time.html content=post.content %}
     {%- if post.content_type %} &middot; {{ site.data.content_types[post.content_type] | default: post.content_type }}{% endif -%}
-    {%- if include.show_topic and topic %} &middot; {{ topic.title }}{% endif %}
+    {%- if include.show_topic and topic %} &middot; {{ topic.title }}{% endif -%}
+    {%- endif %}
   </p>
   <{{ heading }} class="entry-title"><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></{{ heading }}>
+  {%- unless include.compact -%}
   {%- assign summary = post.description | default: post.excerpt | strip_html | normalize_whitespace | truncatewords: 32 -%}
   {%- if summary != "" %}<p class="entry-desc">{{ summary }}</p>{% endif %}
+  {%- endunless %}
 </article>

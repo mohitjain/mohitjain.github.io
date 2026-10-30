@@ -59,7 +59,6 @@ Optional front matter:
 | Key | Effect |
 | --- | --- |
 | `updated` | "Updated" date (`modified` also works) |
-| `featured: true` | Shows the post under "Selected" on the home page (once there are six or more articles) |
 | `series` | Posts with the same value link to each other |
 | `related_posts` | List of post URL fragments to show as related, instead of the automatic matches |
 | `image` | Social preview image (falls back to `assets/img/ogp.png`) |
@@ -86,7 +85,7 @@ Related articles are matched automatically on shared topic or tags. Images in po
 
 - SEO tags, a sitemap, an Atom feed (`/feed.xml`), a JSON feed (`/feed.json`) and an Atom
   feed per tag (`/feed/tags/<tag>.xml`)
-- A home page organized by the five topics (latest three articles each, plus a "Latest" strip once there are six or more articles), a paginated Writing archive (20 per page), five topic pages, tags, experiments and reading pages
+- A home page with a flat list of the latest ten article titles (date and topic above each), a paginated Writing archive (20 per page), five topic pages, tags, experiments and reading pages
 - Reading time, table of contents, related posts, series and code-copy buttons
 - Search at `/search/` (Pagefind; press `/` or Ctrl/Cmd+K on any page)
 - Comments with [giscus](https://giscus.app), backed by GitHub Discussions

@@ -6,7 +6,6 @@ categories: [building-experiments]
 content_type: build-log
 tags: [meta, jekyll]
 series: Rebuilding the blog
-featured: true
 ---
 
 This blog is rebuilt on Jekyll 4.4 with a GitHub Actions deploy.
