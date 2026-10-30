@@ -1,0 +1,21 @@
+{%- comment -%}
+  Everything read on one topic, split by kind. Usage: {% include reading-topic.html topic="leadership-thinking" %}
+{%- endcomment -%}
+{%- assign none = "" | split: "," -%}
+{%- assign preview = site.data.reading_sample | default: none -%}
+{%- assign items = site.data.reading | concat: preview | where: "topic", include.topic | sort: "read" | reverse -%}
+<p class="reading-back"><a href="/reading/">&larr; Recommended reading</a></p>
+{% if items.size > 0 %}
+{% assign kinds = "book|paper|article|video" | split: "|" %}
+{% for kind in kinds %}
+{% assign group = items | where: "type", kind %}
+{% if group.size > 0 %}
+<section class="reading-group" aria-labelledby="k-{{ kind }}">
+  <h2 class="section-title" id="k-{{ kind }}">{% case kind %}{% when "book" %}Books{% when "paper" %}Papers{% when "article" %}Articles{% when "video" %}Videos and talks{% endcase %} <span class="tag-count">{{ group.size }}</span></h2>
+  <ul class="reading-list">{% for item in group %}{% include reading-item.html item=item %}{% endfor %}</ul>
+</section>
+{% endif %}
+{% endfor %}
+{% else %}
+<p>Nothing here yet. Items appear once I have actually read them.</p>
+{% endif %}

@@ -1,0 +1,75 @@
+#!/usr/bin/env ruby
+# Pre-launch checklist: what can be checked automatically is, the rest is listed for the author.
+# Usage: bin/launch-check      Exits 1 while anything is still TODO or FAIL.
+require "yaml"
+require "date"
+require "json"
+require "open3"
+
+root = File.expand_path("..", __dir__)
+Dir.chdir(root)
+todo = 0
+say = lambda do |level, msg|
+  todo += 1 if %w[TODO FAIL].include?(level)
+  puts "#{level.ljust(6)} #{msg}"
+end
+sh = ->(*cmd) { o, s = Open3.capture2e(*cmd); [o.strip, s.success?] }
+cfg = YAML.load_file("_config.yml")
+
+puts "Throwaway content"
+sample_posts = Dir["_posts/*-sample-*.md"] + Dir["_drafts/sample-*.md"]
+others = Dir["assets/img/sample"] + Dir["_data/reading_sample.yml"]
+if sample_posts.empty? && others.empty?
+  say.("ok", "no sample files on disk")
+else
+  say.("TODO", "#{sample_posts.size} sample article(s) and #{others.size} other sample file(s) on disk; delete with:\n         rm -f _posts/*-sample-*.md _drafts/sample-*.md _data/reading_sample.yml && rm -rf assets/img/sample")
+end
+tracked = sh.("git", "ls-files").first.lines.map(&:strip).select { |f| f =~ /sample/i }
+tracked.empty? ? say.("ok", "no sample files tracked by git") : say.("FAIL", "sample files are tracked by git: #{tracked.join(', ')}")
+fixtures = Dir["_drafts/*.md"].reject { |f| File.basename(f).start_with?("sample-") }
+say.("note", "dev fixtures in _drafts/ (never published; delete if you like): #{fixtures.join(', ')}") unless fixtures.empty?
+
+puts "\nContent"
+real = Dir["_posts/*.md"].reject { |f| File.basename(f).include?("-sample-") }
+real.empty? ? say.("TODO", "no real articles yet (the home page would say 'The first articles are on their way')") : say.("ok", "#{real.size} real article(s)")
+reading = YAML.safe_load(File.read("_data/reading.yml"), permitted_classes: [Date, Time]) || []
+say.("ok", "reading list: #{reading.size} real item(s)")
+future = reading.select { |i| i["read"].respond_to?(:>) && i["read"] > Date.today }
+say.("FAIL", "reading items dated in the future: #{future.map { |i| i['title'] }.join(', ')}") unless future.empty?
+say.("TODO", "run bin/lint-content") unless sh.("bin/lint-content").last
+
+puts "\nConfiguration"
+cfg["url"].to_s.include?("codebeerstartups") ? say.("FAIL", "url still points at the lost domain") : say.("ok", "url #{cfg['url']}")
+host = cfg["url"].to_s.sub(%r{\Ahttps?://}, "").chomp("/")
+if File.exist?("CNAME")
+  cname = File.read("CNAME").strip
+  if cname.include?("codebeerstartups") then say.("FAIL", "CNAME names the lost domain (#{cname}); delete the file")
+  elsif cname != host then say.("FAIL", "CNAME is '#{cname}' but url: in _config.yml is '#{host}'; they must match")
+  else say.("ok", "custom domain #{cname} (CNAME matches url:)") end
+else
+  host.end_with?("github.io") ? say.("note", "using the #{host} address; a custom domain (planned: mohitnotes.com) is a separate step after the first deploy") : say.("FAIL", "url: is #{host} but there is no CNAME file for it")
+end
+cfg["google_analytics"].to_s.empty? ? say.("TODO", "google_analytics is empty: set your GA4 ID in _config.yml, or leave it empty on purpose (no analytics)") : say.("ok", "google_analytics set")
+cfg.dig("giscus", "repo_id").to_s.empty? ? say.("note", "comments are off (giscus repo_id empty)") : say.("ok", "comments configured (giscus)")
+cfg.dig("newsletter", "buttondown").to_s.empty? ? say.("note", "newsletter form is off (buttondown empty); readers are pointed at RSS") : say.("ok", "newsletter set (#{cfg['newsletter']['buttondown']})")
+
+puts "\nGit and GitHub"
+branch = sh.("git", "branch", "--show-current").first
+dirty = sh.("git", "status", "--short").first.lines.reject { |l| l.include?("sample") || l.start_with?("??") && l =~ /sample/ }
+dirty.empty? ? say.("ok", "working tree clean (apart from ignored samples)") : say.("TODO", "uncommitted changes: #{dirty.size} file(s)")
+ahead = sh.("git", "rev-list", "--count", "origin/master..#{branch}").first.to_i
+say.(branch == "master" ? "ok" : "TODO", branch == "master" ? "on master" : "on '#{branch}', #{ahead} commit(s) not yet on origin/master: push and merge it")
+pages, ok = sh.("gh", "api", "repos/:owner/:repo/pages", "--jq", ".build_type")
+if ok then pages == "workflow" ? say.("ok", "Pages deploys from GitHub Actions") : say.("TODO", "Pages source is '#{pages}'; set it to GitHub Actions (repo Settings > Pages) after the merge") else say.("note", "could not read Pages settings (gh not logged in?)") end
+_, wf = sh.("gh", "api", "repos/:owner/:repo/contents/.github/workflows/pages.yml?ref=master")
+say.(wf ? "ok" : "TODO", wf ? "deploy workflow is on master" : "the deploy workflow is not on master yet (arrives with the merge)")
+
+puts "\nOnly you can do these"
+about = File.exist?("about.md") ? File.readlines("about.md").grep(/years|Principal|experience/i).map(&:strip) : []
+say.("MANUAL", "confirm every factual claim in about.md is true:\n         #{about.join("\n         ")}") unless about.empty?
+say.("MANUAL", "read the three topic intros and 'covers' lists in _topics/*.md aloud; change anything that is not you")
+say.("MANUAL", "verify the site in Google Search Console and Bing Webmaster Tools, then submit /sitemap.xml")
+say.("MANUAL", "after launch open the site on your phone and read one article start to finish")
+
+puts(todo.zero? ? "\nready to launch" : "\n#{todo} item(s) still to do")
+exit(todo.zero? ? 0 : 1)

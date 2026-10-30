@@ -1,0 +1,20 @@
+{%- if page.series -%}
+{%- assign series_posts = site.posts | where: "series", page.series | sort: "date" -%}
+{%- if series_posts.size > 1 -%}
+{%- for item in series_posts -%}{%- if item.url == page.url -%}{%- assign series_index = forloop.index -%}{%- endif -%}{%- endfor -%}
+<details class="series">
+  <summary>Part {{ series_index }} of {{ series_posts.size }} in <span class="series-name">{{ page.series }}</span></summary>
+  <ol>
+    {%- for item in series_posts -%}
+    <li>
+      {%- if item.url == page.url -%}
+      <span aria-current="page">{{ item.title | escape }}</span>
+      {%- else -%}
+      <a href="{{ item.url | relative_url }}">{{ item.title | escape }}</a>
+      {%- endif -%}
+    </li>
+    {%- endfor -%}
+  </ol>
+</details>
+{%- endif -%}
+{%- endif -%}

@@ -3,21 +3,26 @@ layout: compress
 ---
 
 <!DOCTYPE html>
-<html lang="{{ page.lang | default: site.lang | default: " en " }}">
-  
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
 {% include header.html %}
+
 <body>
-  <main aria-label="Content">
-    {% include navbar.html %}
-    <div class="wrapper not-found">
-      <div class="container">
-        <div class="title">404</div>
-        <p class="phrase">😕 Hmm... Seems you lost from my journey.</p>
-        <a class="solution" href="{{ site.url }}">back home</a>
-      </div>
+  {% include navbar.html %}
+  <main id="main-content" tabindex="-1" class="layout not-found" aria-label="Content">
+    <aside class="rail">
+      <div class="title">404</div>
+    </aside>
+    <div class="column">
+      <p class="phrase">That page isn&rsquo;t here.</p>
+      <a class="pill" href="/">Back home</a>
+      {% if site.posts.size > 0 %}
+      <h2 class="section-title" style="margin-top:3rem">Recent articles</h2>
+      {% for post in site.posts limit: 5 %}{% include entry.html post=post compact=true %}{% endfor %}
+      {% endif %}
     </div>
-    {% include footer.html %}
   </main>
+  {% include footer.html %}
 </body>
 
 </html>

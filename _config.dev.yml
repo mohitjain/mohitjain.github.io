@@ -1,0 +1,5 @@
+# Local overrides. Used by bin/serve:
+#   bundle exec jekyll serve --config _config.yml,_config.dev.yml
+show_drafts: true
+future: true
+livereload: true

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Build the site (with search index) and check it for broken internal links, images and scripts.
+# Usage: [SKIP_BUILD=1] bin/check [--external]   (--external also checks outbound links; slow, can be flaky)
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+[ -n "${SKIP_BUILD:-}" ] || bin/build
+
+bin/lint-content
+
+flags=(--disable-external --no-enforce-https)
+[ "${1:-}" = "--external" ] && flags=(--ignore-status-codes "0,429,999")
+
+bundle exec htmlproofer ./_site "${flags[@]}"

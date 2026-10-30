@@ -1,12 +1,9 @@
-- title: Home
-  url: /
-  external: false
+# Shown after the five topics in the header, in this order.
+- title: Reading
+  url: /reading/
 
-# - title: about
-#   url: /about/
-#   external: false
+- title: Archive
+  url: /archive/
 
-#Example:
-- title: Github
-  url: https://github.com/mohitjain
-  external: true
+- title: About
+  url: /about/

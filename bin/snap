@@ -1,0 +1,34 @@
+#!/usr/bin/env node
+// Screenshot a page of the running site with headless Chrome.
+// Usage: bin/snap <path> [width=1440] [light|dark] [out.png]   (site at $SITE, default http://localhost:4000)
+import { spawn } from "node:child_process";
+import { mkdtempSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
+const [, , path = "/", width = "1440", theme = "light", out = "snap.png"] = process.argv;
+const site = process.env.SITE || "http://localhost:4000";
+const chromeBin = process.env.CHROME || "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+const port = 9400 + Math.floor(Math.random() * 400);
+const chrome = spawn(chromeBin, ["--headless=new", "--disable-gpu", "--hide-scrollbars",
+  `--remote-debugging-port=${port}`, `--user-data-dir=${mkdtempSync(join(tmpdir(), "snap-"))}`, "about:blank"], { stdio: "ignore" });
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+let targets;
+for (let i = 0; i < 40; i++) { try { targets = await (await fetch(`http://127.0.0.1:${port}/json`)).json(); if (targets.length) break; } catch {} await sleep(250); }
+const ws = new WebSocket(targets.find((t) => t.type === "page").webSocketDebuggerUrl);
+await new Promise((r) => ws.addEventListener("open", r));
+let id = 0; const pending = new Map();
+ws.addEventListener("message", (m) => { const d = JSON.parse(m.data); if (d.id && pending.has(d.id)) pending.get(d.id)(d); });
+const send = (method, params = {}) => new Promise((r) => { const i = ++id; pending.set(i, r); ws.send(JSON.stringify({ id: i, method, params })); });
+let status = 0;
+try { status = (await fetch(site + path)).status; } catch {}
+if (status !== 200) { console.error(`${site}${path} returned HTTP ${status || "no response"}; is the server running?`); chrome.kill(); process.exit(1); }
+await send("Page.enable");
+const w = Number(width);
+await send("Emulation.setDeviceMetricsOverride", { width: w, height: 900, deviceScaleFactor: 2, mobile: w < 600 });
+await send("Page.navigate", { url: site + path }); await sleep(2500);
+await send("Runtime.evaluate", { expression: `document.documentElement.setAttribute("data-theme","${theme}")` }); await sleep(300);
+const r = await send("Page.captureScreenshot", { format: "png", captureBeyondViewport: true });
+writeFileSync(out, Buffer.from(r.result.data, "base64"));
+console.log(out);
+chrome.kill(); process.exit(0);

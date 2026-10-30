@@ -1,11 +1,18 @@
 # Site settings
-title: Mohit Jain
-description: >-
+title: The Craft of Engineering
+tagline: Systems, Intelligence, Architecture & Ideas.
+description: A personal knowledge journal about engineering, technology, and the ideas that shape how we think and build.
 lang: en-US
-timezone: Asia/New-Delhi
-image: assets/img/ogp.png # This image used for Open Graph more info https://ogp.me/
+timezone: Asia/Kolkata
 repo:
-mode: dark # default theme "dark" | "light"
+twitter:
+  username: jainmohit27
+  card: summary_large_image
+social:
+  name: Mohit Jain
+  links:
+    - https://github.com/mohitjain
+mode: light # default theme: "light", "dark" or "auto" (follow the visitor's system)
 
 # Profile settings
 author:
@@ -13,19 +20,46 @@ author:
   bio:
   username: jainmohit27
   email: jain.mohit27@gmail.com
-  avatar: /wp-content/avatar.jpg
+  avatar: /assets/img/avatar.jpg
 
 # Url settings
-url: "http://codebeerstartups.com"
+url: "https://mohitjain.github.io"
 baseurl:
 permalink: /:title/
-google_analytics:
 fb_appid:
+
+# Comments (giscus, backed by GitHub Discussions). Needs the giscus app installed on the repo:
+# https://github.com/apps/giscus - leave repo_id empty to turn comments off.
+giscus:
+  repo: mohitjain/mohitjain.github.io
+  repo_id: MDEwOlJlcG9zaXRvcnkzNDM1OTQ4OQ==
+  category: Announcements
+  category_id: DIC_kwDOAgxIwc4DJ_6T
+
+# Analytics (Google Analytics 4): put the measurement ID here, e.g. "G-XXXXXXXXXX".
+# Leave empty to load nothing. Only loads in production builds.
+google_analytics:
+
+# Newsletter (Buttondown): put your Buttondown username here to show the subscribe form.
+# Leave empty to point readers at RSS instead.
+newsletter:
+  buttondown:
 
 # Collection setting
 collections:
   posts:
     output: true
+  topics:
+    output: true
+    permalink: /topics/:name/
+
+# Pagination (jekyll-paginate-v2)
+pagination:
+  enabled: true
+  per_page: 10
+  permalink: /page:num/
+  sort_field: date
+  sort_reverse: true
 
 # Markdown settings
 markdown: kramdown
@@ -40,39 +74,41 @@ defaults:
     values:
       layout: post
       comments: false
-
-# Jekyll Compose default front matter
-jekyll_compose:
-  post_default_front_matter:
-    modified:
-    tags: []
-    description:
-  draft_default_front_matter:
-    modified:
-    tags: []
-    description:
+      image: /assets/img/ogp.png # default share image (Open Graph); a post's own image: overrides it
+  - scope:
+      type: posts
+    values:
+      comments: true
+  - scope:
+      type: topics
+    values:
+      layout: topic
 
 # Build settings
 sass:
   style: compressed
 
-include:
-  - _redirects
-  - .htaccess
+keep_files:
+  - pagefind
 
 exclude:
-  - CNAME
   - Gemfile
   - Gemfile.lock
-  - LICENSE
   - CHANGELOG.md
   - README.md
+  - CLAUDE.md
+  - docs
   - node_modules
   - CODE_OF_CONDUCT.md
+  - bin
+  - Makefile
 
 # Plugins
 plugins:
+  - jekyll-paginate-v2
+  - jekyll-seo-tag
   - jekyll-feed
   - jekyll-sass-converter
   - jekyll-sitemap
+  - jekyll-redirect-from
   - jekyll-postfiles

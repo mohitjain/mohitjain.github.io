@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+# The tag vocabulary (_data/tags.yml).
+#   bin/tags                          list every allowed tag with how many articles use it
+#   bin/tags add <slug> "<description>"   add a tag (format and near-duplicate checks)
+# Counts cover published posts and drafts, ignoring local samples (sample: true).
+require "yaml"
+require "date"
+
+root = File.expand_path("..", __dir__)
+file = File.join(root, "_data", "tags.yml")
+allowed = YAML.load_file(file)
+
+def usage(root)
+  counts = Hash.new { |h, k| h[k] = [] }
+  Dir[File.join(root, "{_posts,_drafts}", "**", "*.md")].sort.each do |f|
+    m = File.read(f).match(/\A---\s*\n(.*?)\n---\s*\n/m) or next
+    fm = YAML.safe_load(m[1], permitted_classes: [Date, Time]) || {}
+    next if fm["sample"]
+    Array(fm["tags"]).each { |t| counts[t.to_s] << File.basename(f) }
+  end
+  counts
+end
+
+# "llm" / "llms" / "l-l-m" style variants collapse to the same key
+norm = ->(s) { s.downcase.delete("-").sub(/(es|s)\z/, "") }
+
+case ARGV[0]
+when nil, "list"
+  counts = usage(root)
+  width = allowed.keys.map(&:size).max
+  allowed.each { |slug, desc| puts "#{slug.ljust(width)}  #{counts[slug].size.to_s.rjust(3)}  #{desc}" }
+  stray = counts.keys - allowed.keys
+  puts "\nused but not allowed: #{stray.join(', ')}" unless stray.empty?
+when "add"
+  slug, desc = ARGV[1], ARGV[2]
+  abort "usage: bin/tags add <slug> \"<description>\"" unless slug && desc && !desc.strip.empty?
+  abort "tag must be lowercase letters, digits and single hyphens: #{slug}" unless slug.match?(/\A[a-z0-9]+(-[a-z0-9]+)*\z/)
+  abort "tag has #{slug.split('-').size} words; keep tags to 3 or fewer" if slug.split("-").size > 3
+  abort "already exists: #{slug}" if allowed.key?(slug)
+  twin = allowed.keys.find { |k| norm.(k) == norm.(slug) }
+  abort "too close to existing tag '#{twin}'; use that one" if twin
+  text = File.read(file)
+  text += "\n" unless text.end_with?("\n")
+  File.write(file, text + "#{slug}: #{desc.strip}\n")
+  puts "added #{slug}. A tag is worth keeping only if at least two articles use it."
+else
+  abort "usage: bin/tags [list | add <slug> \"<description>\"]"
+end

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Take a published article back to a draft. Its address will stop working (404).
+# Nothing is committed. Usage: bin/unpublish <slug>
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+slug="${1:?usage: bin/unpublish <slug>}"
+src="$(ls _posts/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]-"${slug}".md 2>/dev/null | head -1 || true)"
+[ -n "$src" ] || { echo "no published article with slug $slug" >&2; exit 1; }
+dest="_drafts/${slug}.md"
+[ -e "$dest" ] && { echo "$dest already exists" >&2; exit 1; }
+mkdir -p _drafts
+if git ls-files --error-unmatch "$src" >/dev/null 2>&1; then git mv "$src" "$dest"; else mv "$src" "$dest"; fi
+echo "$dest"
+echo "The address /${slug}/ will no longer exist once this is deployed."

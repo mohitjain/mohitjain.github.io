@@ -1,0 +1,97 @@
+#!/usr/bin/env ruby
+# Add one item to the reading list (_data/reading.yml), after checking the link loads.
+# Usage: bin/add-reading --title "..." --type book|paper|article|video --topic <topic-slug> \
+#          --url https://... --read YYYY-MM-DD [--author "..."] [--year 2017] [--pick] \
+#          [--comment "one sentence"] [--notes /my-article/] [--no-check]
+# Only add things that have actually been read or watched. Nothing is committed.
+require "date"
+require "json"
+require "net/http"
+require "optparse"
+require "yaml"
+
+root = File.expand_path("..", __dir__)
+file = File.join(root, "_data", "reading.yml")
+topics = Dir[File.join(root, "_topics", "*.md")].map { |f| File.basename(f, ".md") }.sort
+kinds = %w[book paper article video]
+
+o = { check: true }
+OptionParser.new do |p|
+  p.on("--title T") { |v| o[:title] = v }
+  p.on("--type T") { |v| o[:type] = v }
+  p.on("--topic T") { |v| o[:topic] = v }
+  p.on("--url U") { |v| o[:url] = v }
+  p.on("--read D") { |v| o[:read] = v }
+  p.on("--author A") { |v| o[:author] = v }
+  p.on("--year Y") { |v| o[:year] = v }
+  p.on("--pick") { o[:pick] = true }
+  p.on("--comment C") { |v| o[:comment] = v }
+  p.on("--notes N") { |v| o[:notes] = v }
+  p.on("--no-check") { o[:check] = false }
+end.parse!
+
+errors = []
+errors << "--title is required" if o[:title].to_s.strip.empty?
+errors << "--type must be one of: #{kinds.join(', ')}" unless kinds.include?(o[:type])
+errors << "--topic must be one of: #{topics.join(', ')}" unless topics.include?(o[:topic])
+errors << "--url must start with http:// or https://" unless o[:url].to_s.match?(%r{\Ahttps?://})
+begin
+  d = Date.iso8601(o[:read].to_s)
+  errors << "--read is in the future (#{d}); list only what is already read" if d > Date.today
+rescue ArgumentError
+  errors << "--read must be a date like 2026-10-27"
+end
+errors << "--year must be a 4-digit year" if o[:year] && !o[:year].match?(/\A\d{4}\z/)
+if o[:notes]
+  slug = o[:notes].delete_prefix("/").delete_suffix("/")
+  errors << "--notes must be the address of one of your articles, like /retry-jitter/ (no such article: #{slug})" unless
+    Dir[File.join(root, "_posts", "*-#{slug}.md")].any? || Dir[File.join(root, "_drafts", "#{slug}.md")].any?
+end
+
+existing = YAML.safe_load(File.read(file), permitted_classes: [Date, Time]) || []
+existing = [] unless existing.is_a?(Array)
+dup = existing.find { |i| i["title"].to_s.downcase == o[:title].to_s.downcase }
+errors << "already listed: #{dup['title']}" if dup
+abort errors.map { |e| "error: #{e}" }.join("\n") unless errors.empty?
+
+if o[:check]
+  ok = false
+  begin
+    uri = URI(o[:url])
+    3.times do
+      res = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https", open_timeout: 10, read_timeout: 15) do |h|
+        h.get(uri.request_uri, "User-Agent" => "Mozilla/5.0 (compatible; reading-list-check)")
+      end
+      if res.is_a?(Net::HTTPRedirection) && res["location"]
+        uri = URI.join(uri.to_s, res["location"])
+        next
+      end
+      ok = res.code.to_i.between?(200, 399)
+      puts "link check: HTTP #{res.code} #{uri}"
+      break
+    end
+  rescue StandardError => e
+    puts "link check failed: #{e.class}: #{e.message}"
+  end
+  abort "error: the link did not load. Check it in a browser; if the site blocks scripts, rerun with --no-check." unless ok
+end
+
+fields = [["title", o[:title]], ["type", o[:type]], ["topic", o[:topic]], ["url", o[:url]]]
+fields << ["author", o[:author]] if o[:author]
+fields << ["year", o[:year].to_i] if o[:year]
+fields << ["read", :raw, o[:read]]
+fields << ["pick", true] if o[:pick]
+fields << ["comment", o[:comment]] if o[:comment]
+fields << ["notes", o[:notes]] if o[:notes]
+body = fields.map { |k, v, raw| "#{k}: #{raw ? raw : (v.is_a?(String) ? JSON.generate(v) : v)}" }.join(", ")
+line = "- {#{body}}"
+
+text = File.read(file)
+if text.lines.reject { |l| l.strip.empty? || l.start_with?("#") }.map(&:strip) == ["[]"]
+  text = text.lines.map { |l| l.strip == "[]" ? line + "\n" : l }.join
+else
+  text = text.end_with?("\n") ? text : text + "\n"
+  text += line + "\n"
+end
+File.write(file, text)
+puts line

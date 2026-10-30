@@ -1,2 +1,7 @@
 _site/*
 .sass-cache/*
+.idea/
+.bundle/
+vendor/
+.lighthouseci/
+.site-health/

@@ -1,0 +1,166 @@
+.post-header-block {
+  padding-bottom: 1rem;
+}
+
+.post-title {
+  margin: 0.2em 0 0.3em;
+  font-size: clamp(2.25rem, 1.6rem + 3.2vw, 3.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.012em;
+
+  // in the rail: large bold right-aligned title
+  @media (min-width: 62em) {
+    font-size: clamp(1.5rem, 10.2cqw, 2.75rem);
+  }
+}
+
+.post-meta {
+  margin: 0;
+}
+
+// Article body
+.prose {
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 2em 0 0;
+  }
+
+  h2 {
+    font-size: 1.6em;
+  }
+
+  h3 {
+    font-size: 1.25em;
+  }
+
+  h4,
+  h5,
+  h6 {
+    font-size: 1em;
+  }
+
+  h1 {
+    margin-top: 2em;
+    font-size: 1.9em;
+  }
+
+  p,
+  ul,
+  ol,
+  blockquote,
+  table,
+  pre,
+  .highlighter-rouge {
+    margin-block: 1em 0;
+  }
+
+  ul,
+  ol {
+    padding-left: 1.4em;
+  }
+
+  li {
+    margin: 0.3em 0;
+  }
+
+  blockquote {
+    margin-inline: 0;
+    padding-left: 1em;
+    font-style: italic;
+    border-left: 0.2rem solid var(--text);
+  }
+
+  // Wide tables scroll inside their own box instead of widening the page on a phone
+  table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    font-size: 0.85em;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    padding: 0.35em 0.6em;
+    text-align: left;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  th {
+    font-weight: 700;
+    border-bottom-color: var(--text);
+  }
+
+  // Heading anchors added by _includes/anchor_headings.html: a "#" on hover
+  .anchor-head {
+    position: relative;
+    color: var(--muted);
+    opacity: 0;
+    text-decoration: none;
+
+    &::before {
+      content: "#";
+      position: absolute;
+      right: 0.15em;
+      width: 1em;
+    }
+  }
+
+  :is(h1, h2, h3, h4, h5, h6):hover .anchor-head,
+  .anchor-head:focus-visible {
+    opacity: 1;
+  }
+}
+
+// Previous / next
+.post-nav {
+  display: flex;
+  gap: 2rem;
+  margin-top: 3.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+
+  .post-nav-item {
+    flex: 1;
+    text-decoration: none;
+
+    .nav-arrow {
+      color: var(--muted);
+      font-size: 0.72em;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .post-title {
+      display: block;
+      margin: 0.15em 0 0;
+      font-size: 1.1em;
+      line-height: 1.25;
+      letter-spacing: 0;
+      text-decoration: underline;
+      text-decoration-thickness: 0.07em;
+      text-underline-offset: 0.18em;
+    }
+
+    &:hover .post-title {
+      text-decoration-thickness: 0.14em;
+    }
+  }
+
+  .post-nav-next {
+    text-align: right;
+  }
+
+  @media (max-width: 40em) {
+    flex-direction: column;
+    gap: 1.25rem;
+
+    .post-nav-next {
+      text-align: left;
+    }
+  }
+}

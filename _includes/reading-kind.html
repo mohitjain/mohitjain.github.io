@@ -1,0 +1,35 @@
+{%- comment -%}
+  The full list for one kind of reading, newest first, grouped by year, with a filter box.
+  Usage: {% include reading-kind.html kind="book" %}
+{%- endcomment -%}
+{%- assign none = "" | split: "," -%}
+{%- assign preview = site.data.reading_sample | default: none -%}
+{%- assign items = site.data.reading | concat: preview | where: "type", include.kind | sort: "read" | reverse -%}
+<p class="reading-back"><a href="/reading/">&larr; Recommended reading</a></p>
+{% if items.size > 0 %}
+<div class="reading" id="reading">
+  <p class="reading-find" id="reading-find" hidden>
+    <label for="reading-q" class="visually-hidden">Filter the list</label>
+    <input id="reading-q" type="search" placeholder="Filter by title, author or tag" autocomplete="off">
+  </p>
+  <ul class="chips reading-topics" id="reading-topics" aria-label="Filter by topic" hidden>
+    <li><a href="#reading-topics" data-topic="">All</a></li>
+    {% assign topics = site.topics | sort: "order" %}
+    {% for t in topics %}
+    {% assign tn = items | where: "topic", t.slug | size %}
+    {% if tn > 0 %}<li><a href="#reading-topics" data-topic="{{ t.slug }}" data-hash="{{ t.nav_title | downcase }}">{{ t.nav_title }} <span class="tag-count">{{ tn }}</span></a></li>{% endif %}
+    {% endfor %}
+  </ul>
+  {% assign years = items | group_by_exp: "i", "i.read | date: '%Y'" | sort: "name" | reverse %}
+  {% for year in years %}
+  <section class="reading-group" aria-labelledby="y{{ year.name }}">
+    <h2 class="section-title" id="y{{ year.name }}">{{ year.name }} <span class="tag-count">{{ year.items.size }}</span></h2>
+    <ul class="reading-list">{% for item in year.items %}{% include reading-item.html item=item %}{% endfor %}</ul>
+  </section>
+  {% endfor %}
+  <p class="reading-empty" id="reading-empty" hidden>Nothing matches that.</p>
+</div>
+<script src="/assets/js/reading.js?v={{ site.time | date: '%s' }}" defer="defer"></script>
+{% else %}
+<p>Nothing here yet. Items appear once I have actually read them.</p>
+{% endif %}

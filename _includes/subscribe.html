@@ -1,0 +1,16 @@
+<section class="subscribe"{% unless include.compact %} aria-labelledby="subscribe-title"{% endunless %}>
+  {%- unless include.compact %}
+  <h2 class="subscribe-title" id="subscribe-title">Follow new articles</h2>
+  <p>New articles, and the occasional learning note, with no fixed schedule.</p>
+  {%- endunless %}
+  {%- if site.newsletter.buttondown and site.newsletter.buttondown != '' %}
+  <form class="subscribe-form" action="https://buttondown.com/api/emails/embed-subscribe/{{ site.newsletter.buttondown }}" method="post">
+    <label for="subscribe-email" class="visually-hidden">Email address</label>
+    <input type="email" name="email" id="subscribe-email" placeholder="you@example.com" required autocomplete="email" />
+    <button type="submit" class="pill">Subscribe</button>
+  </form>
+  <p class="subscribe-alt">Or <a href="/feed.xml">use the RSS feed</a>.</p>
+  {%- else %}
+  <p><a class="pill" href="/feed.xml">Subscribe via RSS</a></p>
+  {%- endif %}
+</section>
