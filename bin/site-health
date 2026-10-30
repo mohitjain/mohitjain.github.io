@@ -1,0 +1,87 @@
+#!/usr/bin/env node
+// Periodic health check of the built site: Lighthouse scores, phone overflow, and (optionally) outbound links.
+// Builds the site, serves _site on a free port, then compares with the previous run in .site-health/.
+// Usage: bin/site-health [--quick] [--external] [--no-build]
+//   --quick     only the home page, the Reading page and the newest article
+//   --external  also check outbound links (slow, can be flaky)
+import { spawn, spawnSync } from "node:child_process";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
+const args = new Set(process.argv.slice(2));
+const root = new URL("..", import.meta.url).pathname;
+process.chdir(root);
+const run = (cmd, a, opts = {}) => spawnSync(cmd, a, { encoding: "utf8", ...opts });
+
+if (!args.has("--no-build")) {
+  console.log("building...");
+  const b = run("bin/build", []);
+  if (b.status !== 0) { console.error(b.stdout + b.stderr); process.exit(1); }
+}
+
+// newest real posts (never samples) and the fixed pages
+const newest = readdirSync("_posts").filter((f) => f.endsWith(".md") && !/-sample-/.test(f)).sort().reverse().slice(0, 3)
+  .map((f) => "/" + f.replace(/^\d{4}-\d{2}-\d{2}-/, "").replace(/\.md$/, "") + "/");
+const fixed = ["/", "/archive/", "/reading/", "/reading/books/", "/about/", "/search/", "/tags/", "/topics/ai-intelligent-systems/"];
+let pages = args.has("--quick") ? ["/", "/reading/", ...newest.slice(0, 1)] : [...fixed, ...newest];
+pages = pages.filter((p) => existsSync(join("_site", p, "index.html")));
+
+const port = 4200 + Math.floor(Math.random() * 500);
+const server = spawn("python3", ["-m", "http.server", String(port), "--directory", "_site"], { stdio: "ignore" });
+const site = `http://localhost:${port}`;
+const cleanup = () => server.kill();
+process.on("exit", cleanup);
+for (let i = 0; i < 20; i++) { try { if ((await fetch(site + "/")).ok) break; } catch {} await new Promise((r) => setTimeout(r, 250)); }
+
+const chromePath = process.env.CHROME_PATH || process.env.CHROME || "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+const tmp = mkdtempSync(join(tmpdir(), "health-"));
+const results = {};
+for (const [i, p] of pages.entries()) {
+  const outFile = join(tmp, `lh${i}.json`);
+  console.log(`lighthouse ${p}`);
+  const r = run("npx", ["--yes", "lighthouse@12", site + p, "--quiet", "--output=json", `--output-path=${outFile}`,
+    "--chrome-flags=--headless=new --no-sandbox"], { env: { ...process.env, CHROME_PATH: chromePath } });
+  if (!existsSync(outFile)) { results[p] = { error: (r.stderr || "lighthouse failed").split("\n")[0] }; continue; }
+  const lh = JSON.parse(readFileSync(outFile, "utf8"));
+  results[p] = Object.fromEntries(Object.entries(lh.categories).map(([k, v]) => [k, Math.round(v.score * 100)]));
+}
+
+console.log("phone overflow test...");
+const ov = run("bin/overflow", pages, { env: { ...process.env, SITE: site, CHROME: chromePath } });
+const overflowFailures = (ov.stdout || "").split("\n").filter((l) => l.startsWith("FAIL"));
+
+let external = null;
+if (args.has("--external")) {
+  console.log("outbound links (slow)...");
+  const e = run("bin/check", ["--external"], { env: { ...process.env, SKIP_BUILD: "1" } });
+  external = { ok: e.status === 0, tail: (e.stdout + e.stderr).trim().split("\n").slice(-8).join("\n") };
+}
+cleanup();
+
+mkdirSync(".site-health", { recursive: true });
+const latestFile = ".site-health/latest.json";
+const previous = existsSync(latestFile) ? JSON.parse(readFileSync(latestFile, "utf8")) : null;
+const now = { date: new Date().toISOString(), results, overflowFailures, external };
+if (previous) writeFileSync(".site-health/previous.json", JSON.stringify(previous, null, 2));
+writeFileSync(latestFile, JSON.stringify(now, null, 2));
+
+const cats = ["performance", "accessibility", "best-practices", "seo"];
+const min = { performance: 90, accessibility: 95, "best-practices": 90, seo: 90 };
+console.log("\npage".padEnd(36) + "perf      a11y      best      seo");
+let problems = 0;
+for (const [p, s] of Object.entries(results)) {
+  if (s.error) { console.log(p.padEnd(35) + " ERROR " + s.error); problems++; continue; }
+  const cells = cats.map((c) => {
+    const before = previous?.results?.[p]?.[c];
+    const d = before === undefined || before === s[c] ? "" : (s[c] > before ? `+${s[c] - before}` : `${s[c] - before}`);
+    if (s[c] < min[c]) problems++;
+    return (String(s[c]) + (s[c] < min[c] ? "!" : "") + (d ? `(${d})` : "")).padEnd(10);
+  });
+  console.log(p.padEnd(35) + " " + cells.join(""));
+}
+console.log(overflowFailures.length ? "\nphone overflow:\n" + overflowFailures.join("\n") : "\nphone overflow: none");
+if (external) console.log("\noutbound links: " + (external.ok ? "all ok" : "problems\n" + external.tail));
+console.log(previous ? `\ncompared with the run of ${previous.date.slice(0, 10)}` : "\nfirst run; nothing to compare with");
+console.log("(! = below the target: 90, accessibility 95)");
+process.exit(problems || overflowFailures.length || (external && !external.ok) ? 1 : 0);
