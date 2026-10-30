@@ -221,3 +221,17 @@ old address would redirect to a domain that does not answer yet.
 6. **Afterwards:** `mohitjain.github.io` redirects to the new domain by itself. Add the new domain
    to Search Console and Bing Webmaster Tools, update the analytics property if one is set, and run
    `bin/launch-check`, which now checks that `CNAME` and `url:` agree.
+
+## External links
+
+Every link to another site opens in a new tab. You do not write anything special: the
+`_plugins/external_links.rb` plugin adds `target="_blank"` and `rel="noopener"` to those links in
+the final HTML, whether they come from a template, an article or the reading list. Links to this
+site, `mailto:`, `#anchors` and relative links are left alone, a link that already sets `target`
+keeps it, and the feeds are not changed.
+
+## Icons
+
+The site icon is `assets/favicons/favicon.svg` (a yellow note in the site's colours). After editing
+it, run `bin/favicons` (macOS, needs Google Chrome) to regenerate `favicon.ico`, the touch icon and
+the Android icons, then commit the results.
