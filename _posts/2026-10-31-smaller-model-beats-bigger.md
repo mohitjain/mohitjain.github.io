@@ -1,5 +1,5 @@
 ---
-title: "A smaller AI model can beat a bigger one, and can be cheaper to own"
+title: "Small AI models can beat big ones"
 description: "Build cost versus run cost for a 70B and an 8B model, how the sizing rules changed in 2020, 2022 and 2024, and a derived break-even of about 2 billion answers."
 categories: [ai-intelligent-systems]
 tags: [llms, performance]
