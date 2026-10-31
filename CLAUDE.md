@@ -9,6 +9,7 @@ Mohit Jain's personal journal (Jekyll, GitHub Pages, built by Actions). Markdown
 - Only add a URL you have checked. Paraphrase sources; do not quote them at length.
 - One topic per article: `systems-architecture`, `ai-intelligent-systems` or `leadership-thinking`. Tags come only from `_data/tags.yml`, at most 4.
 - Slug (the filename after the date) is the permanent URL: lowercase, hyphens, at most 5 words. Changing it later needs `redirect_from`.
+- Every article ends with a reading-list check: the sources it cites that the author really read or watched go into `_data/reading.yml` (`bin/add-reading`), confirmed by the author, never guessed. `bin/review-checks` lists the gaps; `bg-publish` asks.
 - Required front matter: `title`, `description`, `categories` (one topic). Optional: `tags`, `series`, `updated`, `image`, `toc: false`, `related_posts`, `comments: false`.
 
 ## Git rules

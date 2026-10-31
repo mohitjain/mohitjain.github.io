@@ -13,6 +13,9 @@
 #   comment: One sentence in my own words about why it mattered   # optional
 #   tags: [systems-thinking]   # optional
 #   notes: /some-article/      # optional: link to my notes or a related article
-- {title: "Deep Dive into LLMs like ChatGPT", type: video, url: "https://www.youtube.com/watch?v=7xTGNNLPyMI", author: "Andrej Karpathy", topic: ai-intelligent-systems, year: 2025, read: 2026-10-27}
+- {title: "Deep Dive into LLMs like ChatGPT", type: video, url: "https://www.youtube.com/watch?v=7xTGNNLPyMI", author: "Andrej Karpathy", topic: ai-intelligent-systems, year: 2025, read: 2026-10-27, pick: true}
 - {title: "Intro to Large Language Models", type: video, url: "https://www.youtube.com/watch?v=zjkBMFhNj_g", author: "Andrej Karpathy", topic: ai-intelligent-systems, year: 2023, read: 2026-10-27}
 - {title: "State of GPT", type: video, url: "https://www.youtube.com/watch?v=bZQun8Y4L2A", author: "Andrej Karpathy", topic: ai-intelligent-systems, year: 2023, read: 2026-10-27}
+- {title: "Scaling Laws for Neural Language Models", type: "paper", topic: "ai-intelligent-systems", url: "https://arxiv.org/abs/2001.08361", author: "Kaplan et al.", year: 2020, read: 2026-10-31, notes: "/smaller-model-beats-bigger/"}
+- {title: "Training Compute-Optimal Large Language Models", type: "paper", topic: "ai-intelligent-systems", url: "https://arxiv.org/abs/2203.15556", author: "Hoffmann et al.", year: 2022, read: 2026-10-31, notes: "/smaller-model-beats-bigger/"}
+- {title: "Introducing Meta Llama 3", type: "article", topic: "ai-intelligent-systems", url: "https://ai.meta.com/blog/meta-llama-3/", author: "Meta", year: 2024, read: 2026-10-31, notes: "/smaller-model-beats-bigger/"}

@@ -29,5 +29,12 @@ body | grep -niE "at my (last|previous|old) (job|company)|when I worked at|in my
 # links
 body | grep -noE 'https?://[^) >"]+' | sed 's/^/link to check: /' | head -10
 body | grep -noE '\]\(/[^) ]+\)' | sed 's/^/internal link to check: /' | head -10
+# sources that are not on the reading list yet. Only the author can say what they read, so this asks; it never adds.
+reading="$(dirname "$0")/../_data/reading.yml"
+if [ -f "$reading" ]; then
+  body | grep -oE 'https?://[^) >"]+' | sed -E 's/[.,;:]+$//' | sort -u | while read -r u; do
+    grep -qF "$u" "$reading" || echo "not on the reading list: $u (if you read or watched it, add it with bin/add-reading; otherwise ignore)"
+  done
+fi
 # dense paragraphs
 body | awk -v RS= 'length($0) > 900 { printf "long paragraph (%d characters) starting: %.60s\n", length($0), $0 }' | head -3
