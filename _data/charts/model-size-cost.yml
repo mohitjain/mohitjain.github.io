@@ -1,0 +1,22 @@
+# Source of truth for _includes/charts/model-size-cost.svg. Edit, run `bin/chart model-size-cost`, commit both.
+# Derived, not measured: build = 6 x parameters x training tokens; each answer = 2 x parameters x answer_tokens.
+# Counts operations only (dense models), not price. Assumes both models reach the same quality, which is not shown.
+type: cumulative
+answer_tokens: 500
+scale: linear
+x_label: Answers served
+y_label: Total operations, build + run (×10²³)
+x_max: 6.0e9
+x_step: 1.0e9
+y_unit_exp: 23
+y_max: 12
+y_step: 2
+series:
+  - label: 70B, 1.4T tokens
+    params: 70.0e9
+    tokens: 1.4e12
+    dash: false
+  - label: 8B, 15T tokens
+    params: 8.0e9
+    tokens: 15.0e12
+    dash: true

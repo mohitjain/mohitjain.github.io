@@ -1,0 +1,103 @@
+#!/usr/bin/env ruby
+# Regenerate a chart SVG from _data/charts/<name>.yml into _includes/charts/<name>.svg.
+# The YAML is the source of truth. Edit it, run bin/chart <name>, commit both. Use it in a post with:
+#   {% include chart.html name="<name>" alt="..." caption="..." %}
+# Usage: bin/chart [name]      (no name: regenerate every chart)
+Dir.chdir(File.expand_path("..", __dir__))
+# Draws "cumulative" charts: total cost = build + per-answer x answers, on log-log axes.
+# Lines differ by dash, not colour, and are labelled directly. All colours are CSS variables
+# so the inline SVG follows light and dark mode.
+require "yaml"
+require "cgi"
+
+W, H = 420, 330
+L, R, T, B = 58, 14, 14, 62
+SUP = %w[⁰ ¹ ² ³ ⁴ ⁵ ⁶ ⁷ ⁸ ⁹]
+
+def sup(n) = n.to_s.chars.map { |c| SUP[c.to_i] }.join
+def esc(s) = CGI.escapeHTML(s.to_s)
+def short(exp)
+  { 6 => "1M", 7 => "10M", 8 => "100M", 9 => "1B", 10 => "10B", 11 => "100B", 12 => "1T" }[exp] || "10#{sup(exp)}"
+end
+
+def fmt_answers(x)
+  x >= 1e9 ? "#{(x / 1e9).round(1).to_s.sub(/\.0\z/, "")}B" : x >= 1e6 ? "#{(x / 1e6).round}M" : x.round.to_s
+end
+
+def render(name)
+  d = YAML.load_file("_data/charts/#{name}.yml")
+  abort "#{name}: only type 'cumulative' is supported" unless d["type"] == "cumulative"
+  log = d["scale"] != "linear"
+  if log
+    x0, x1, y0, y1 = d.values_at("x_min_exp", "x_max_exp", "y_min_exp", "y_max_exp").map(&:to_f)
+    px = ->(x) { L + (Math.log10(x) - x0) / (x1 - x0) * (W - L - R) }
+    py = ->(y) { H - B - (Math.log10(y) - y0) / (y1 - y0) * (H - T - B) }
+    xmin, xmax = 10.0**x0, 10.0**x1
+    xs = (0..80).map { |i| 10.0**(x0 + (x1 - x0) * i / 80.0) }
+    xticks = (x0.to_i..x1.to_i).map { |e| [10.0**e, short(e)] }
+    yticks = (y0.to_i..y1.to_i).map { |e| [10.0**e, "10#{sup(e)}"] }
+  else
+    # linear: x in answers (x_max, x_step); y in units of 10^y_unit_exp operations (y_max, y_step)
+    xmax, xstep = Float(d["x_max"]), Float(d["x_step"])
+    unit = 10.0**d["y_unit_exp"]
+    ymax, ystep = Float(d["y_max"]), Float(d["y_step"])
+    xmin = 0.0
+    px = ->(x) { L + x / xmax * (W - L - R) }
+    py = ->(y) { H - B - (y / unit) / ymax * (H - T - B) }
+    xs = (0..80).map { |i| xmax * i / 80.0 }
+    xticks = (0..(xmax / xstep).round).map { |i| [i * xstep, i.zero? ? "0" : fmt_answers(i * xstep)] }
+    yticks = (0..(ymax / ystep).round).map { |i| [i * ystep * unit, (i * ystep).to_s.sub(/\.0\z/, "")] }
+  end
+  at = d["answer_tokens"]
+  series = d["series"].map do |s|
+    s.merge("build" => 6 * Float(s["params"]) * Float(s["tokens"]), "run" => 2 * Float(s["params"]) * at)
+  end
+  ybase = log ? nil : H - B
+
+  o = []
+  o << %(<svg class="chart-svg" viewBox="0 0 #{W} #{H}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">)
+  xticks.each do |v, lab|
+    x = px.call(v == 0 ? xmin : v)
+    o << %(<line x1="#{x.round(1)}" y1="#{T}" x2="#{x.round(1)}" y2="#{H - B}" stroke="var(--rule)" stroke-width="1"/>)
+    o << %(<text x="#{x.round(1)}" y="#{H - B + 16}" text-anchor="middle">#{lab}</text>)
+  end
+  yticks.each do |v, lab|
+    y = log ? py.call(v) : H - B - v / unit / ymax * (H - T - B)
+    o << %(<line x1="#{L}" y1="#{y.round(1)}" x2="#{W - R}" y2="#{y.round(1)}" stroke="var(--rule)" stroke-width="1"/>)
+    o << %(<text x="#{L - 8}" y="#{(y + 4).round(1)}" text-anchor="end">#{lab}</text>)
+  end
+  o << %(<line x1="#{L}" y1="#{H - B}" x2="#{W - R}" y2="#{H - B}" stroke="currentColor" stroke-width="1.5"/>)
+  o << %(<text x="#{((L + W - R) / 2.0).round}" y="#{H - B + 40}" text-anchor="middle">#{esc(d["x_label"])}#{log ? " (log scale)" : ""}</text>)
+  o << %(<text transform="translate(14 #{((T + H - B) / 2.0).round}) rotate(-90)" text-anchor="middle">#{esc(d["y_label"])}</text>)
+
+  series.each do |s|
+    pts = xs.map { |x| "#{px.call(x).round(1)},#{py.call(s["build"] + s["run"] * x).round(1)}" }
+    dash = s["dash"] ? ' stroke-dasharray="7 5"' : ""
+    o << %(<polyline points="#{pts.join(" ")}" fill="none" stroke="currentColor" stroke-width="2.5"#{dash}/>)
+  end
+
+  # direct labels at the left start: the higher start above its line, the lower one below
+  higher = series.max_by { |s| s["build"] }
+  series.each do |s|
+    y = py.call(s["build"] + s["run"] * xmin)
+    o << %(<text x="#{L + 8}" y="#{(y + (s.equal?(higher) ? -8 : 18)).round(1)}" font-weight="600">#{esc(s["label"])}</text>)
+  end
+
+  a, b = series
+  if a && b && (a["run"] - b["run"]).abs > 0
+    xc = (b["build"] - a["build"]) / (a["run"] - b["run"])
+    if xc > 0 && xc.between?(xmin, xmax)
+      cx, cy = px.call(xc), py.call(a["build"] + a["run"] * xc)
+      o << %(<circle cx="#{cx.round(1)}" cy="#{cy.round(1)}" r="5" fill="var(--bg)" stroke="currentColor" stroke-width="2"/>)
+      label = "cross at about #{format("%.1f", xc / 1e9)} billion"
+      o << %(<text x="#{(cx + 10).round(1)}" y="#{(cy + 30).round(1)}" text-anchor="#{log ? "middle" : "start"}">#{label}</text>)
+      warn "#{name}: crossing at #{format("%.3e", xc)} answers"
+    end
+  end
+  o << "</svg>"
+  File.write("_includes/charts/#{name}.svg", o.join("\n") + "\n")
+  puts "_includes/charts/#{name}.svg"
+end
+
+names = ARGV.empty? ? Dir["_data/charts/*.yml"].map { |f| File.basename(f, ".yml") } : ARGV
+names.each { |n| render(n) }
