@@ -19,3 +19,4 @@
 - {title: "Scaling Laws for Neural Language Models", type: "paper", topic: "ai-intelligent-systems", url: "https://arxiv.org/abs/2001.08361", author: "Kaplan et al.", year: 2020, read: 2026-10-31, notes: "/smaller-model-beats-bigger/"}
 - {title: "Training Compute-Optimal Large Language Models", type: "paper", topic: "ai-intelligent-systems", url: "https://arxiv.org/abs/2203.15556", author: "Hoffmann et al.", year: 2022, read: 2026-10-31, notes: "/smaller-model-beats-bigger/"}
 - {title: "Introducing Meta Llama 3", type: "article", topic: "ai-intelligent-systems", url: "https://ai.meta.com/blog/meta-llama-3/", author: "Meta", year: 2024, read: 2026-10-31, notes: "/smaller-model-beats-bigger/"}
+- {title: "Let's build the GPT Tokenizer", type: "video", topic: "ai-intelligent-systems", url: "https://www.youtube.com/watch?v=zduSFxRajkE", author: "Andrej Karpathy", year: 2024, read: 2026-10-31, pick: true}
