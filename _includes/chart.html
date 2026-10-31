@@ -1,0 +1,11 @@
+{%- comment -%}
+  {% include chart.html name="model-size-cost" alt="What the chart shows" caption="Source and caveats" %}
+  The SVG is made by bin/chart from _data/charts/<name>.yml. alt and caption are required.
+{%- endcomment -%}
+<figure class="chart">
+  {%- if include.title %}
+  <p class="chart-title">{{ include.title }}</p>
+  {%- endif %}
+  <div class="chart-frame" role="img" aria-label="{{ include.alt | escape }}">{% include charts/{{ include.name }}.svg %}</div>
+  <figcaption>{{ include.caption }}</figcaption>
+</figure>

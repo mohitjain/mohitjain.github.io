@@ -15,6 +15,7 @@ Publishing is one commit: `Publish: <title>`. Nothing is pushed without an expli
 1. **Identify the draft** (`_drafts/<slug>.md`). If unclear, list `_drafts/` and ask. Refuse anything with `sample: true`.
 2. **Preconditions.** Run `git status --short` and `git branch --show-current`. Stop and tell the author if there are unrelated uncommitted changes (they must not slip into the publish commit) or if the draft is not committed or tracked in a way that confuses the move.
 3. **Review:** run the `bg-review-draft` skill. Do not continue while any "Must fix" item is open.
+3b. **Reading list.** Run `bin/review-checks` on the draft and look at every "not on the reading list" line. Ask the author which of those sources they actually read or watched, and which they want recommended (`--pick`). Add only those, with the `bg-log-reading` skill (`notes:` pointing at the article). Never add an item the author has not confirmed. If none, say so and continue. Reading entries go in the same pull request or commit series as the article, never forgotten for later.
 4. **Move and lint:**
    ```sh
    source ~/.rvm/scripts/rvm && rvm use ruby-$(cat .ruby-version)
