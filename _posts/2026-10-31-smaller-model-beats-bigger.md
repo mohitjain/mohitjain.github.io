@@ -7,7 +7,7 @@ tags: [llms, performance]
 
 *What the sizing rules say, what a model costs to build and to run, and where a smaller model breaks even.*
 
-A smaller AI model can beat a bigger one. In 2022, a model with 70 billion parameters beat one four times its size, trained on the same budget. Two years later, Meta trained an 8-billion-parameter model on text equal to roughly 140 million books, about 75 times what the standard rule (explained below) says it needs. It kept improving the whole way. The first half of this post is about the same training budget; the second half is about total cost over many answers. Between a 70-billion and an 8-billion-parameter model, the computing behind every answer differs by about 9×.
+A smaller AI model can beat a bigger one. In 2022, a model with 70 billion parameters beat one four times its size, trained on the same budget. Two years later, Meta trained an 8-billion-parameter model on text equal to roughly 140 million books, about 75 times the amount Meta itself gives as balanced for a model that size (explained below). It kept improving the whole way. The first half of this post is about the same training budget; the second half is about total cost over many answers. Between a 70-billion and an 8-billion-parameter model, the computing behind every answer differs by about 9×.
 
 Pause on that. How can less beat more? And why would anyone feed a model 75 times what it "needs"?
 
@@ -50,7 +50,7 @@ Then they proved it. Gopher had 280B parameters and read 300B tokens. With the s
 
 Chinchilla minimizes the build bill. It says nothing about the run bill.
 
-Now price the run bill. Take one 500-token answer, using the rule from earlier: each token costs about 2 operations per parameter, where an operation is one multiply or one add.
+Now price the run bill. Take one 500-token answer, using the 2 × parameters estimate from earlier: each token costs about 2 operations per parameter, where an operation is one multiply or one add.
 
 | | 70B model | 8B model |
 | --- | --- | --- |
