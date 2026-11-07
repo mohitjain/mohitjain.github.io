@@ -184,6 +184,16 @@ cycle; each calls the scripts in `bin/`:
 | `bg-site-health` | Lighthouse, phone overflow and link check, compared with the last run |
 | `bg-launch` | the one-time go-live checklist |
 
+### Claude on the web
+
+Claude Code on the web (claude.ai/code) can write an article from a cloud copy of this repository.
+
+1. Connect your GitHub account at claude.ai/code and choose `mohitjain/mohitjain.github.io`.
+2. In the environment settings, set the setup script to `bin/cloud-setup`. It installs the Ruby in `.ruby-version` (a few minutes the first time), checks for Node, installs the gems and turns on the commit hook. Run `bin/check` once to confirm the site builds.
+3. Ask for the article. Claude follows `CLAUDE.md` and the `bg-` skills, works on a branch and opens a pull request. You read it and merge it in the GitHub web page.
+
+`CLAUDE.md` is the only memory a web session has, so keep the standing decisions in it up to date.
+
 ## Project layout
 
 | Path | What it is |

@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# Get a fresh Linux machine ready to work on the site, such as a Claude Code on the web environment.
+# Installs the Ruby version in .ruby-version if it is missing (built with ruby-build, which takes a few
+# minutes), then runs bin/setup (gems, commit hook). Safe to run again: it skips what is already done.
+# Usage: bin/cloud-setup            DRY_RUN=1 bin/cloud-setup   shows the steps without running them
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+run() { if [ -n "${DRY_RUN:-}" ]; then echo "would run: $*"; else "$@"; fi; }
+
+want="$(cat .ruby-version)"
+have="$(ruby -e 'print RUBY_VERSION' 2>/dev/null || echo none)"
+
+if [ "$have" = "$want" ]; then
+  echo "Ruby $want is already installed."
+else
+  echo "Ruby $want is needed (found $have). Building it with ruby-build; this takes a few minutes."
+  sudo=""; [ "$(id -u)" -ne 0 ] && command -v sudo >/dev/null 2>&1 && sudo="sudo -n"
+  if command -v apt-get >/dev/null 2>&1; then
+    run $sudo apt-get update -y
+    run $sudo apt-get install -y build-essential git curl libssl-dev libyaml-dev zlib1g-dev libffi-dev libreadline-dev
+  else
+    echo "No apt-get here: make sure a C compiler, git, curl and the OpenSSL, YAML, zlib and libffi headers are installed." >&2
+  fi
+  [ -d "$HOME/.ruby-build" ] || run git clone --depth 1 https://github.com/rbenv/ruby-build.git "$HOME/.ruby-build"
+  run "$HOME/.ruby-build/bin/ruby-build" "$want" "$HOME/.rubies/ruby-$want"
+  export PATH="$HOME/.rubies/ruby-$want/bin:$PATH"
+  # keep the new Ruby on the PATH for later shells
+  line="export PATH=\"\$HOME/.rubies/ruby-$want/bin:\$PATH\""
+  if [ -z "${DRY_RUN:-}" ]; then
+    for f in "$HOME/.bashrc" "$HOME/.profile"; do grep -qsF "$line" "$f" || echo "$line" >> "$f"; done
+  fi
+fi
+
+if ! command -v node >/dev/null 2>&1; then
+  echo "Node.js is also required (for the Pagefind search index) and was not found. Install a current LTS release, then run this again." >&2
+  exit 1
+fi
+
+run bin/setup
+echo "Ready. Run bin/check to confirm the site builds."

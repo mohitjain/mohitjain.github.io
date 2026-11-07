@@ -53,4 +53,5 @@ Publishing is one commit: `Publish: <title>`. Nothing is pushed without an expli
 - Never push, merge or force-push without a clear yes for that action. Approval for one push does not cover another.
 - Never stage or commit sample files. Never use `git add -A` or `git add .` here.
 - If a step fails, stop and report; do not work around a check.
+- In a web (cloud) session, step 8 is always "push a branch and open a pull request". Never push to `master` and never merge.
 - Follow `CLAUDE.md`.
