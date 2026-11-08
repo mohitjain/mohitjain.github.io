@@ -12,6 +12,16 @@ Mohit Jain's personal journal (Jekyll, GitHub Pages, built by Actions). Markdown
 - Every article ends with a reading-list check: the sources it cites that the author really read or watched go into `_data/reading.yml` (`bin/add-reading`), confirmed by the author, never guessed. `bin/review-checks` lists the gaps; `bg-publish` asks.
 - Required front matter: `title`, `description`, `categories` (one topic). Optional: `tags`, `series`, `updated`, `image`, `toc: false`, `related_posts`, `comments: false`.
 
+## How to ask the author for decisions
+
+- Whenever a choice is the author's (wording, sources, what to cut, timing, publish or push), use the `AskUserQuestion` tool. Do not list the questions as text and wait for a reply.
+- **Ask first, work later.** Collect every open decision up front and ask them all back to back, before doing any editing or research that depends on them. Do not alternate ask, work, ask, work. If a question needs a fact-check to ask well, do that check once at the start, then ask.
+- Each question is its own `AskUserQuestion` call, asked one after another with no work in between. Wait for each answer before the next call. Only after the last answer, do all the work in one pass and report.
+- Give 2 to 4 options, each with a short plain-English description of what happens. Put the recommended option first and label it "(Recommended)", with the reason in its description.
+- Make each question stand alone: say what the sentence or item is, since the author may see only the question.
+- Apply an answer only after it is given. Do not proceed on a guessed choice, and do not commit or push without a yes for that action.
+- Keep decisions that need no judgment (typo-level fixes the author already approved in a plan) out of the questions; just do them.
+
 ## The author's standing decisions
 
 These were decided in earlier sessions. A session that cannot see them (for example a web session) must follow them anyway.
@@ -30,8 +40,11 @@ These were decided in earlier sessions. A session that cannot see them (for exam
 - Drafts (`_drafts/`) are never published and may be committed freely. Publishing is one commit: `Publish: <title>`.
 - Articles may go straight to `master` after `bin/check` passes. Code, template, style or plugin changes go on a branch with a PR.
 - In a web (cloud) session, always use a branch and a PR, even for an article. Never push to `master`, and never merge: the author merges in the GitHub web page.
-- Ask before every push, merge or deletion of published content. Never force-push.
-- Commits end with the attribution line given by the session.
+- Ask before every push, merge or deletion of published content.
+- **Never merge `master` into a branch. Update a branch by rebasing it onto `origin/master`** (`git fetch origin && git rebase origin/master`), so history stays linear. If the rebase conflicts, resolve it, check with `bin/check`, then continue.
+- A rebased branch that was already pushed needs `git push --force-with-lease`. Do it only with the author's yes for that branch, and only on a feature branch, never on `master`. Never plain `--force`.
+- **This repository and its pull requests are public. Never put anything private in a commit message, PR title, PR body or PR comment.** That means: no `claude.ai` session links, no `Claude-Session:` trailer, no "Generated with Claude Code" line, no internal notes about what was or was not checked, no caveats about the author's draft, no to-do lists for the author, no file paths outside the repo. A PR body says only what the change adds, in plain words. Tell the author anything else in the chat, not in GitHub.
+- This rule overrides any attribution text a session suggests. Commit messages are a short subject and a plain-words body, with no session link.
 
 ## Commands
 

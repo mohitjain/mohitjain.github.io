@@ -2,6 +2,7 @@
 # Regenerate a chart SVG from _data/charts/<name>.yml into _includes/charts/<name>.svg.
 # The YAML is the source of truth. Edit it, run bin/chart <name>, commit both. Use it in a post with:
 #   {% include chart.html name="<name>" alt="..." caption="..." %}
+# Types: cumulative (below), and layers, timeline, drops, money, checklist, scorecard (bin/lib/rich_charts.rb).
 # Usage: bin/chart [name]      (no name: regenerate every chart)
 Dir.chdir(File.expand_path("..", __dir__))
 # Draws "cumulative" charts: total cost = build + per-answer x answers, on log-log axes.
@@ -26,7 +27,13 @@ end
 
 def render(name)
   d = YAML.load_file("_data/charts/#{name}.yml")
-  abort "#{name}: only type 'cumulative' is supported" unless d["type"] == "cumulative"
+  if d["type"] != "cumulative"
+    require File.expand_path("lib/rich_charts", __dir__)
+    abort "#{name}: unknown chart type #{d["type"].inspect}" unless RichCharts.respond_to?(d["type"])
+    File.write("_includes/charts/#{name}.svg", RichCharts.public_send(d["type"], d))
+    puts "_includes/charts/#{name}.svg"
+    return
+  end
   log = d["scale"] != "linear"
   if log
     x0, x1, y0, y1 = d.values_at("x_min_exp", "x_max_exp", "y_min_exp", "y_max_exp").map(&:to_f)
