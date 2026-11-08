@@ -167,6 +167,14 @@
 
 // Charts made by bin/chart: inline SVG that follows the page colours (light and dark).
 .chart {
+  --chart-edge: rgba(29, 45, 53, 0.55);
+  --chart-grid: rgba(29, 45, 53, 0.16);
+  --chart-muted: rgba(29, 45, 53, 0.45);
+  --chart-accent: #3b6fd1;
+  --chart-good: #1a7f37;
+  --chart-warn: #b7791f;
+  --chart-bad: #c62828;
+
   margin: 1.75em 0;
 
   .chart-title {
@@ -199,5 +207,37 @@
 
   .chart-svg circle {
     fill: var(--bg);
+  }
+
+  // Wide charts (760 units across) keep a readable size and scroll sideways on a phone.
+  .chart-frame.wide {
+    max-width: none;
+    overflow-x: auto;
+
+    .chart-svg {
+      min-width: 38rem;
+    }
+  }
+}
+
+:root[data-theme="dark"] .chart {
+  --chart-edge: rgba(255, 255, 255, 0.6);
+  --chart-grid: rgba(255, 255, 255, 0.18);
+  --chart-muted: rgba(255, 255, 255, 0.45);
+  --chart-accent: #6b9bf0;
+  --chart-good: #4cc26a;
+  --chart-warn: #e6b94a;
+  --chart-bad: #ff6b6b;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .chart {
+    --chart-edge: rgba(255, 255, 255, 0.6);
+    --chart-grid: rgba(255, 255, 255, 0.18);
+    --chart-muted: rgba(255, 255, 255, 0.45);
+    --chart-accent: #6b9bf0;
+    --chart-good: #4cc26a;
+    --chart-warn: #e6b94a;
+    --chart-bad: #ff6b6b;
   }
 }

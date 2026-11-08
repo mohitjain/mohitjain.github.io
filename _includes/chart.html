@@ -1,11 +1,12 @@
 {%- comment -%}
   {% include chart.html name="model-size-cost" alt="What the chart shows" caption="Source and caveats" %}
+  Add wide=true for a chart drawn 760 units wide: it keeps a readable size and scrolls sideways on a phone.
   The SVG is made by bin/chart from _data/charts/<name>.yml. alt and caption are required.
 {%- endcomment -%}
 <figure class="chart">
   {%- if include.title %}
   <p class="chart-title">{{ include.title }}</p>
   {%- endif %}
-  <div class="chart-frame" role="img" aria-label="{{ include.alt | escape }}">{% include charts/{{ include.name }}.svg %}</div>
+  <div class="chart-frame{% if include.wide %} wide{% endif %}" role="img" aria-label="{{ include.alt | escape }}">{% include charts/{{ include.name }}.svg %}</div>
   <figcaption>{{ include.caption }}</figcaption>
 </figure>
