@@ -63,4 +63,4 @@ These were decided in earlier sessions. A session that cannot see them (for exam
 
 ## Skills (`.claude/skills/`)
 
-all start with `bg-`: bg-new-article, bg-review-draft, bg-check, bg-preview, bg-publish, bg-update-article, bg-log-reading, bg-add-tag, bg-seo-check, bg-site-health, bg-launch.
+all start with `bg-`: bg-new-article, bg-review-draft, bg-check, bg-preview, bg-publish, bg-update-article, bg-log-reading, bg-add-tag, bg-seo-check, bg-site-health, bg-launch, bg-pr-checks.
