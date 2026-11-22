@@ -239,10 +239,13 @@
           const p = pending;
           pending = null;
           if (r.error || !r.access_token) return p.rej(new ApiError("auth", r.error));
+          // Which permissions did Google grant? Compare each granted scope for an exact match, never as a substring,
+          // so ".../auth/youtube.readonly" can never be mistaken for ".../auth/youtube".
+          const granted = String(r.scope || "").split(/\s+/);
           write(session, K.token, {
             token: r.access_token,
             expiresAt: Date.now() + (Number(r.expires_in) || 3600) * 1000 - 60000,
-            write: String(r.scope || "").split(" ").includes(SCOPE_WRITE),
+            write: granted.some((scope) => scope === SCOPE_WRITE),
           });
           p.res();
         },
