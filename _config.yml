@@ -40,6 +40,10 @@ giscus:
 # Leave empty to load nothing. Only loads in production builds.
 google_analytics: "G-4N94T0LKZ6"
 
+# YouTube subscriptions page (/watch/). A Google OAuth *web* client ID: public, not a secret.
+# Never put a client secret, API key or token here.
+youtube_client_id: "1012160421305-4u3dc9b47j7uv8s4q5qqqtj5tg3hp060.apps.googleusercontent.com"
+
 # Newsletter (Buttondown): put your Buttondown username here to show the subscribe form.
 # Leave empty to point readers at RSS instead.
 newsletter:
