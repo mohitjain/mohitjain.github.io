@@ -1,4 +1,6 @@
 <head>
+  {%- comment -%} A page can set `csp:` in its front matter. Production builds only, so the local live-reload script still works. {%- endcomment -%}
+  {% if page.csp and jekyll.environment == "production" %}<meta http-equiv="Content-Security-Policy" content="{{ page.csp | strip | escape }}" />{% endif %}
   <script>
     (function () {
       try {

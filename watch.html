@@ -6,6 +6,21 @@ description: A private page for my own YouTube subscriptions.
 robots: noindex, nofollow
 sitemap: false
 analytics: false
+# Content-Security-Policy for this page (production builds). Scripts are locked to this site, Google sign-in and one
+# hashed inline script (bin/check-csp keeps the hash right). Inline styles are allowed only because Google's sign-in
+# script adds a <style> element of its own.
+csp: >-
+  default-src 'none';
+  script-src 'self' 'sha256-y1SWa3LGvafrceZDXdN1yHCXIv96sihVz6RgYbBHZAE=' https://accounts.google.com/gsi/client;
+  style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style;
+  font-src 'self';
+  img-src 'self' https://i.ytimg.com;
+  connect-src 'self' https://www.googleapis.com https://accounts.google.com/gsi/;
+  frame-src https://www.youtube-nocookie.com https://accounts.google.com/gsi/;
+  manifest-src 'self';
+  base-uri 'self';
+  form-action 'none';
+  object-src 'none'
 ---
 
 <div id="watch" class="watch" data-client-id="{{ site.youtube_client_id }}">

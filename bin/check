@@ -7,6 +7,7 @@ cd "$(dirname "$0")/.."
 [ -n "${SKIP_BUILD:-}" ] || bin/build
 
 bin/lint-content
+bin/check-csp
 
 flags=(--disable-external --no-enforce-https)
 [ "${1:-}" = "--external" ] && flags=(--ignore-status-codes "0,429,999")
