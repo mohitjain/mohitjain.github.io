@@ -11,3 +11,7 @@ vendor/
 *.swp
 *.swo
 *~
+
+# Local secrets (OAuth client file etc.). Never commit.
+.secrets/
+client_secret*.json

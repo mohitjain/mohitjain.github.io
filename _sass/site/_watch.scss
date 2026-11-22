@@ -1,0 +1,672 @@
+// /watch/ : private YouTube subscriptions page. Same tokens as the rest of the site; no boxes, no shadows.
+.watch-main {
+  width: 100%;
+  max-width: 54rem;
+  padding: clamp(1rem, 4vw, 2.5rem) var(--edge) 0;
+}
+
+.watch {
+  font-size: 0.9em;
+
+  button,
+  input,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+
+  button {
+    padding: 0;
+    background: none;
+    border: 0;
+    cursor: pointer;
+
+    &:disabled {
+      cursor: default;
+      opacity: 0.5;
+    }
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  h2 {
+    margin: 0 0 0.6rem;
+    font-size: 1.1em;
+  }
+
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+}
+
+// Top bar: tabs on the left, quiet actions on the right
+.w-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.w-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.3rem;
+
+  button {
+    padding: 0.15rem 0;
+    font-weight: 700;
+    border-bottom: 2px solid transparent;
+
+    &:hover {
+      border-bottom-color: var(--rule);
+    }
+
+    &[aria-current="page"] {
+      border-bottom-color: var(--text);
+    }
+  }
+}
+
+.w-count {
+  margin-left: 0.35em;
+  font-size: 0.75em;
+  font-weight: 500;
+  opacity: 0.7;
+}
+
+.w-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.1rem;
+  font-size: 0.85em;
+
+  button {
+    text-decoration: underline;
+    text-decoration-thickness: 0.06em;
+    text-underline-offset: 0.2em;
+
+    &:hover {
+      text-decoration-thickness: 0.14em;
+    }
+  }
+}
+
+.w-status {
+  min-height: 1.5em;
+  margin: 0.6rem 0 0;
+  font-size: 0.78em;
+  opacity: 0.75;
+
+  &.is-error {
+    font-weight: 700;
+    opacity: 1;
+  }
+}
+
+// Player: sits above the list and keeps its place while you tag
+.w-player {
+  margin: 1rem 0 1.5rem;
+}
+
+.w-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #000;
+
+  iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+}
+
+.w-frame-demo {
+  display: grid;
+  place-items: center;
+  color: #fff;
+}
+
+.w-now {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.4rem 1.5rem;
+  margin-top: 0.6rem;
+}
+
+.w-now-title {
+  margin: 0;
+  font-weight: 700;
+}
+
+.w-now-meta {
+  margin: 0;
+  font-size: 0.85em;
+  opacity: 0.75;
+}
+
+.w-now-actions {
+  display: flex;
+  gap: 1.1rem;
+  font-size: 0.85em;
+
+  button {
+    text-decoration: underline;
+  }
+}
+
+// Chips and segmented buttons
+.w-chips,
+.w-topics {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.9rem;
+  font-size: 0.85em;
+}
+
+.w-chips {
+  margin: 1.1rem 0 0.4rem;
+}
+
+.w-chip,
+.w-seg button {
+  padding: 0.1rem 0;
+  border-bottom: 1px solid transparent;
+  opacity: 0.65;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &[aria-pressed="true"] {
+    font-weight: 700;
+    border-bottom-color: var(--text);
+    opacity: 1;
+  }
+}
+
+.w-seg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.9rem;
+  font-size: 0.85em;
+}
+
+// Video rows
+.w-list {
+  margin-top: 0.8rem;
+}
+
+.w-v {
+  position: relative;
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: 0.2rem 1rem;
+  align-items: start;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--rule);
+
+  @media (max-width: 40em) {
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    gap: 0.2rem 0.8rem;
+  }
+}
+
+.w-thumb {
+  position: relative;
+  display: block;
+  grid-row: 1 / span 2;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--inline-code-bg);
+
+  img {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    object-fit: cover;
+  }
+
+  @media (max-width: 40em) {
+    grid-row: auto;
+  }
+}
+
+.w-dur {
+  position: absolute;
+  right: 0.35rem;
+  bottom: 0.35rem;
+  padding: 0.05rem 0.35rem;
+  color: #fff;
+  font-size: 0.75em;
+  font-variant-numeric: tabular-nums;
+  background: rgba(0, 0, 0, 0.82);
+
+  @media (max-width: 40em) {
+    right: 0.2rem;
+    bottom: 0.2rem;
+    font-size: 0.68em;
+  }
+}
+
+.w-title {
+  margin: 0;
+  font-size: 1em;
+  line-height: 1.3;
+
+  button {
+    text-align: left;
+    font-weight: 700;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.w-meta {
+  margin: 0.25rem 0 0;
+  font-size: 0.8em;
+  opacity: 0.75;
+}
+
+.w-tags {
+  grid-column: 2;
+  margin-top: 0.2rem;
+
+  @media (max-width: 40em) {
+    grid-column: 1 / -1;
+    margin-top: 0.4rem;
+  }
+}
+
+.w-te {
+  display: grid;
+  gap: 0.6rem;
+
+  // under a video: two quiet lines, Category then Tags
+  &.is-compact {
+    gap: 0.1rem;
+    font-size: 0.85em;
+  }
+}
+
+.w-te-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.1rem 0.9rem;
+}
+
+// Inputs
+.watch input[type="text"],
+.watch input[type="search"],
+.watch select {
+  padding: 0.3rem 0.1rem;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--text);
+  border-radius: 0;
+}
+
+.w-add {
+  display: inline-flex;
+  gap: 0.6rem;
+  align-items: baseline;
+
+  input {
+    width: 9rem;
+  }
+
+  button {
+    text-decoration: underline;
+  }
+}
+
+// Channels view
+
+.w-only {
+  align-self: baseline;
+  font-size: 0.85em;
+  white-space: nowrap;
+}
+
+.w-ch {
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.w-ch-name {
+  display: flex;
+  gap: 0.6rem;
+  align-items: baseline;
+  margin-bottom: 0.4rem;
+  font-weight: 700;
+}
+
+.w-bulk {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0.8rem 0;
+  padding: 0.7rem 0;
+  border-top: 1px solid var(--text);
+  border-bottom: 1px solid var(--text);
+
+  p {
+    margin: 0;
+    font-weight: 700;
+  }
+}
+
+.w-link,
+.w-more-row button {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.w-section {
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--text);
+}
+
+.w-topic-list li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 1rem;
+  align-items: baseline;
+  padding: 0.25rem 0;
+}
+
+.w-tname {
+  min-width: 8rem;
+  font-weight: 700;
+}
+
+.w-n {
+  min-width: 6rem;
+  font-size: 0.85em;
+  opacity: 0.75;
+}
+
+.w-section .w-add {
+  margin-top: 0.8rem;
+}
+
+.w-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.4rem;
+
+  button {
+    text-decoration: underline;
+  }
+}
+
+.w-note,
+.w-hint {
+  margin: 0 0 0.8rem;
+  font-size: 0.85em;
+  opacity: 0.75;
+}
+
+.w-hint {
+  margin-top: 0.8rem;
+}
+
+.w-empty {
+  margin-top: 2rem;
+}
+
+.w-more-row {
+  margin-top: 1.5rem;
+}
+
+// Signed-out first screen
+.w-intro {
+  max-width: var(--measure);
+  padding-top: 1.5rem;
+}
+
+.w-lede {
+  margin: 0 0 0.6rem;
+  font-size: 1.5em;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.watch .w-primary {
+  margin-top: 1.2rem;
+  padding: 0.5em 1.15em;
+  color: var(--pill-text);
+  font-weight: 700;
+  background: var(--pill-bg);
+  border-radius: 999px;
+}
+
+.w-warn {
+  font-weight: 700;
+}
+
+// Save / Remove links next to a video, and the playlist name box
+.w-meta button {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.w-add input[name="n"] {
+  width: min(18rem, 60vw);
+}
+
+.w-status button {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+// Emoji icons: dimmed when off, full strength (with an underline) when on
+.w-ic {
+  display: inline-block;
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+  font-size: 1.1em;
+  line-height: 1;
+  vertical-align: -0.12em;
+}
+
+.w-chip:not([aria-pressed="true"]) .w-ic,
+.w-seg button:not([aria-pressed="true"]) .w-ic,
+.w-act:not(.is-on) .w-ic {
+  opacity: 0.5;
+}
+
+.w-act.is-on {
+  border-bottom: 2px solid var(--text);
+}
+
+// Under a video: icon-only buttons, comfortably tappable
+.w-te.is-compact {
+  .w-seg,
+  .w-topics {
+    gap: 0.1rem 0.35rem;
+  }
+
+  .w-chip,
+  .w-seg button {
+    padding: 0.25rem 0.4rem;
+  }
+}
+
+.w-acts {
+  display: inline-flex;
+  gap: 0.2rem;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+
+  button {
+    padding: 0.25rem 0.4rem;
+    text-decoration: none;
+    opacity: 0.7;
+
+    &:hover,
+    &.is-on {
+      opacity: 1;
+    }
+  }
+}
+
+.w-now-actions .w-act {
+  text-decoration: none;
+}
+
+// Emoji buttons are dimmed through the emoji itself (above), not the whole button, so it does not stack
+.w-chip:has(.w-ic),
+.w-seg button:has(.w-ic),
+.w-acts button {
+  opacity: 1;
+}
+
+// Under a video: category icons and tag icons on ONE tight line, with a thin divider between them
+.w-te.is-compact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 0.5rem;
+  font-size: 0.85em;
+
+  .w-te-row {
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0;
+  }
+
+  .w-te-row + .w-te-row {
+    padding-left: 0.5rem;
+    border-left: 1px solid var(--rule);
+  }
+
+  .w-seg,
+  .w-topics {
+    gap: 0;
+  }
+
+  .w-topics {
+    flex-wrap: wrap;
+  }
+
+  .w-chip,
+  .w-seg button {
+    padding: 0.15rem 0.3rem;
+  }
+}
+
+.w-v {
+  gap: 0.1rem 1rem;
+  padding: 0.7rem 0;
+}
+
+.w-v .w-tags {
+  margin-top: 0;
+}
+
+.w-meta {
+  margin-top: 0.15rem;
+}
+
+// Tag icons on the left, Save / Remove on the right of the same line
+.w-v .w-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0 0.5rem;
+
+  .w-acts {
+    margin-left: auto;
+  }
+}
+
+// Top bar: Learn / Saved on the left, Refresh and Settings icons on the right
+.w-actions {
+  align-items: center;
+}
+
+.w-actions .w-icon-btn {
+  padding: 0.2rem 0.35rem;
+  font-size: 1.1em;
+  line-height: 1;
+  text-decoration: none;
+
+  &[aria-pressed="true"] {
+    border-bottom: 2px solid var(--text);
+  }
+}
+
+// Inside Settings: Channels / Later / Mute
+.w-sub {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.2rem;
+  margin: 1rem 0 0.2rem;
+
+  button {
+    padding: 0.1rem 0;
+    font-weight: 700;
+    border-bottom: 2px solid transparent;
+
+    &:hover {
+      border-bottom-color: var(--rule);
+    }
+
+    &[aria-current="page"] {
+      border-bottom-color: var(--text);
+    }
+  }
+}
+
+.w-icon-btn .w-ic {
+  font-size: 1.2em;
+}
+
+// Show Shorts and Untagged only, side by side
+.w-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.6rem;
+  margin: 0.5rem 0 0.9rem;
+
+  .w-only {
+    display: inline-block;
+    margin: 0;
+  }
+}
+
+// Channel rows (Settings): category icon + word, then tag icons, on one line
+.w-ch .w-te.is-compact {
+  font-size: 1em;
+  gap: 0.3rem 0.9rem;
+
+  .w-seg {
+    gap: 0.1rem 0.4rem;
+  }
+
+  .w-chip,
+  .w-seg button {
+    padding: 0.2rem 0.4rem;
+  }
+}

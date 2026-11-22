@@ -1,0 +1,14 @@
+---
+title: Watch
+permalink: /watch/
+layout: watch
+description: A private page for my own YouTube subscriptions.
+robots: noindex, nofollow
+sitemap: false
+analytics: false
+---
+
+<div id="watch" class="watch" data-client-id="{{ site.youtube_client_id }}">
+  <noscript>This page needs JavaScript.</noscript>
+</div>
+<script src="/assets/js/watch.js?v={{ site.time | date: '%s' }}" defer="defer"></script>
