@@ -1,10 +1,12 @@
 <head>
+  {%- comment -%} A page can set `csp:` in its front matter. Production builds only, so the local live-reload script still works. {%- endcomment -%}
+  {% if page.csp and jekyll.environment == "production" %}<meta http-equiv="Content-Security-Policy" content="{{ page.csp | strip | escape }}" />{% endif %}
   <script>
     (function () {
       try {
-        var t = localStorage.getItem("theme");
+        var t = localStorage.getItem("{{ page.theme_key | default: 'theme' }}");
         if (t !== "dark" && t !== "light") {
-          var d = "{{ site.mode }}";
+          var d = "{{ page.mode | default: site.mode }}";
           t = d === "dark" || d === "light" ? d : window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
         }
         document.documentElement.setAttribute("data-theme", t);

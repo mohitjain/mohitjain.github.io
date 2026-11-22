@@ -34,6 +34,16 @@ These were decided in earlier sessions. A session that cannot see them (for exam
 - Never ask for, store or commit passwords, API keys or tokens.
 - The author prefers plain English and short answers.
 
+## The /watch/ page
+
+- `/watch/` is the author's private, unlisted YouTube subscriptions page (`watch.html`, `assets/js/watch.js`, `_sass/site/_watch.scss`). It is not linked, not in the sitemap or search, and loads no Analytics. Keep it that way.
+- Everything runs in the browser. The Google OAuth client ID in `_config.yml` is public. Never commit a client secret, API key or token; `.secrets/` is git-ignored for local credential files.
+- The page keeps a short-lived sign-in token in the browser tab's session storage while it runs. That is expected and is never written to the repository.
+- Sign-in is read-only. The wider "manage your YouTube account" permission is asked for only by the one-playlist feature.
+- `/watch/?demo=1` shows made-up data and never calls Google; use it for layout work.
+- The page defaults to a black (dark) theme and keeps its own light/dark choice (`mode` and `theme_key` in `watch.html`), separate from the blog's theme.
+- The page sets a content-security policy (`csp:` in `watch.html`, production builds only). It allows the one inline script in `_includes/header.html` by its hash, so if that script changes, `bin/check` fails until the hash is updated; `bin/check-csp` prints the value to use.
+
 ## Git rules
 
 - Never commit sample files: `_posts/*-sample-*.md`, `_drafts/sample-*.md`, `assets/img/sample/`, `_data/reading_sample.yml` (they are git-ignored locally; do not force-add them).

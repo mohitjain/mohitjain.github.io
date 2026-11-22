@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+# Check that /watch/'s content-security policy matches the built page.
+# The policy allows the page's one inline script (the theme setup in _includes/header.html) by its hash. If that
+# script changes, the hash changes and the browser would silently block it; this fails the build instead and
+# prints the value to paste into `csp:` in watch.html.
+# Usage: bin/check-csp   (run after a build; bin/check runs it)
+require "digest"
+require "cgi"
+
+root = File.expand_path("..", __dir__)
+file = File.join(root, "_site", "watch", "index.html")
+abort "check-csp: #{file} not found; build the site first (bin/build)" unless File.exist?(file)
+html = File.read(file)
+problems = []
+
+meta = html[/<meta http-equiv="Content-Security-Policy" content="([^"]*)"/, 1]
+if meta.nil?
+  abort "check-csp: /watch/ has no Content-Security-Policy meta tag (is `csp:` set in watch.html, and is this a production build?)"
+end
+policy = CGI.unescapeHTML(meta)
+script_src = policy[/script-src([^;]*)/, 1].to_s
+
+# The policy has to come before the first script, or that script is not covered.
+first_script = html.index(/<script\b/)
+problems << "the policy meta tag must come before the first <script> in <head>" if first_script && html.index("Content-Security-Policy") > first_script
+
+# Every executable inline script needs its hash in script-src. Data blocks (ld+json) are never executed.
+html.scan(%r{<script\b([^>]*)>(.*?)</script>}m) do |attrs, body|
+  next if attrs.include?("src=")
+  next if attrs =~ /type\s*=\s*["'](?!module|text\/javascript)[^"']*["']/
+  hash = "'sha256-#{Digest::SHA256.base64digest(body)}'"
+  problems << "an inline script is not allowed by the policy; add #{hash} to script-src in watch.html" unless script_src.include?(hash)
+end
+
+# No shortcuts that would defeat the policy.
+problems << "script-src must not contain 'unsafe-inline' or 'unsafe-eval'" if script_src =~ /'unsafe-(inline|eval)'/
+problems << "the policy must start from default-src 'none'" unless policy =~ /default-src\s+'none'/
+
+# External scripts must be same-site or on the policy's list.
+html.scan(/<script\b[^>]*\bsrc="([^"]+)"/) do |(src)|
+  next if src.start_with?("/")
+  problems << "external script #{src} is not allowed by the policy" unless script_src.split.any? { |s| src.start_with?(s) }
+end
+
+if problems.empty?
+  puts "Content-Security-Policy OK for /watch/"
+else
+  problems.each { |p| warn "check-csp: #{p}" }
+  exit 1
+end
