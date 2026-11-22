@@ -1,5 +1,5 @@
 // /watch/: my YouTube subscriptions, in the browser only.
-// Google sign-in -> subscriptions -> each Learn/Unwind/Later channel's last 90 days of uploads -> a quiet list.
+// Google sign-in -> subscriptions -> each Learn/Unwind/Snacks/Later channel's last 90 days of uploads -> a quiet list.
 // Sign-in is read-only. The broader "manage your YouTube account" permission is asked for only once a playlist is
 // set up (Save / Unsave). Categories, tags, removed videos and caches live in this browser's storage. Nothing is
 // sent anywhere except to Google/YouTube. ?demo=1 shows fake data and never calls Google.
@@ -25,7 +25,8 @@
   const PAGE = 40;
   const STATUSES = [
     { id: "learn", label: "Learn" },
-    { id: "unwind", label: "Unwind" }, // lean-back: podcasts, interviews, entertainment
+    { id: "unwind", label: "Unwind" }, // lean-back: podcasts, interviews
+    { id: "snacks", label: "Snacks" }, // pure entertainment: chess, games, comedy. Not muted, not for learning
     { id: "later", label: "Later" },
     { id: "mute", label: "Mute" },
   ];
@@ -33,6 +34,7 @@
   const TABS = [
     { id: "learn", label: "Learn" },
     { id: "unwind", label: "Unwind" },
+    { id: "snacks", label: "Snacks" },
     { id: "saved", label: "Saved" },
   ];
   const SUBS = [
@@ -54,7 +56,7 @@
 
   // Emoji for the built-in tags and the status/action buttons (custom tags stay text).
   const TAG_ICONS = { ai: "🤖", systems: "🧩", leadership: "👑", books: "📚", finance: "💰", others: "📦" };
-  const UI_ICONS = { learn: "🎓", unwind: "🍿", later: "⏳", mute: "🔇", save: "📌", saved: "📌", remove: "✕" };
+  const UI_ICONS = { learn: "🎓", unwind: "🍿", snacks: "🍫", later: "⏳", mute: "🔇", save: "📌", saved: "📌", remove: "✕" };
 
   // ---------- storage (every access guarded; falls back to memory) ----------
   const P = DEMO ? "yt.demo." : "yt.";
@@ -114,7 +116,7 @@
 
   // ---------- state ----------
   const state = {
-    tab: "learn", // "learn" | "unwind" | "saved" | "settings"
+    tab: "learn", // "learn" | "unwind" | "snacks" | "saved" | "settings"
     sub: "channels", // inside Settings: "channels" | "later" | "mute"
     topic: null, // topic filter in the feed
     hideShorts: read(local, K.shorts, true) !== false,
@@ -571,8 +573,8 @@
   };
   const dismissControl = (v) => btn({ class: "w-act", "data-fk": "dm-" + v.id, onclick: () => dismissVideo(v) }, UI("remove"), "Remove", true);
 
-  // Only Learn, Unwind and Later channels have a feed, so only they are fetched (untagged and muted cost no quota).
-  const inFeed = (c) => ["learn", "unwind", "later"].includes(statusOf(c.id));
+  // Only Learn, Unwind, Snacks and Later channels have a feed, so only they are fetched (untagged and muted cost no quota).
+  const inFeed = (c) => ["learn", "unwind", "snacks", "later"].includes(statusOf(c.id));
   const needsFetch = () => {
     if (!state.subs || !state.vids) return false;
     return channels().some((c) => inFeed(c) && !state.vids.fetched.includes(c.id));
@@ -898,7 +900,7 @@
   });
 
   // ---------- views ----------
-  // Category buttons (Learn / Unwind / Later / Mute) and tag buttons for one channel, on one line.
+  // Category buttons (Learn / Unwind / Snacks / Later / Mute) and tag buttons for one channel, on one line.
   // compact: everything icon-only (under a video). Otherwise categories show icon + word, tags stay icon-only.
   // New tags are added in Settings -> Channels -> Tags, not here.
   const tagEditor = (ch, p, compact) => {
@@ -940,7 +942,7 @@
 
   const feedView = () => {
     const out = [];
-    const tab = state.tab === "settings" ? state.sub : state.tab; // "learn" or "unwind", or "later" inside Settings
+    const tab = state.tab === "settings" ? state.sub : state.tab; // a main tab, or "later" inside Settings
     const used = state.topics.filter((t) => channels().some((c) => statusOf(c.id) === tab && topicsOf(c.id).includes(t.id)));
     if (used.length) {
       out.push(h("div", { class: "w-chips", role: "group", "aria-label": "Filter by tag" },
@@ -953,7 +955,7 @@
       .filter((v) => live.has(v.channelId) && statusOf(v.channelId) === tab)
       .filter((v) => !state.topic || topicsOf(v.channelId).includes(state.topic))
       .filter((v) => !(state.hideShorts && isShort(v.id)))
-      .filter((v) => !((tab === "learn" || tab === "unwind") && saved.has(v.id))) // already saved: it lives in the Saved tab
+      .filter((v) => !(tab !== "later" && saved.has(v.id))) // already saved: it lives in the Saved tab
       .filter((v) => !state.dismissed[v.id])
       .filter((v) => Date.parse(v.published) >= Date.now() - WINDOW_MS)
       .sort((a, b) => Date.parse(b.published) - Date.parse(a.published));
@@ -964,7 +966,7 @@
       else if (!state.vids) msg = "Nothing loaded yet. Use Refresh (↻) to try again.";
       else if (!inTab) {
         const open = channels().filter((c) => statusOf(c.id) === "none").length;
-        msg = `No channels are tagged ${{ learn: "Learn", unwind: "Unwind", later: "Later" }[tab]} yet. Open Settings (the gear icon) to choose some${open ? ` (${open} untagged)` : ""}.`;
+        msg = `No channels are tagged ${{ learn: "Learn", unwind: "Unwind", snacks: "Snacks", later: "Later" }[tab]} yet. Open Settings (the gear icon) to choose some${open ? ` (${open} untagged)` : ""}.`;
       }
       else msg = "No videos to show here. Try Refresh (↻), or turn on Show Shorts in Settings.";
       out.push(h("p", { class: "w-empty", text: msg }));
@@ -1088,7 +1090,7 @@
   const muteView = () => {
     const rows = channels().filter((c) => statusOf(c.id) === "mute");
     return [
-      h("p", { class: "w-hint", text: "Muted channels are never loaded. Choose Learn, Unwind or Later to bring one back." }),
+      h("p", { class: "w-hint", text: "Muted channels are never loaded. Choose Learn, Unwind, Snacks or Later to bring one back." }),
       rows.length
         ? h("div", { class: "w-channels" }, rows.map((c) => h("div", { class: "w-ch" }, h("div", { class: "w-ch-name" }, h("span", { text: c.title })), tagEditor(c, "x" + c.id + "-", true))))
         : h("p", { class: "w-empty", text: "No channels are muted." }),
@@ -1114,13 +1116,14 @@
     return { text: parts.join(" · ") };
   };
 
-  // Light / dark switch. Same "theme" key and data-theme attribute as the rest of the site (see _includes/header.html).
+  // Light / dark switch. This page defaults to dark and keeps its own saved choice ("watch-theme"), separate from the
+  // blog's "theme", so a light blog never turns this page light. Set in watch.html and read by _includes/header.html.
   const themeNow = () => (document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light");
   const toggleTheme = () => {
     const next = themeNow() === "dark" ? "light" : "dark";
     document.documentElement.setAttribute("data-theme", next);
     try {
-      localStorage.setItem("theme", next);
+      localStorage.setItem("watch-theme", next);
     } catch (e) {}
     render();
   };
@@ -1144,7 +1147,7 @@
     const themeBtn = btn({ class: "w-icon-btn", "data-fk": "theme", onclick: toggleTheme }, glyph(dark ? "☀️" : "🌙"), dark ? "Light mode" : "Dark mode", true);
     bar.replaceChildren(
       h("nav", { class: "w-tabs", "aria-label": "Views" }, TABS.map((t) =>
-        h("button", { type: "button", "aria-current": state.tab === t.id ? "page" : null, "data-fk": "tab-" + t.id, onclick: () => { state.tab = t.id; state.limit = PAGE; state.topic = null; state.undo = null; write(local, K.tab, t.id); render(); } }, t.label))),
+        btn({ "aria-current": state.tab === t.id ? "page" : null, "data-fk": "tab-" + t.id, onclick: () => { state.tab = t.id; state.limit = PAGE; state.topic = null; state.undo = null; write(local, K.tab, t.id); render(); } }, UI(t.id), t.label, true))),
       h("div", { class: "w-actions" },
         !hasSession() && (state.subs || state.vids) ? h("button", { type: "button", "data-fk": "signin-bar", onclick: onSignIn, disabled: !tokenClient, text: "Sign in" }) : null,
         hasSession() || state.subs || state.vids
@@ -1181,6 +1184,7 @@
       { id: cid(4), title: "Example Quick Clips" },
       { id: cid(5), title: "Example Weekly Digest" },
       { id: cid(6), title: "Example Noise" },
+      { id: cid(7), title: "Example Chess Club" },
     ];
     const H = 3600 * 1000;
     const spec = [
@@ -1196,6 +1200,8 @@
       [3, "Writing a decision record that gets read", 70, 1290],
       [2, "Embeddings from first principles", 100, 2886],
       [1, "Backpressure and load shedding", 150, 2240],
+      [7, "Endgame ideas every player should know", 8, 1520],
+      [7, "A brilliant sacrifice, move by move", 60, 980],
     ];
     const now = Date.now();
     const items = spec.map(([c, title, hrs, d], i) => ({ id: "demovideo" + i, title, channelId: cid(c), channel: chans[c - 1].title, published: new Date(now - hrs * H).toISOString(), demo: true, _d: d }));
@@ -1208,6 +1214,7 @@
         [cid(2)]: { status: "learn", topics: ["ai"] },
         [cid(3)]: { status: "later", topics: ["leadership"] },
         [cid(5)]: { status: "unwind", topics: [] },
+        [cid(7)]: { status: "snacks", topics: [] },
         [cid(6)]: { status: "mute", topics: [] },
       };
     }

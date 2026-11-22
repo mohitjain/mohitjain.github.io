@@ -6,12 +6,14 @@ description: A private page for my own YouTube subscriptions.
 robots: noindex, nofollow
 sitemap: false
 analytics: false
+mode: dark
+theme_key: watch-theme
 # Content-Security-Policy for this page (production builds). Scripts are locked to this site, Google sign-in and one
 # hashed inline script (bin/check-csp keeps the hash right). Inline styles are allowed only because Google's sign-in
 # script adds a <style> element of its own.
 csp: >-
   default-src 'none';
-  script-src 'self' 'sha256-y1SWa3LGvafrceZDXdN1yHCXIv96sihVz6RgYbBHZAE=' https://accounts.google.com/gsi/client;
+  script-src 'self' 'sha256-isRFtX33CECm8QiPPKDgxyRFAR5UbAtzSo2NtksPmrY=' https://accounts.google.com/gsi/client;
   style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style;
   font-src 'self';
   img-src 'self' https://i.ytimg.com;
