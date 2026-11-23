@@ -1131,9 +1131,64 @@
   const bar = h("div", { class: "w-bar" });
   const statusEl = h("p", { class: "w-status", role: "status", "aria-live": "polite" });
   const main = h("div", { class: "w-main" });
-  root.replaceChildren(bar, statusEl, playerBox, main);
+  // ---------- pull to refresh (touch screens) ----------
+  // Pull down from the very top: "Pull to refresh" -> "Release to refresh" -> "Refreshing...". Release past the mark and
+  // it runs the same full refresh as the refresh icon. The browser's own pull-to-reload is switched off for this page,
+  // because a plain reload would only use the 15-minute cache.
+  const ptrEl = h("div", { class: "w-ptr", "aria-hidden": "true" });
+  const PTR_TRIGGER = 56; // px of (damped) pull needed
+  const PTR_MAX = 90;
+  const touchScreen = window.matchMedia("(pointer: coarse)").matches;
+  let ptrStart = null; // finger's starting y while a pull is possible
+  let ptrPull = 0; // damped pull distance in px
+  let ptrRefreshing = false;
+
+  const paintPtr = () => {
+    const pulling = ptrStart !== null && ptrPull > 0;
+    ptrEl.style.height = (pulling ? ptrPull : ptrRefreshing ? 40 : 0) + "px";
+    ptrEl.classList.toggle("is-pulling", pulling);
+    ptrEl.textContent = pulling ? (ptrPull >= PTR_TRIGGER ? "Release to refresh" : "Pull to refresh") : ptrRefreshing ? "Refreshing…" : "";
+  };
+  const atTop = () => (window.scrollY || document.documentElement.scrollTop || 0) <= 0;
+
+  if (touchScreen && !DEMO) {
+    document.documentElement.style.overscrollBehaviorY = "contain";
+    document.addEventListener("touchstart", (e) => {
+      const ok = e.touches.length === 1 && atTop() && !state.busy && !state.playing && !e.target.closest("input, select, textarea, iframe");
+      ptrStart = ok ? e.touches[0].clientY : null;
+      ptrPull = 0;
+    }, { passive: true });
+    document.addEventListener("touchmove", (e) => {
+      if (ptrStart === null) return;
+      const dy = e.touches[0].clientY - ptrStart;
+      if (!atTop() || dy <= 0) {
+        // scrolling the list, or moving up: not a pull
+        if (ptrPull) { ptrPull = 0; paintPtr(); }
+        if (!atTop()) ptrStart = null;
+        return;
+      }
+      ptrPull = Math.min(dy * 0.5, PTR_MAX);
+      if (e.cancelable) e.preventDefault(); // stop the browser's own overscroll / reload
+      paintPtr();
+    }, { passive: false });
+    const endPull = (cancel) => {
+      const go = !cancel && ptrStart !== null && ptrPull >= PTR_TRIGGER;
+      ptrStart = null;
+      ptrPull = 0;
+      if (go) {
+        ptrRefreshing = hasSession(); // signed out: onRefresh opens the sign-in window instead
+        onRefresh();
+      }
+      paintPtr();
+    };
+    document.addEventListener("touchend", () => endPull(false));
+    document.addEventListener("touchcancel", () => endPull(true));
+  }
+
+  root.replaceChildren(ptrEl, bar, statusEl, playerBox, main);
 
   function render() {
+    if (!state.busy) ptrRefreshing = false;
     const active = document.activeElement;
     const fk = active && active.dataset && active.dataset.fk;
     const caret = active && typeof active.selectionStart === "number" && active.type !== "checkbox" ? active.selectionStart : null;
@@ -1162,6 +1217,7 @@
     const needsIntro = !DEMO && !hasSession() && !state.subs && !state.vids && state.tab !== "settings";
     main.replaceChildren(...(needsIntro ? [introView()] : state.tab === "settings" ? settingsView() : state.tab === "saved" ? savedView() : feedView()).filter(Boolean));
     fillNowActions();
+    paintPtr();
 
     if (fk) {
       const next = root.querySelector(`[data-fk="${CSS.escape(fk)}"]`);
