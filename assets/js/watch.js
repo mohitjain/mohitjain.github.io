@@ -23,6 +23,7 @@
   const MAX_PAGES = 5; // safety cap: at most 250 videos per channel
   const CONCURRENCY = 6;
   const PAGE = 40;
+  const DEFAULT_PLAYLIST = "mohitnotes"; // the playlist this page saves to; found and reused on any new device or browser
   const STATUSES = [
     { id: "learn", label: "Learn" },
     { id: "unwind", label: "Unwind" }, // lean-back: podcasts, interviews
@@ -73,6 +74,7 @@
     playlist: P + "playlist",
     dismissed: P + "dismissed",
     plitems: P + "plitems",
+    plcheck: P + "plChecked",
     setup: P + "setupDone",
   };
   const memory = new Map();
@@ -129,7 +131,7 @@
     pl: read(local, K.plitems, null), // {at, items:[{itemId, videoId, title, channel, published}]}
     plBusy: false,
     plChoices: null, // playlists I already have, listed so one can be picked
-    plName: "Watch later (page)",
+    plName: DEFAULT_PLAYLIST,
     dismissed: read(local, K.dismissed, {}), // videoId -> time removed from the feed (local only)
     undo: null, // {id, title} of the last removed video
     limit: PAGE,
@@ -459,7 +461,7 @@
 
   // My playlists (read-only, 1 unit per 50), with how many videos each holds so two with the same name can be told apart.
   const DEMO_PLAYLISTS = [
-    { id: "PLdemo0000000000", title: "Watch later (page)", count: 12 },
+    { id: "PLdemo0000000000", title: DEFAULT_PLAYLIST, count: 12 },
     { id: "PLdemo0000000001", title: "Another playlist", count: 3 },
   ];
   const listMyPlaylists = async () => {
@@ -474,18 +476,34 @@
     return out;
   };
 
+  const connectPlaylist = async (p) => {
+    state.playlist = { id: p.id, title: p.title };
+    write(local, K.playlist, state.playlist);
+    state.pl = null;
+    drop(local, K.plitems);
+    await loadPlaylist();
+  };
+  const fullest = (list) => list.slice().sort((a, b) => b.count - a.count)[0];
+
+  // A new device or browser knows nothing yet: the first time it is signed in, look for my playlist by its name and
+  // connect to it, so Save works straight away and nothing is ever created twice. Checked once per browser (1 unit).
+  const connectExistingPlaylist = async () => {
+    write(local, K.plcheck, true);
+    const same = (await listMyPlaylists()).filter((p) => p.title.trim().toLowerCase() === DEFAULT_PLAYLIST.toLowerCase());
+    if (!same.length) return;
+    const keep = fullest(same);
+    await connectPlaylist(keep);
+    state.note = `Found your “${keep.title}” playlist (${keep.count} video${keep.count === 1 ? "" : "s"}) and connected to it.`;
+  };
+
   // Never create a second playlist with the same name: if one exists (the fullest, if several), use it instead.
   const createPlaylist = (name) =>
     plAction(async () => {
-      name = name.trim().slice(0, 100) || "Watch later (page)";
+      name = name.trim().slice(0, 100) || DEFAULT_PLAYLIST;
       const same = (await listMyPlaylists()).filter((p) => p.title.trim().toLowerCase() === name.toLowerCase());
       if (same.length) {
-        const keep = same.sort((a, b) => b.count - a.count)[0];
-        state.playlist = { id: keep.id, title: keep.title };
-        write(local, K.playlist, state.playlist);
-        state.pl = null;
-        drop(local, K.plitems);
-        await loadPlaylist();
+        const keep = fullest(same);
+        await connectPlaylist(keep);
         if (DEMO) {
           state.pl = { at: Date.now(), items: [] };
           savePl();
@@ -559,6 +577,7 @@
   };
 
   const forgetPlaylist = () => {
+    write(local, K.plcheck, true); // an explicit forget is respected: no automatic reconnect
     state.playlist = null;
     state.pl = null;
     drop(local, K.playlist);
@@ -687,6 +706,13 @@
       if (failed.length) notes.push(`${failed.length} channel${failed.length > 1 ? "s" : ""} could not be loaded. Refresh to try again.`);
       if (lengthsFailed && !quotaHit) notes.push("Video lengths could not be checked, so Shorts may show.");
       if (notes.length) state.note = notes.join(" ");
+      if (!state.playlist && !quotaHit && !read(local, K.plcheck, false)) {
+        try {
+          await connectExistingPlaylist();
+        } catch (e) {
+          if (e.kind === "auth") throw e;
+        }
+      }
       maybeFirstRun();
     } catch (e) {
       state.error = explain(e);
