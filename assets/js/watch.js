@@ -457,10 +457,43 @@
     }
   };
 
+  // My playlists (read-only, 1 unit per 50), with how many videos each holds so two with the same name can be told apart.
+  const DEMO_PLAYLISTS = [
+    { id: "PLdemo0000000000", title: "Watch later (page)", count: 12 },
+    { id: "PLdemo0000000001", title: "Another playlist", count: 3 },
+  ];
+  const listMyPlaylists = async () => {
+    if (DEMO) return DEMO_PLAYLISTS;
+    const out = [];
+    let pageToken;
+    do {
+      const j = await api("/playlists", { part: "snippet,contentDetails", mine: "true", maxResults: 50, pageToken });
+      for (const it of j.items || []) out.push({ id: it.id, title: it.snippet.title, count: Number(it.contentDetails && it.contentDetails.itemCount) || 0 });
+      pageToken = j.nextPageToken;
+    } while (pageToken && out.length < 200);
+    return out;
+  };
+
+  // Never create a second playlist with the same name: if one exists (the fullest, if several), use it instead.
   const createPlaylist = (name) =>
     plAction(async () => {
       name = name.trim().slice(0, 100) || "Watch later (page)";
-      if (DEMO) state.playlist = { id: "PLdemo0000000000", title: name };
+      const same = (await listMyPlaylists()).filter((p) => p.title.trim().toLowerCase() === name.toLowerCase());
+      if (same.length) {
+        const keep = same.sort((a, b) => b.count - a.count)[0];
+        state.playlist = { id: keep.id, title: keep.title };
+        write(local, K.playlist, state.playlist);
+        state.pl = null;
+        drop(local, K.plitems);
+        await loadPlaylist();
+        if (DEMO) {
+          state.pl = { at: Date.now(), items: [] };
+          savePl();
+        }
+        state.note = `You already have “${keep.title}” (${keep.count} video${keep.count === 1 ? "" : "s"}), so it is being used instead of creating another one.`;
+        return;
+      }
+      if (DEMO) state.playlist = { id: "PLdemo0000000099", title: name };
       else {
         const j = await api("/playlists", { part: "snippet,status" }, { method: "POST", body: { snippet: { title: name }, status: { privacyStatus: "private" } } });
         state.playlist = { id: j.id, title: (j.snippet && j.snippet.title) || name };
@@ -507,17 +540,7 @@
     render();
     try {
       await ask;
-      if (DEMO) state.plChoices = [{ id: "PLdemo0000000000", title: "Watch later (page)" }, { id: "PLdemo0000000001", title: "Another playlist" }];
-      else {
-        const out = [];
-        let pageToken;
-        do {
-          const j = await api("/playlists", { part: "snippet", mine: "true", maxResults: 50, pageToken });
-          for (const it of j.items || []) out.push({ id: it.id, title: it.snippet.title });
-          pageToken = j.nextPageToken;
-        } while (pageToken && out.length < 200);
-        state.plChoices = out;
-      }
+      state.plChoices = await listMyPlaylists();
     } catch (e) {
       state.error = explain(e);
     } finally {
@@ -1022,7 +1045,7 @@
             h("p", { class: "w-note", text: "Already made one, on another device? Use it instead of creating a second." }),
             state.plChoices
               ? (state.plChoices.length
-                  ? h("div", { class: "w-row" }, state.plChoices.map((p) => h("button", { type: "button", "data-fk": "use-" + p.id, onclick: () => usePlaylist(p), text: p.title })))
+                  ? h("div", { class: "w-row" }, state.plChoices.map((p) => h("button", { type: "button", "data-fk": "use-" + p.id, onclick: () => usePlaylist(p), text: `${p.title} · ${p.count} video${p.count === 1 ? "" : "s"}` })))
                   : h("p", { class: "w-note", text: "No playlists found on this account." }))
               : h("div", { class: "w-row" }, h("button", { type: "button", "data-fk": "pl-choose", disabled: state.plBusy, onclick: choosePlaylist, text: "Use a playlist I already have" })),
           ]);
