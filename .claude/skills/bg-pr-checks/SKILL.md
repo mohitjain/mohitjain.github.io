@@ -22,7 +22,7 @@ Get a pull request to green, honestly. Wait for every check, find the real cause
    ```
 
    Run the watch in the background or with a long timeout, as the harness requires. The final `gh pr checks <n>` is the truth: count passes, failures and anything still pending. If a workflow run is still queued or in progress, keep waiting.
-2. **All green?** Report the count and the names, and stop. Do not merge, approve or mark ready: that is the author's job in GitHub.
+2. **All green?** Report the count and the names, and stop. Do not merge, approve or mark ready here. Merging is the separate `bg-merge-pr` skill, and only on the author's yes for that PR.
 3. **Find the real cause of every failure.** Read the evidence, never guess from the name:
 
    ```sh

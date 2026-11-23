@@ -50,7 +50,7 @@ These were decided in earlier sessions. A session that cannot see them (for exam
 - Drafts (`_drafts/`) are never published and may be committed freely. Publishing is one commit: `Publish: <title>`.
 - Articles may go straight to `master` after `bin/check` passes. Code, template, style or plugin changes go on a branch with a PR.
 - In a web (cloud) session, always use a branch and a PR, even for an article. Never push to `master`, and never merge: the author merges in the GitHub web page.
-- Ask before every push, merge or deletion of published content.
+- Ask before every push, merge or deletion of published content. Merging a pull request is done with the `bg-merge-pr` skill, only after a clear yes for that PR, and never in a web (cloud) session.
 - **Never merge `master` into a branch. Update a branch by rebasing it onto `origin/master`** (`git fetch origin && git rebase origin/master`), so history stays linear. If the rebase conflicts, resolve it, check with `bin/check`, then continue.
 - A rebased branch that was already pushed needs `git push --force-with-lease`. Do it only with the author's yes for that branch, and only on a feature branch, never on `master`. Never plain `--force`.
 - **This repository and its pull requests are public. Never put anything private in a commit message, PR title, PR body or PR comment.** That means: no `claude.ai` session links, no `Claude-Session:` trailer, no "Generated with Claude Code" line, no internal notes about what was or was not checked, no caveats about the author's draft, no to-do lists for the author, no file paths outside the repo. A PR body says only what the change adds, in plain words. Tell the author anything else in the chat, not in GitHub.
@@ -73,4 +73,4 @@ These were decided in earlier sessions. A session that cannot see them (for exam
 
 ## Skills (`.claude/skills/`)
 
-all start with `bg-`: bg-new-article, bg-review-draft, bg-check, bg-preview, bg-publish, bg-update-article, bg-log-reading, bg-add-tag, bg-seo-check, bg-site-health, bg-launch, bg-pr-checks.
+all start with `bg-`: bg-new-article, bg-review-draft, bg-check, bg-preview, bg-publish, bg-update-article, bg-log-reading, bg-add-tag, bg-seo-check, bg-site-health, bg-launch, bg-pr-checks, bg-merge-pr.

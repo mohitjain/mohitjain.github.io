@@ -149,6 +149,26 @@
   }
 }
 
+// ---------- Pull to refresh (touch screens) ----------
+.w-ptr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 0;
+  overflow: hidden;
+  font-size: 0.8em;
+  opacity: 0.75;
+  transition: height 0.2s ease;
+
+  &.is-pulling {
+    transition: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
 // ---------- Status line ----------
 .w-status {
   min-height: 1.5em;
